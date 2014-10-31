@@ -8,8 +8,17 @@
 
 #include <iostream>
 
+#include "Board.h"
+
 int main(int argc, const char * argv[]) {
 	// insert code here...
-	std::cout << "Hello, World!\n";
+	
+	Piece * p = new Rook("♕") ;
+	auto str = p->getSymbol() ;
+	
+	Board b ;
+
+	std::cout << str << endl ;
+	
     return 0;
 }
