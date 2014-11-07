@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66AD2FA41A07FC91004785E3 /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AD2FA31A07FC91004785E3 /* Position.cpp */; };
 		66C10DB81A0030B10074ED36 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66C10DB71A0030B10074ED36 /* main.cpp */; };
 		66C10DC01A0030E80074ED36 /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66C10DBE1A0030E80074ED36 /* Board.cpp */; };
 		66C10DC31A0034D90074ED36 /* Piece.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66C10DC11A0034D90074ED36 /* Piece.cpp */; };
+		66D4B2BC1A080BF300EE98E8 /* NotificationSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66D4B2BA1A080BF300EE98E8 /* NotificationSystem.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,12 +27,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		66AD2FA21A07EFBB004785E3 /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
+		66AD2FA31A07FC91004785E3 /* Position.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
 		66C10DB41A0030B10074ED36 /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C10DB71A0030B10074ED36 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		66C10DBE1A0030E80074ED36 /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
 		66C10DBF1A0030E80074ED36 /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
 		66C10DC11A0034D90074ED36 /* Piece.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Piece.cpp; sourceTree = "<group>"; };
 		66C10DC21A0034D90074ED36 /* Piece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piece.h; sourceTree = "<group>"; };
+		66D4B2BA1A080BF300EE98E8 /* NotificationSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NotificationSystem.cpp; sourceTree = "<group>"; };
+		66D4B2BB1A080BF300EE98E8 /* NotificationSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSystem.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +69,12 @@
 		66C10DB61A0030B10074ED36 /* Chess */ = {
 			isa = PBXGroup;
 			children = (
+				66D4B2BB1A080BF300EE98E8 /* NotificationSystem.h */,
+				66AD2FA21A07EFBB004785E3 /* Position.h */,
 				66C10DC21A0034D90074ED36 /* Piece.h */,
 				66C10DBF1A0030E80074ED36 /* Board.h */,
+				66D4B2BA1A080BF300EE98E8 /* NotificationSystem.cpp */,
+				66AD2FA31A07FC91004785E3 /* Position.cpp */,
 				66C10DC11A0034D90074ED36 /* Piece.cpp */,
 				66C10DBE1A0030E80074ED36 /* Board.cpp */,
 				66C10DB71A0030B10074ED36 /* main.cpp */,
@@ -130,6 +140,8 @@
 			files = (
 				66C10DC31A0034D90074ED36 /* Piece.cpp in Sources */,
 				66C10DC01A0030E80074ED36 /* Board.cpp in Sources */,
+				66AD2FA41A07FC91004785E3 /* Position.cpp in Sources */,
+				66D4B2BC1A080BF300EE98E8 /* NotificationSystem.cpp in Sources */,
 				66C10DB81A0030B10074ED36 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +257,7 @@
 				66C10DBD1A0030B10074ED36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Chess/main.cpp"
-            timestampString = "436356037.205965"
+            timestampString = "437043006.471267"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "16"
-            endingLineNumber = "16"
-            landmarkName = "main(int argc, const char * argv[])"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "runChessGameTests()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

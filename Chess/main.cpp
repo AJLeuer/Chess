@@ -8,17 +8,34 @@
 
 #include <iostream>
 
+#include "NotificationSystem.h"
 #include "Board.h"
 
-int main(int argc, const char * argv[]) {
-	// insert code here...
-	
-	Piece * p = new Rook("♕") ;
-	auto str = p->getSymbol() ;
+#include "time.h"
+
+
+
+void runChessGameTests() {
 	
 	Board b ;
-
-	std::cout << str << endl ;
 	
+	cout << b << endl ;
+	
+	auto sq = b.boardRepresentation.at(1).at(2) ;
+	
+	Piece * pwn = sq.piece ;
+	
+	pwn->move({1, 3}) ;
+	
+	cout << b << endl ;
+	
+	int a = 1 ;
+}
+
+
+int main(int argc, const char * argv[]) {
+
+	runChessGameTests() ;
+
     return 0;
 }
