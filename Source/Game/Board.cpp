@@ -44,7 +44,17 @@ void Square::registerForPieceMovement() {
 }
 
 
-ostream & operator<< (ostream & out, const Square & square) {
+ostream & operator << (ostream & out, const Square & square) {
+	if (square.isEmpty()) {
+		out << ' ' ;
+	}
+	else {
+		out << *(square.piece) ;
+	}
+	return out ;
+}
+
+basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Square & square) {
 	if (square.isEmpty()) {
 		out << ' ' ;
 	}
@@ -102,3 +112,33 @@ ostream & operator<< (ostream & out, const Board & board) {
 	}
 	return out ;
 }
+
+basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Board & board) {
+	out << "┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl ;
+	
+	for (unsigned i = 0; i < Board::ranks ; i++) {
+		
+		out << "│ " << *(board.getSquare(i, (unsigned)0)) << " │ " << *(board.getSquare(i, (unsigned)1)) << " │ " << *(board.getSquare(i, (unsigned)2)) << " │ " << *(board.getSquare(i, (unsigned)3)) << " │ " << *(board.getSquare(i, (unsigned)4)) << " │ " << *(board.getSquare(i, (unsigned)5)) << " │ " << *(board.getSquare(i, (unsigned)6)) << " │ " << *(board.getSquare(i, (unsigned)7)) << " │" << endl ;
+		
+		if (i < 7) {
+			out << "├───┼───┼───┼───┼───┼───┼───┼───┤" << endl ;
+		}
+		else { //at the end
+			out << "└───┴───┴───┴───┴───┴───┴───┴───┘" << endl ;
+		}
+		
+	}
+	return out ;
+}
+
+
+
+
+
+
+
+
+
+
+
+

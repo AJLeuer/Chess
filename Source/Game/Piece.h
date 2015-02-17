@@ -11,6 +11,9 @@
 
 #include <iostream>
 #include <functional>
+#include <locale>
+#include <codecvt>
+#include <string>
 
 #include "NotificationSystem.h"
 #include "Position.h"
@@ -23,7 +26,7 @@ class Piece {
 	
 protected:
 	
-	const string symbol ;
+	const wstring symbol ;
 	
 	const Position * position ;
 	
@@ -53,7 +56,7 @@ public:
 	 */
 	virtual void move(const Position to) ;//inheriting pieces will define
 	
-	const string & getSymbol() const { return symbol ; }
+	const wstring & getSymbol() const { return symbol ; }
 	
 	const Position * getPosition() const { return position ; }
 	
@@ -65,7 +68,7 @@ protected:
 	
 	Position * getPosition() { return new Position{0, 0} ; } //todo implement
 	
-	Piece(const string & symbol, const Color color, const Position * position) : symbol(symbol), color(color), position(position) {}
+	Piece(const wstring & symbol, const Color color, const Position * position) : symbol(symbol), color(color), position(position) {}
 	
 };
 

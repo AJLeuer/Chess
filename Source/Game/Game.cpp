@@ -10,10 +10,10 @@
 
 void Game::runTests() {
 	
-	stringstream * stream = new stringstream() ;
+	wstringstream * stream = new wstringstream() ;
 	*stream << board ;
 	cout << board ;
-	string * str = new string(stream->str()) ;
+	wstring * str = new wstring(stream->str()) ;
 	
 	auto open = window.isOpen() ;
 	

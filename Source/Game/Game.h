@@ -10,6 +10,7 @@
 #define __Chess__Game__
 
 #include <iostream>
+#include <string>
 #include <sstream>
 #include <thread>
 

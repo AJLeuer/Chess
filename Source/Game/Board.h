@@ -64,6 +64,8 @@ public:
 	
 	friend std::ostream & operator<< (std::ostream & , const Square &) ;
 	
+	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Square &) ;
+	
 } ;
 
 class Board {
@@ -92,7 +94,9 @@ public:
 	
 	const Square * getSquare(unsigned arrIndexX, unsigned arrIndexY) const ;
 	
-	friend std::ostream & operator<< (std::ostream & , const Board &) ;
+	friend std::ostream & operator << (std::ostream & , const Board &) ;
+	
+	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Board &) ;
 } ;
 
 #endif /* defined(__Chess__Board__) */
