@@ -26,7 +26,7 @@ Square::Square(Piece * piece, const char file, const unsigned rank) :
 }
 
 Square::Square(const string & pieceSymbol, const char file, const unsigned rank) :
-	Square(Piece::init(pieceSymbol, & position), file, rank) {}
+	Square(Piece::init(stringConverter.from_bytes(pieceSymbol), & position), file, rank) {}
 
 
 void Square::registerForPieceMovement() {
@@ -114,17 +114,17 @@ ostream & operator<< (ostream & out, const Board & board) {
 }
 
 basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Board & board) {
-	out << "┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl ;
+	out << L"┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl ;
 	
 	for (unsigned i = 0; i < Board::ranks ; i++) {
 		
-		out << "│ " << *(board.getSquare(i, (unsigned)0)) << " │ " << *(board.getSquare(i, (unsigned)1)) << " │ " << *(board.getSquare(i, (unsigned)2)) << " │ " << *(board.getSquare(i, (unsigned)3)) << " │ " << *(board.getSquare(i, (unsigned)4)) << " │ " << *(board.getSquare(i, (unsigned)5)) << " │ " << *(board.getSquare(i, (unsigned)6)) << " │ " << *(board.getSquare(i, (unsigned)7)) << " │" << endl ;
+		out << L"│ " << *(board.getSquare(i, (unsigned)0)) << L" │ " << *(board.getSquare(i, (unsigned)1)) << L" │ " << *(board.getSquare(i, (unsigned)2)) << L" │ " << *(board.getSquare(i, (unsigned)3)) << L" │ " << *(board.getSquare(i, (unsigned)4)) << L" │ " << *(board.getSquare(i, (unsigned)5)) << L" │ " << *(board.getSquare(i, (unsigned)6)) << L" │ " << *(board.getSquare(i, (unsigned)7)) << L" │" << endl ;
 		
 		if (i < 7) {
-			out << "├───┼───┼───┼───┼───┼───┼───┼───┤" << endl ;
+			out << L"├───┼───┼───┼───┼───┼───┼───┼───┤" << endl ;
 		}
 		else { //at the end
-			out << "└───┴───┴───┴───┴───┴───┴───┴───┘" << endl ;
+			out << L"└───┴───┴───┴───┴───┴───┴───┴───┘" << endl ;
 		}
 		
 	}

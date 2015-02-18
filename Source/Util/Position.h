@@ -14,6 +14,8 @@
 #include <sstream>
 #include <utility>
 
+#include <SFML/System/Vector2.hpp>
+
 using namespace std ;
 
 constexpr unsigned lowerCaseA{97} ;
@@ -44,18 +46,53 @@ bool equal(vec2<N> lhs, vec2<N> rhs) {
 	return false ;
 }
 
+template<typename NumericType>
+vec2<NumericType> convertToNativeVectorType(const sf::Vector2<NumericType> & sf_vec) {
+	vec2<NumericType> vector ;
+	vector[0] = sf_vec.x ;
+	vector[1] = sf_vec.y ;
+	return vector ;
+}
+
+template<typename NumericType>
+sf::Vector2<NumericType> convertToSFMLVectorType(const vec2<NumericType> & native_vec) {
+	sf::Vector2<NumericType> vector ;
+	vector.x = native_vec[0] ;
+	vector.y = native_vec[1]  ;
+	return vector ;
+}
+
+template<typename NumericType0, typename NumericType1>
+vec2<NumericType0> convertToNativeVectorType(const sf::Vector2<NumericType1> & sf_vec) {
+	vec2<NumericType0> vector ;
+	vector[0] = sf_vec.x ;
+	vector[1] = sf_vec.y ;
+	return vector ;
+}
+
+template<typename NumericType0, typename NumericType1>
+sf::Vector2<NumericType0> convertToSFMLVectorType(const vec2<NumericType1> & native_vec) {
+	sf::Vector2<NumericType0> vector ;
+	vector.x = native_vec[0] ;
+	vector.y = native_vec[1]  ;
+	return vector ;
+}
+
+
 /**
  * A vector type (2-vector) used to represent a position on the chess board purely numerically,
  * with (0, 0) equal to a1, etc. Can be explicitely converted to a RankAndFile object, 
  * and vice versa.
  */
-typedef vec2<unsigned> Position ;
+typedef vec2<unsigned int> Position ;
+
+
 
 
 
 /**
  * Used to represents a position on the chess board in algebraic notation, where the first square
- * is a1, etc. Can be explicitely converted to a Position (where a1 would equal the 2-vector (0, 0)), and vice versa.
+ * is a1, etc. Can be explicitely and implicitely converted to a Position (where a1 would equal the 2-vector (0, 0)), and vice versa.
  *
  * @see Wikipedia's article on <a href="http://en.wikipedia.org/wiki/Algebraic_notation_(chess)">Algebraic notation (chess)</a>
  */

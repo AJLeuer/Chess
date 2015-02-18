@@ -16,6 +16,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "Position.h"
+
 using namespace std ;
 using namespace sf ;
 
@@ -47,8 +49,8 @@ public:
 	
 	ChessWindow(const string & title = "Chess") ;
 	
-	void draw(const string & chars) ;
-	void draw(const wstring & chars) ;
+	void draw(const string & chars, const Position where) ;
+	void draw(const wstring & chars, const Position where) ;
 	
 };
 

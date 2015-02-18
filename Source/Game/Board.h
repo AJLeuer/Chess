@@ -16,6 +16,7 @@
 #include <array>
 #include <initializer_list>
 
+#include "Util.h"
 #include "NotificationSystem.h"
 #include "Position.h"
 #include "Piece.h"

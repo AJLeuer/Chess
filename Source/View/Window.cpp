@@ -26,17 +26,18 @@ ChessWindow::ChessWindow(const string & title) :
 	RenderWindow(videoMode, title, Style::Default, ContextSettings())
 {
 	text.setFont(font) ;
+	text.setCharacterSize(60) ;
 }
 
-void ChessWindow::draw(const string & chars) {
+void ChessWindow::draw(const string & chars, const Position where) {
 	text.setString(chars) ;
-	text.setPosition(800, 450) ;
+	text.setPosition(convertToSFMLVectorType<float, unsigned>(where)) ;
 	this->RenderWindow::draw(text) ;
 }
 
-void ChessWindow::draw(const wstring & chars) {
+void ChessWindow::draw(const wstring & chars, const Position where) {
 	text.setString(chars) ;
-	text.setPosition(800, 450) ;
+	text.setPosition(convertToSFMLVectorType<float, unsigned>(where)) ;
 	this->RenderWindow::draw(text) ;
 }
 

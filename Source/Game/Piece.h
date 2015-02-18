@@ -11,25 +11,22 @@
 
 #include <iostream>
 #include <functional>
-#include <locale>
-#include <codecvt>
 #include <string>
 
+#include "Util.h"
 #include "NotificationSystem.h"
 #include "Position.h"
 
 using namespace std ;
 
-//class Square ;
 
 class Piece {
 	
 protected:
 	
-	const wstring symbol ;
+	wstring symbol ;
 	
 	const Position * position ;
-	
 	
 	void sendMoveNotification(const Position newPosition) ;
 	
@@ -46,9 +43,17 @@ public:
 		white
 	} ;
 	
-	static Piece * init(const string & symbol, const Position * position) ;
+	struct Symbols {
+		const wstring black ;
+		const wstring white ;
+	} ;
+	
+	
+	static Piece * init(const wstring & symbol, const Position * position) ;
 	
 	virtual ~Piece() {} ;
+	
+	Piece & operator = (const Piece & rhs) ;
 	
 	/**
 	 * Moves the piece to it's new square, and notifies both the Square object
@@ -61,6 +66,10 @@ public:
 	const Position * getPosition() const { return position ; }
 	
 	friend ostream & operator<< (ostream & , const Piece &) ;
+	
+	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Piece &) ;
+	
+	friend int main(int argc, const char * argv[]) ;
 	
 protected:
 	
@@ -80,13 +89,11 @@ protected:
 	
 public:
 	
-	static constexpr char * symbolBlack {(char *)"♟"} ;
-	
-	static constexpr char * symbolWhite {(char *)"♙"} ;
+	static Symbols symbols ;
 	
 	Pawn(const Color color, const Position * position) ;
 	
-	Pawn(const string & symbol, const Position * position) ;
+	Pawn(const wstring & symbol, const Position * position) ;
 	
 	~Pawn() {}
 	
@@ -101,13 +108,11 @@ protected:
 	
 public:
 	
-	static constexpr char * symbolBlack {(char *)"♞"} ;
+	static Symbols symbols ;
 	
-	static constexpr char * symbolWhite {(char *)"♘"} ;
-
 	Knight(const Color color, const Position * position) ;
 	
-	Knight(const string & symbol, const Position * position) ;
+	Knight(const wstring & symbol, const Position * position) ;
 	
 	~Knight() {}
 	
@@ -121,13 +126,11 @@ protected:
 	
 public:
 	
-	static constexpr char * symbolBlack {(char *)"♝"} ;
-	
-	static constexpr char * symbolWhite {(char *)"♗"} ;
-	
+	static Symbols symbols ;
+
 	Bishop(const Color color, const Position * position) ;
 	
-	Bishop(const string & symbol, const Position * position) ;
+	Bishop(const wstring & symbol, const Position * position) ;
 	
 	~Bishop() {}
 	
@@ -142,13 +145,11 @@ protected:
 	
 public:
 	
-	static constexpr char * symbolBlack {(char *)"♜"} ;
-	
-	static constexpr char * symbolWhite {(char *)"♖"} ;
+	static Symbols symbols ;
 
 	Rook(const Color color, const Position * position) ;
 	
-	Rook(const string & symbol, const Position * position) ;
+	Rook(const wstring & symbol, const Position * position) ;
 	
 	~Rook() {}
 	
@@ -162,13 +163,11 @@ protected:
 	
 public:
 	
-	static constexpr char * symbolBlack {(char *)"♛"} ;
-	
-	static constexpr char * symbolWhite {(char *)"♕"} ;
+	static Symbols symbols ;
 	
 	Queen(const Color color, const Position * position) ;
 	
-	Queen(const string & symbol, const Position * position) ;
+	Queen(const wstring & symbol, const Position * position) ;
 	
 	~Queen() {}
 	
@@ -182,13 +181,11 @@ protected:
 	
 public:
 	
-	static constexpr char * symbolBlack {(char *)"♚"} ;
-	
-	static constexpr char * symbolWhite {(char *)"♔"} ;
+	static Symbols symbols ;
 	
 	King(const Color color, const Position * position) ;
 	
-	King(const string & symbol, const Position * position) ;
+	King(const wstring & symbol, const Position * position) ;
 	
 	~King() {}
 	

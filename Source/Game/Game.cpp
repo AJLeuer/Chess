@@ -22,9 +22,13 @@ void Game::runTests() {
 	Piece * piece = sq->piece ;
 	piece->move({1, 3}) ;
 	
+	vec2<unsigned> windowSize = convertToNativeVectorType(window.getSize()) ;
+	
+	vec2<unsigned> middle = windowSize / 2 ;
+	
 	while (true) {
 		window.clear() ;
-		window.draw("│ ♖ │ ♘ │ ♗ │ ♕ │ ♚ │ ♗ │ ♘ │ ♖ ││") ;
+		window.draw(*str, middle) ;
 		window.display() ;
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}
