@@ -74,7 +74,7 @@ const Square * Board::getSquare(unsigned arrIndexX, unsigned arrIndexY) const {
 
 Board::Board() :
 	boardRepresentation{{
-		{{{"♖", 'a', 1}, {"♘", 'b', 1}, {"♗", 'c', 1}, {"♕", 'd', 1}, {"♚", 'e', 1}, {"♗", 'f', 1}, {"♘", 'g', 1}, {"♖", 'h', 1}}},
+		{{{"♖", 'a', 1}, {"♘", 'b', 1}, {"♗", 'c', 1}, {"♕", 'd', 1}, {"♔", 'e', 1}, {"♗", 'f', 1}, {"♘", 'g', 1}, {"♖", 'h', 1}}},
 		
 		{{{"♙", 'a', 2}, {"♙", 'b', 2}, {"♙", 'c', 2}, {"♙", 'd', 2}, {"♙", 'e', 2}, {"♙", 'f', 2}, {"♙", 'g', 2}, {"♙", 'h', 2}}},
 		
@@ -93,44 +93,6 @@ Board::Board() :
 {
 	
 }
-
-ostream & operator<< (ostream & out, const Board & board) {
-	
-	out << "┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl ;
-	
-	for (unsigned i = 0; i < Board::ranks ; i++) {
-		
-		out << "│ " << *(board.getSquare(i, (unsigned)0)) << " │ " << *(board.getSquare(i, (unsigned)1)) << " │ " << *(board.getSquare(i, (unsigned)2)) << " │ " << *(board.getSquare(i, (unsigned)3)) << " │ " << *(board.getSquare(i, (unsigned)4)) << " │ " << *(board.getSquare(i, (unsigned)5)) << " │ " << *(board.getSquare(i, (unsigned)6)) << " │ " << *(board.getSquare(i, (unsigned)7)) << " │" << endl ;
-
-		if (i < 7) {
-			out << "├───┼───┼───┼───┼───┼───┼───┼───┤" << endl ;
-		}
-		else { //at the end
-			out << "└───┴───┴───┴───┴───┴───┴───┴───┘" << endl ;
-		}
-
-	}
-	return out ;
-}
-
-basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Board & board) {
-	out << L"┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl ;
-	
-	for (unsigned i = 0; i < Board::ranks ; i++) {
-		
-		out << L"│ " << *(board.getSquare(i, (unsigned)0)) << L" │ " << *(board.getSquare(i, (unsigned)1)) << L" │ " << *(board.getSquare(i, (unsigned)2)) << L" │ " << *(board.getSquare(i, (unsigned)3)) << L" │ " << *(board.getSquare(i, (unsigned)4)) << L" │ " << *(board.getSquare(i, (unsigned)5)) << L" │ " << *(board.getSquare(i, (unsigned)6)) << L" │ " << *(board.getSquare(i, (unsigned)7)) << L" │" << endl ;
-		
-		if (i < 7) {
-			out << L"├───┼───┼───┼───┼───┼───┼───┼───┤" << endl ;
-		}
-		else { //at the end
-			out << L"└───┴───┴───┴───┴───┴───┴───┴───┘" << endl ;
-		}
-		
-	}
-	return out ;
-}
-
 
 
 

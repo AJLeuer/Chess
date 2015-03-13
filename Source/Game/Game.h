@@ -14,6 +14,9 @@
 #include <sstream>
 #include <thread>
 
+#include <SFML/Window/Mouse.hpp>
+
+#include "Config.h"
 #include "Board.h"
 #include "Player.h"
 #include "Window.h"
@@ -38,6 +41,8 @@ public:
 	void display() ;
 	
 	void runTests() ;
+	
+	void monitorMouse() ;
 };
 
 

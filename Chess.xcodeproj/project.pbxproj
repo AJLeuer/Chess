@@ -38,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6688CFB71AB2BE9E0050EB5B /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		66AD6CF41A93D3080008F0ED /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		66AD6CF51A93D3080008F0ED /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-audio.2.2.0.dylib"; sourceTree = "<group>"; };
@@ -102,6 +103,7 @@
 		66BE096F1A8E4AC200C5F1CC /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				6688CFB71AB2BE9E0050EB5B /* Config.h */,
 				66AD6CF51A93D3080008F0ED /* Util.h */,
 				66BE09731A8E4AC200C5F1CC /* Position.h */,
 				66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */,

@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <ostream>
 #include <sstream>
 #include <utility>
 
@@ -94,6 +95,11 @@ sf::Vector2<NumericType0> convertToSFMLVectorType(const vec2<NumericType1> & nat
 	return vector ;
 }
 
+template <typename Character, typename NumericType>
+basic_ostream<Character> & operator << (basic_ostream<Character> & out, const vec2<NumericType> & vect) {
+	out << "x = " << vect[0] << " y = " << vect[1] ;
+	return out ;
+}
 
 /**
  * A vector type (2-vector) used to represent a position on the chess board purely numerically,

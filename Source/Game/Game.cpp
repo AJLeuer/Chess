@@ -40,6 +40,8 @@ void Game::display() {
 
 void Game::runTests() {
 	
+	monitorMouse() ;
+	
 	while (true) {
 		updateGameState() ;
 		display() ;
@@ -47,3 +49,38 @@ void Game::runTests() {
 	}
 	
 }
+
+void Game::monitorMouse() {
+	
+	auto mouseMonitor = []() -> void {
+		while (true) {
+			if (Mouse::isButtonPressed(buttonMain)) {
+		
+				Position mousePosition = convertToNativeVectorType<unsigned, int>(Mouse::getPosition()) ;
+				
+				cout << "Main mouse button pressed." << endl ;
+				cout << "Coordinates: " << mousePosition << endl ;
+			}
+		}
+		this_thread::sleep_for(chrono::microseconds(100)) ;
+	} ;
+	
+	std::thread mouseThread(mouseMonitor) ;
+	mouseThread.detach() ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
