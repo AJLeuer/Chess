@@ -29,15 +29,5 @@ ChessWindow::ChessWindow(const string & title) :
 	text.setCharacterSize(60) ;
 }
 
-void ChessWindow::draw(const string & chars, const Position where) {
-	text.setString(chars) ;
-	text.setPosition(convertToSFMLVectorType<float, unsigned>(where)) ;
-	this->RenderWindow::draw(text) ;
-}
 
-void ChessWindow::draw(const wstring & chars, const Position where) {
-	text.setString(chars) ;
-	text.setPosition(convertToSFMLVectorType<float, unsigned>(where)) ;
-	this->RenderWindow::draw(text) ;
-}
 

@@ -11,6 +11,11 @@
 
 #include <iostream>
 #include <string>
+#include <list>
+#include <array>
+#include <iterator>
+
+#include "Board.h"
 
 using namespace std ;
 
@@ -20,14 +25,49 @@ protected:
 	
 	static unsigned long uniqueIDs ;
 	
+	list<Square> squaresWithPieces ;
+	
 	unsigned long ID ;
 	
 	string name ;
 	
 public:
 	
-	Player() ;
+	template <typename Iterator>
+	Player(Iterator squares_start, Iterator squares_end) :
+		squaresWithPieces(squares_start, squares_end),
+		ID(uniqueIDs++),
+		name("Player " + to_string(ID))
+	{
+		
+	}
+	
+};
+
+class AI : public Player {
+	
+public:
+	
+	template <typename Iterator>
+	AI(Iterator squares_start, Iterator squares_end) :
+		Player(squares_start, squares_end) {}
+	
+} ;
+
+class Human : public Player {
+
+public:
+
+	template <typename Iterator>
+	Human(Iterator squares_start, Iterator squares_end) :
+		Player(squares_start, squares_end) {}
 	
 };
 
 #endif /* defined(__Chess__Player__) */
+
+
+
+
+
+

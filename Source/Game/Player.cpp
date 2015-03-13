@@ -8,14 +8,7 @@
 
 #include "Player.h"
 
-
 using namespace std ;
 
 unsigned long Player::uniqueIDs = 0 ;
 
-Player::Player() :
-	ID(uniqueIDs++),
-	name("Player " + to_string(ID))
-{
-	
-}

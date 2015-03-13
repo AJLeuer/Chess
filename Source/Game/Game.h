@@ -22,16 +22,20 @@ class Game {
 	
 protected:
 	
-	Player player0 ;
-	Player player1 ;
+	Player * player0 ;
+	Player * player1 ;
 	
 	Board board ;
 	
 	ChessWindow window ;
-	
+		
 public:
 	
-	Game() {}
+	Game() ;
+	
+	void updateGameState() ;
+	
+	void display() ;
 	
 	void runTests() ;
 };

@@ -14,6 +14,7 @@
 #include <string>
 
 #include "Util.h"
+#include "Color.h"
 #include "NotificationSystem.h"
 #include "Position.h"
 
@@ -37,11 +38,6 @@ protected:
 	friend void runTests() ;
 	
 public:
-	
-	enum class Color {
-		black,
-		white
-	} ;
 	
 	struct Symbols {
 		const wstring black ;

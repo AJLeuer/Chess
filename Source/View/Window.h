@@ -29,9 +29,9 @@ protected:
 	
 	/**
 	 * The Font used for displaying most text onscreen.
-	 * Using <a href="http://developer.android.com/design/style/typography.html">Google's Roboto font</a> by default.
-	 *
-	 * @see <a href="http://developer.android.com/design/style/typography.html"> Google's developer page on Roboto</a>
+	 * 
+	 * Currently using Apple's menlo font (which is based on Bitstream Vera Sans
+	 * mono), until I can find something better suited for chess
 	 */
 	static Font font ;
 	
@@ -49,9 +49,26 @@ public:
 	
 	ChessWindow(const string & title = "Chess") ;
 	
-	void draw(const string & chars, const Position where) ;
-	void draw(const wstring & chars, const Position where) ;
+	template<class StringType>
+	void draw(const StringType & chars, const Position where) ;
 	
 };
+
+template<class StringType>
+void ChessWindow::draw(const StringType & chars, const Position where) {
+	
+	text.setString(chars) ;
+	text.setColor(sf::Color(173, 255, 0)) ;
+	
+	auto textSize = text.getLocalBounds() ;
+	
+	Position middle = {static_cast<unsigned>((textSize.width / 2)), static_cast<unsigned>((textSize.height / 2)) } ;
+	
+	Position adjustedPos = where - middle ;
+	
+	text.setPosition(convertToSFMLVectorType<float, unsigned>(adjustedPos)) ;
+	
+	this->RenderWindow::draw(text) ;
+}
 
 #endif /* defined(__Chess__Window__) */

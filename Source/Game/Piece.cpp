@@ -34,44 +34,43 @@ Piece::Symbols King::symbols {/* black */ L"♚", /* white */ L"♔"} ;
 Piece * Piece::init(const wstring & symbol, const Position * position) {
 	Piece * piece ;
 	if (symbol == Pawn::symbols.white) {
-		piece = new Pawn(Piece::Color::white, position) ;
+		piece = new Pawn(Color::white, position) ;
 	}
 	else if (symbol == Pawn::symbols.black) {
-		piece = new Pawn(Piece::Color::black, position) ;
+		piece = new Pawn(Color::black, position) ;
 	}
 	else if (symbol == Knight::symbols.white) {
-		piece = new Knight(Piece::Color::white, position) ;
+		piece = new Knight(Color::white, position) ;
 	}
 	else if (symbol == Knight::symbols.black) {
-		piece = new Knight(Piece::Color::black, position) ;
+		piece = new Knight(Color::black, position) ;
 	}
 	else if (symbol == Bishop::symbols.white) {
-		piece = new Bishop(Piece::Color::white, position) ;
+		piece = new Bishop(Color::white, position) ;
 	}
 	else if (symbol == Bishop::symbols.black) {
-		piece = new Bishop(Piece::Color::black, position) ;
+		piece = new Bishop(Color::black, position) ;
 	}
 	else if (symbol == Rook::symbols.white) {
-		piece = new Rook(Piece::Color::white, position) ;
+		piece = new Rook(Color::white, position) ;
 	}
 	else if (symbol == Rook::symbols.black) {
-		piece = new Rook(Piece::Color::black, position) ;
+		piece = new Rook(Color::black, position) ;
 	}
 	else if (symbol == Queen::symbols.white) {
-		piece = new Queen(Piece::Color::white, position) ;
+		piece = new Queen(Color::white, position) ;
 	}
 	else if (symbol == Queen::symbols.black) {
-		piece = new Queen(Piece::Color::black, position) ;
+		piece = new Queen(Color::black, position) ;
 	}
 	else if (symbol == King::symbols.white) {
-		piece = new King(Piece::Color::white, position) ;
+		piece = new King(Color::white, position) ;
 	}
 	else if (symbol == King::symbols.black) {
-		piece = new King(Piece::Color::black, position) ;
+		piece = new King(Color::black, position) ;
 	}
 	else {
 		piece = nullptr ;
-		cerr << "A piece was initialized to null" << endl ;
 	}
 	return piece ;
 }
@@ -95,13 +94,13 @@ void Piece::sendMoveNotification(const Position newPosition) {
 }
 
 Pawn::Pawn(const Color color, const Position * position) :
-	Piece((color == Piece::Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
 {
 	
 }
 
 Pawn::Pawn(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Piece::Color::black : Piece::Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
 {
 	
 }
@@ -112,13 +111,13 @@ void Pawn::move(const Position to) {
 }
 
 Knight::Knight(const Color color, const Position * position) :
-	Piece((color == Piece::Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
 {
 	
 }
 
 Knight::Knight(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Piece::Color::black : Piece::Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
 {
 	
 }
@@ -129,13 +128,13 @@ void Knight::move(const Position to) {
 }
 
 Bishop::Bishop(const Color color, const Position * position) :
-	Piece((color == Piece::Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
 {
 	
 }
 
 Bishop::Bishop(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Piece::Color::black : Piece::Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
 {
 	
 }
@@ -146,13 +145,13 @@ void Bishop::move(const Position to) {
 }
 
 Rook::Rook(const Color color, const Position * position) :
-	Piece((color == Piece::Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
 {
 	
 }
 
 Rook::Rook(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Piece::Color::black : Piece::Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
 {
 	
 }
@@ -163,13 +162,13 @@ void Rook::move(const Position to) {
 }
 
 Queen::Queen(const Color color, const Position * position) :
-	Piece((color == Piece::Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
 {
 	
 }
 
 Queen::Queen(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Piece::Color::black : Piece::Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
 {
 	
 }
@@ -180,13 +179,13 @@ void Queen::move(const Position to) {
 }
 
 King::King(const Color color, const Position * position) :
-	Piece((color == Piece::Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
 {
 	
 }
 
 King::King(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Piece::Color::black : Piece::Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
 {
 	
 }
