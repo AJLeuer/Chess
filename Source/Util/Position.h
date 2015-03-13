@@ -46,6 +46,10 @@ bool equal(vec2<N> lhs, vec2<N> rhs) {
 	return false ;
 }
 
+/**
+ * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
+ * data types as well)
+ */
 template<typename NumericType>
 vec2<NumericType> convertToNativeVectorType(const sf::Vector2<NumericType> & sf_vec) {
 	vec2<NumericType> vector ;
@@ -54,6 +58,10 @@ vec2<NumericType> convertToNativeVectorType(const sf::Vector2<NumericType> & sf_
 	return vector ;
 }
 
+/**
+ * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
+ * data types as well)
+ */
 template<typename NumericType>
 sf::Vector2<NumericType> convertToSFMLVectorType(const vec2<NumericType> & native_vec) {
 	sf::Vector2<NumericType> vector ;
@@ -62,6 +70,10 @@ sf::Vector2<NumericType> convertToSFMLVectorType(const vec2<NumericType> & nativ
 	return vector ;
 }
 
+/**
+ * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
+ * data types as well)
+ */
 template<typename NumericType0, typename NumericType1>
 vec2<NumericType0> convertToNativeVectorType(const sf::Vector2<NumericType1> & sf_vec) {
 	vec2<NumericType0> vector ;
@@ -70,6 +82,10 @@ vec2<NumericType0> convertToNativeVectorType(const sf::Vector2<NumericType1> & s
 	return vector ;
 }
 
+/**
+ * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
+ * data types as well)
+ */
 template<typename NumericType0, typename NumericType1>
 sf::Vector2<NumericType0> convertToSFMLVectorType(const vec2<NumericType1> & native_vec) {
 	sf::Vector2<NumericType0> vector ;
@@ -85,8 +101,6 @@ sf::Vector2<NumericType0> convertToSFMLVectorType(const vec2<NumericType1> & nat
  * and vice versa.
  */
 typedef vec2<unsigned int> Position ;
-
-
 
 
 

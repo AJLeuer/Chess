@@ -62,6 +62,8 @@
 		66BE09831A8E5A7A00C5F1CC /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		66C10DB41A0030B10074ED36 /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C10DB71A0030B10074ED36 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		66ED80F91AB1B6B3003CA2FC /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		66ED80FA1AB1BA60003CA2FC /* Square.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Square.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,13 +85,15 @@
 		66BE09661A8E4AC200C5F1CC /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				66ED80F91AB1B6B3003CA2FC /* Color.h */,
+				66ED80FA1AB1BA60003CA2FC /* Square.h */,
 				66BE096C1A8E4AC200C5F1CC /* Piece.h */,
-				66BE09681A8E4AC200C5F1CC /* Board.h */,
 				66BE096E1A8E4AC200C5F1CC /* Player.h */,
+				66BE09681A8E4AC200C5F1CC /* Board.h */,
 				66BE096A1A8E4AC200C5F1CC /* Game.h */,
 				66BE096B1A8E4AC200C5F1CC /* Piece.cpp */,
-				66BE09671A8E4AC200C5F1CC /* Board.cpp */,
 				66BE096D1A8E4AC200C5F1CC /* Player.cpp */,
+				66BE09671A8E4AC200C5F1CC /* Board.cpp */,
 				66BE09691A8E4AC200C5F1CC /* Game.cpp */,
 			);
 			path = Game;
@@ -99,11 +103,11 @@
 			isa = PBXGroup;
 			children = (
 				66AD6CF51A93D3080008F0ED /* Util.h */,
-				66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */,
 				66BE09731A8E4AC200C5F1CC /* Position.h */,
+				66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */,
 				66AD6CF41A93D3080008F0ED /* Util.cpp */,
-				66BE09701A8E4AC200C5F1CC /* NotificationSystem.cpp */,
 				66BE09721A8E4AC200C5F1CC /* Position.cpp */,
+				66BE09701A8E4AC200C5F1CC /* NotificationSystem.cpp */,
 			);
 			path = Util;
 			sourceTree = "<group>";
