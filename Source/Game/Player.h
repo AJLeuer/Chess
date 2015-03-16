@@ -19,6 +19,11 @@
 
 using namespace std ;
 
+struct MoveIntent {
+	Piece * piece ;
+	Square * destination ;
+} ;
+
 class Player {
 	
 protected:
@@ -42,17 +47,10 @@ public:
 		
 	}
 	
+	virtual MoveIntent decideNextMove() ;
+	
 };
 
-class AI : public Player {
-	
-public:
-	
-	template <typename Iterator>
-	AI(Iterator squares_start, Iterator squares_end) :
-		Player(squares_start, squares_end) {}
-	
-} ;
 
 class Human : public Player {
 
@@ -62,7 +60,23 @@ public:
 	Human(Iterator squares_start, Iterator squares_end) :
 		Player(squares_start, squares_end) {}
 	
+	MoveIntent decideNextMove() ;
+	
 };
+
+class AI : public Player {
+	
+public:
+	
+	template <typename Iterator>
+	AI(Iterator squares_start, Iterator squares_end) :
+	Player(squares_start, squares_end) {}
+	
+	MoveIntent decideNextMove() ;
+	
+	void runSearchAlgorithm() ;
+	
+} ;
 
 #endif /* defined(__Chess__Player__) */
 

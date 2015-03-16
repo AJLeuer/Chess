@@ -12,3 +12,22 @@ using namespace std ;
 
 unsigned long Player::uniqueIDs = 0 ;
 
+
+MoveIntent Player::decideNextMove() {
+	return MoveIntent() ;
+}
+
+
+MoveIntent Human::decideNextMove() {
+	return MoveIntent() ; //todo: implement
+}
+
+
+MoveIntent AI::decideNextMove() {
+	return MoveIntent() ; //todo: implement
+}
+
+void AI::runSearchAlgorithm() {
+	
+}
+

@@ -19,6 +19,7 @@
 #include "Util.h"
 #include "NotificationSystem.h"
 #include "Position.h"
+#include "Color.h"
 #include "Piece.h"
 #include "Square.h"
 
@@ -58,6 +59,45 @@ public:
 	
 	template <typename Character>
 	friend basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Board & board) ;
+	
+	/*
+	union BoardValues {
+		int white ;
+		int black ;
+	}; */
+	
+	/**
+	 * Calculates a numeric value based on the current state of the chess board (including the existence and configuration of pieces)m
+	 * from the perspective of the player playing the Color color. In other words, if e.g. the player playing white requests the current
+	 * value of the board, it will be calculated by subtracting the sum of the extant black pieces from the sum of the remaining white ones.
+	 *
+	 * @param PlayerByColor The player from whose perspective the value of the game state is calculated
+	 */
+	template <typename CallingPlayerByColor>
+	short evaluate() {
+		
+		short black_sum = 0 ;
+		short white_sum = 0 ;
+		
+		for (auto & i : boardRepresentation) {
+			for (auto & j : i) {
+				if (j.piece->getColor() == Color::black) {
+					black_sum += j.piece->getValue() ;
+				}
+				else { //if color == white
+					white_sum += j.piece->getValue() ;
+				}
+			}
+			if (typeid(CallingPlayerByColor) == typeid(Color::black)) {
+				auto result = black_sum - white_sum ;
+				return result ;
+			}
+			else if (typeid(CallingPlayerByColor) == typeid(Color::black)) {
+				auto result = white_sum - black_sum ;
+				return result ;
+			}
+		}
+	}
 	
 	
 } ;

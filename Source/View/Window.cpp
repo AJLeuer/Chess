@@ -17,7 +17,7 @@ VideoMode ChessWindow::videoMode = VideoMode::getDesktopMode() ;
 Font ChessWindow::font = ChessWindow::initFont() ;
 
 Font & ChessWindow::initFont() {
-	font.loadFromFile("Menlo-Regular.ttf") ;
+	font.loadFromFile("Apple Color Emoji.ttf") ;
 	return font ;
 }
 
@@ -26,7 +26,7 @@ ChessWindow::ChessWindow(const string & title) :
 	RenderWindow(videoMode, title, Style::Default, ContextSettings())
 {
 	text.setFont(font) ;
-	text.setCharacterSize(60) ;
+	text.setCharacterSize(84) ;
 }
 
 

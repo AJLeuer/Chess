@@ -20,7 +20,6 @@
 		66BE097B1A8E4AC200C5F1CC /* NotificationSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09701A8E4AC200C5F1CC /* NotificationSystem.cpp */; };
 		66BE097C1A8E4AC200C5F1CC /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09721A8E4AC200C5F1CC /* Position.cpp */; };
 		66BE097D1A8E4AC200C5F1CC /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09751A8E4AC200C5F1CC /* Window.cpp */; };
-		66BE09841A8E5A9000C5F1CC /* Roboto-Regular.ttf in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66BE09831A8E5A7A00C5F1CC /* Roboto-Regular.ttf */; };
 		66C10DB81A0030B10074ED36 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66C10DB71A0030B10074ED36 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -31,16 +30,15 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				66BE09841A8E5A9000C5F1CC /* Roboto-Regular.ttf in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6688CFB71AB2BE9E0050EB5B /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		66AD6CF41A93D3080008F0ED /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		66AD6CF51A93D3080008F0ED /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		66AF8EC31AB40F0000FECDA7 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-audio.2.2.0.dylib"; sourceTree = "<group>"; };
 		66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-graphics.2.2.0.dylib"; sourceTree = "<group>"; };
 		66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-network.2.2.0.dylib"; sourceTree = "<group>"; };
@@ -60,9 +58,9 @@
 		66BE09731A8E4AC200C5F1CC /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
 		66BE09751A8E4AC200C5F1CC /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		66BE09761A8E4AC200C5F1CC /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		66BE09831A8E5A7A00C5F1CC /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		66C10DB41A0030B10074ED36 /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C10DB71A0030B10074ED36 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		66D0AFA41AB6D026001AD733 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		66ED80F91AB1B6B3003CA2FC /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		66ED80FA1AB1BA60003CA2FC /* Square.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Square.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,7 +101,7 @@
 		66BE096F1A8E4AC200C5F1CC /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				6688CFB71AB2BE9E0050EB5B /* Config.h */,
+				66AF8EC31AB40F0000FECDA7 /* Config.h */,
 				66AD6CF51A93D3080008F0ED /* Util.h */,
 				66BE09731A8E4AC200C5F1CC /* Position.h */,
 				66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */,
@@ -123,14 +121,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		66BE09821A8E5A7A00C5F1CC /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				66BE09831A8E5A7A00C5F1CC /* Roboto-Regular.ttf */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
 		66C10DAB1A0030B10074ED36 = {
 			isa = PBXGroup;
 			children = (
@@ -139,7 +129,7 @@
 				66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */,
 				66BE095C1A8E382300C5F1CC /* libsfml-system.2.2.0.dylib */,
 				66BE095D1A8E382300C5F1CC /* libsfml-window.2.2.0.dylib */,
-				66BE09821A8E5A7A00C5F1CC /* Assets */,
+				66D0AFA41AB6D026001AD733 /* Assets */,
 				66C10DB61A0030B10074ED36 /* Source */,
 				66C10DB51A0030B10074ED36 /* Products */,
 			);

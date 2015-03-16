@@ -105,6 +105,13 @@ Pawn::Pawn(const wstring & symbol, const Position * position) :
 	
 }
 
+const float Pawn::getValue() const  {
+	constexpr float pawnValue = 1 ;
+	auto rank = position->x ;
+	auto adjustedRank = (rank / 8) ;
+	return (pawnValue + adjustedRank) ;
+}
+
 void Pawn::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;

@@ -20,7 +20,6 @@ void Game::updateGameState() {
 	Piece * piece = sq->piece ;
 	
 	//piece->move({1, 3}) ;
-
 }
 
 void Game::display() {
@@ -58,11 +57,12 @@ void Game::monitorMouse() {
 		
 				Position mousePosition = convertToNativeVectorType<unsigned, int>(Mouse::getPosition()) ;
 				
-				cout << "Main mouse button pressed." << endl ;
-				cout << "Coordinates: " << mousePosition << endl ;
+				//cout << "Main mouse button pressed." << endl ;
+				//cout << "Coordinates: " << mousePosition << endl ;
 			}
+			this_thread::sleep_for(chrono::microseconds(100)) ;
 		}
-		this_thread::sleep_for(chrono::microseconds(100)) ;
+		
 	} ;
 	
 	std::thread mouseThread(mouseMonitor) ;

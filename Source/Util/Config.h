@@ -2,7 +2,7 @@
 //  Config.h
 //  Chess
 //
-//  Created by Adam James Leuer on 3/13/15.
+//  Created by Adam James Leuer on 3/14/15.
 //  Copyright (c) 2015 Adam James Leuer. All rights reserved.
 //
 
@@ -11,7 +11,6 @@
 
 #include <SFML/Window/Mouse.hpp>
 
-auto buttonMain = sf::Mouse::Button::Left ;
-
+constexpr auto buttonMain = sf::Mouse::Button::Left ;
 
 #endif

@@ -57,9 +57,13 @@ public:
 	 */
 	virtual void move(const Position to) ;//inheriting pieces will define
 	
+	const Color getColor() const { return color ; }
+	
 	const wstring & getSymbol() const { return symbol ; }
 	
 	const Position * getPosition() const { return position ; }
+	
+	virtual const float getValue() const = 0 ;
 	
 	friend ostream & operator<< (ostream & , const Piece &) ;
 	
@@ -93,6 +97,8 @@ public:
 	
 	~Pawn() {}
 	
+	virtual const float getValue() const override ;
+	
 	void move(const Position to) override ;
 
 } ;
@@ -112,6 +118,8 @@ public:
 	
 	~Knight() {}
 	
+	virtual const float getValue() const override { return 2 ; }
+	
 	void move(const Position to) override ;
 	
 };
@@ -129,6 +137,8 @@ public:
 	Bishop(const wstring & symbol, const Position * position) ;
 	
 	~Bishop() {}
+	
+	virtual const float getValue() const override { return 4 ; }
 	
 	void move(const Position to) override ;
 
@@ -149,6 +159,8 @@ public:
 	
 	~Rook() {}
 	
+	virtual const float getValue() const override { return 6 ; }
+	
 	void move(const Position to) override ;
 	
 };
@@ -167,6 +179,8 @@ public:
 	
 	~Queen() {}
 	
+	virtual const float getValue() const override { return 10 ; }
+	
 	void move(const Position to) override ;
 	
 };
@@ -184,6 +198,8 @@ public:
 	King(const wstring & symbol, const Position * position) ;
 	
 	~King() {}
+	
+	virtual const float getValue() const override { return 48 ; }
 	
 	void move(const Position to) override ;
 	

@@ -16,7 +16,7 @@ RankAndFile::RankAndFile(const Position & pos) :
 	
 }
 
-RankAndFile & RankAndFile::operator=(const RankAndFile & rhs) {
+RankAndFile & RankAndFile::operator = (const RankAndFile & rhs) {
 	if (this != &rhs) {
 		this->file = rhs.file ;
 		this->rank = rhs.rank ;
@@ -24,8 +24,14 @@ RankAndFile & RankAndFile::operator=(const RankAndFile & rhs) {
 	return *this ;
 }
 
+RankAndFile & RankAndFile::operator = (const Position & pos) {
+	RankAndFile other(pos) ;
+	*this = other ;
+	return *this ;
+}
+
 RankAndFile::operator Position() const {
-	return convertToArrayIndex() ;
+	return convertToPosition() ;
 }
 
 string RankAndFile::toString() const {
@@ -34,7 +40,7 @@ string RankAndFile::toString() const {
 	return ss.str() ;
 }
 
-Position RankAndFile::convertToArrayIndex() const {
+Position RankAndFile::convertToPosition() const {
 	unsigned ind0 = this->getRank() ;
 	ind0-- ;
 	unsigned ind1 = static_cast<unsigned>(getFile() - lowerCaseA) ;

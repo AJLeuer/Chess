@@ -21,7 +21,7 @@ using namespace std ;
 
 constexpr unsigned lowerCaseA{97} ;
 
-template<typename NumericType>
+template <typename NumericType>
 using vec2 = NumericType __attribute__((ext_vector_type(2))) ;
 
 /* //Apparently illegal. Boo
@@ -36,7 +36,7 @@ bool operator==(vec2<N> lhs, vec2<N> rhs) {
 	return false ;
 } */
 
-template<typename N>
+template <typename N>
 bool equal(vec2<N> lhs, vec2<N> rhs) {
 	if (lhs[0] == rhs[0]) {
 		if (lhs[1] == rhs[1]) {
@@ -51,7 +51,7 @@ bool equal(vec2<N> lhs, vec2<N> rhs) {
  * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
  * data types as well)
  */
-template<typename NumericType>
+template <typename NumericType>
 vec2<NumericType> convertToNativeVectorType(const sf::Vector2<NumericType> & sf_vec) {
 	vec2<NumericType> vector ;
 	vector[0] = sf_vec.x ;
@@ -63,7 +63,7 @@ vec2<NumericType> convertToNativeVectorType(const sf::Vector2<NumericType> & sf_
  * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
  * data types as well)
  */
-template<typename NumericType>
+template <typename NumericType>
 sf::Vector2<NumericType> convertToSFMLVectorType(const vec2<NumericType> & native_vec) {
 	sf::Vector2<NumericType> vector ;
 	vector.x = native_vec[0] ;
@@ -87,7 +87,7 @@ vec2<NumericType0> convertToNativeVectorType(const sf::Vector2<NumericType1> & s
  * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
  * data types as well)
  */
-template<typename NumericType0, typename NumericType1>
+template <typename NumericType0, typename NumericType1>
 sf::Vector2<NumericType0> convertToSFMLVectorType(const vec2<NumericType1> & native_vec) {
 	sf::Vector2<NumericType0> vector ;
 	vector.x = native_vec[0] ;
@@ -100,6 +100,7 @@ basic_ostream<Character> & operator << (basic_ostream<Character> & out, const ve
 	out << "x = " << vect[0] << " y = " << vect[1] ;
 	return out ;
 }
+
 
 /**
  * A vector type (2-vector) used to represent a position on the chess board purely numerically,
@@ -139,13 +140,15 @@ public:
 	
 	~RankAndFile() {}
 	
-	RankAndFile & operator=(const RankAndFile & rhs) ;
+	RankAndFile & operator = (const RankAndFile & rhs) ;
+	
+	RankAndFile & operator = (const Position & pos) ;
 	
 	operator Position() const ;
 	
 	string toString() const ;
 	
-	Position convertToArrayIndex() const ;
+	Position convertToPosition() const ;
 
 	const char getFile() const { return file ; }
 	const unsigned & getRank() const { return rank ; }
