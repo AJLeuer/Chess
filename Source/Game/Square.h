@@ -16,9 +16,9 @@ struct Square {
 	
 protected:
 	
-	const RankAndFile rankAndFile ;
+	RankAndFile rankAndFile ;
 	
-	const Position position ;
+	Position position ;
 	
 	Piece * piece ;
 	
@@ -28,11 +28,17 @@ protected:
 	
 public:
 	
+	Square(const Square & other) ;
+	
 	Square(const char file, const unsigned rank) ;
 	
 	Square(Piece * piece, const char file, const unsigned rank) ;
 	
 	Square(const string & pieceSymbol, const char file, const unsigned rank) ;
+	
+	~Square() { delete piece ; }
+	
+	Square & operator = (const Square & rhs) ;
 	
 	void setCurrentPiece(Piece * piece) { this->piece = piece ; this->piece->setCurrentPosition(& this->position) ;}
 	

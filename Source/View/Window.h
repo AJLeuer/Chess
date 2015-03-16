@@ -51,15 +51,25 @@ protected:
 	
 public:
 	
+	ChessWindow(const ChessWindow & other) :
+		text(other.text)
+	{
+		
+	}
+	
 	ChessWindow(const string & title = "Chess") ;
 	
+	~ChessWindow() {}
+	
+	ChessWindow & operator = (const ChessWindow & other) ;
+	
 	template<class StringType>
-	void draw(const StringType & chars, const Position where) ;
+	void displayText(const StringType & chars, const Position where) ;
 	
 };
 
 template<class StringType>
-void ChessWindow::draw(const StringType & chars, const Position where) {
+void ChessWindow::displayText(const StringType & chars, const Position where) {
 	
 	text.setString(chars) ;
 	text.setColor(sf::Color(173, 255, 0)) ;

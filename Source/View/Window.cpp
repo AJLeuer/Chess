@@ -11,6 +11,12 @@
 using namespace std ;
 using namespace sf ;
 
+ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
+	if (this != & other) {
+		this->text = other.text ;
+	}
+	return * this ;
+}
 
 VideoMode ChessWindow::videoMode = setVideoMode() ;
 

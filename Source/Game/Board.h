@@ -51,6 +51,12 @@ public:
 	
 	Board() ;
 	
+	Board(const Board & other) ;
+	
+	~Board() {}
+	
+	Board & operator = (const Board & other) ;
+	
 	const Square * getSquare(unsigned rank, char file) const ;
 	
 	const Square * getSquare(unsigned arrIndexX, unsigned arrIndexY) const ;
@@ -60,12 +66,7 @@ public:
 	template <typename Character>
 	friend basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Board & board) ;
 	
-	/*
-	union BoardValues {
-		int white ;
-		int black ;
-	}; */
-	
+
 	/**
 	 * Calculates a numeric value based on the current state of the chess board (including the existence and configuration of pieces)m
 	 * from the perspective of the player playing the Color color. In other words, if e.g. the player playing white requests the current

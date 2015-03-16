@@ -14,6 +14,8 @@
 #include <string>
 
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 #include "Config.h"
 #include "Util.h"
@@ -39,9 +41,11 @@ protected:
 	
 	wstring symbol ;
 	
-	const string spriteImageFile ;
+	string spriteImageFilePath ;
 	
-	sf::Image sprite ;
+	sf::Image spriteImage ;
+	
+	sf::Sprite sprite ;
 	
 	const Position * position ;
 	
@@ -57,6 +61,8 @@ public:
 	
 	static Piece * init(const wstring & symbol, const Position * position) ;
 	
+	Piece (const Piece & other) ;
+	
 	virtual ~Piece() {} ;
 	
 	Piece & operator = (const Piece & rhs) ;
@@ -70,6 +76,8 @@ public:
 	const Color getColor() const { return color ; }
 	
 	const wstring & getSymbol() const { return symbol ; }
+	
+	const sf::Sprite & getSprite() const { return sprite ; }
 	
 	const Position * getPosition() const { return position ; }
 	
@@ -87,13 +95,16 @@ protected:
 	
 	Position * getPosition() { return new Position{0, 0} ; } //todo implement
 	
-	Piece(const wstring & symbol, const string & spriteImageFile, const Color color, const Position * position) :
+	Piece(const wstring & symbol, const string & spriteImageFilePath, const Color color, const Position * position) :
 		symbol(symbol),
-		spriteImageFile(spriteImageFile),
+		spriteImageFilePath(spriteImageFilePath),
 		color(color),
 		position(position)
 	{
-		bool loadedOK = sprite.loadFromFile(spriteImageFile) ;
+		bool loadedImageOK = spriteImage.loadFromFile(spriteImageFilePath) ;
+		sf::Texture texture ;
+		texture.loadFromImage(spriteImage) ;
+		sprite.setTexture(texture) ;
 	}
 	
 };
@@ -101,8 +112,6 @@ protected:
 
 
 class Pawn : public Piece {
-
-protected:
 	
 public:
 	
@@ -110,11 +119,21 @@ public:
 	
 	static ImageFiles imageFiles ;
 	
+	Pawn(const Pawn & other) :
+		Piece(other) {}
+	
 	Pawn(const Color color, const Position * position) ;
 	
 	Pawn(const wstring & symbol, const Position * position) ;
 	
 	~Pawn() {}
+	
+	Pawn & operator = (const Pawn & other) {
+		if (this != & other) {
+			this->Piece::operator=(other) ;
+		}
+		return * this ;
+	}
 	
 	virtual const float getValue() const override ;
 	
@@ -124,20 +143,27 @@ public:
 
 class Knight : public Piece {
 	
-protected:
-	
-	
 public:
 	
 	static Symbols symbols ;
 	
 	static ImageFiles imageFiles ;
 	
+	Knight(const Knight & other) :
+		Piece(other) {}
+	
 	Knight(const Color color, const Position * position) ;
 	
 	Knight(const wstring & symbol, const Position * position) ;
 	
 	~Knight() {}
+	
+	Knight & operator = (const Knight & other) {
+		if (this != & other) {
+			this->Piece::operator=(other) ;
+		}
+		return * this ;
+	}
 	
 	virtual const float getValue() const override { return 2 ; }
 	
@@ -147,19 +173,27 @@ public:
 
 class Bishop : public Piece {
 	
-protected:
-	
 public:
 	
 	static Symbols symbols ;
 	
 	static ImageFiles imageFiles ;
+	
+	Bishop(const Bishop & other) :
+		Piece(other) {}
 
 	Bishop(const Color color, const Position * position) ;
 	
 	Bishop(const wstring & symbol, const Position * position) ;
 	
 	~Bishop() {}
+	
+	Bishop & operator = (const Bishop & other) {
+		if (this != & other) {
+			this->Piece::operator=(other) ;
+		}
+		return * this ;
+	}
 	
 	virtual const float getValue() const override { return 4 ; }
 	
@@ -169,20 +203,28 @@ public:
 
 
 class Rook : public Piece {
-	
-protected:
-	
+
 public:
 	
 	static Symbols symbols ;
 	
 	static ImageFiles imageFiles ;
+	
+	Rook(const Rook & other) :
+		Piece(other) {}
 
 	Rook(const Color color, const Position * position) ;
 	
 	Rook(const wstring & symbol, const Position * position) ;
 	
 	~Rook() {}
+	
+	Rook & operator = (const Rook & other) {
+		if (this != & other) {
+			this->Piece::operator=(other) ;
+		}
+		return * this ;
+	}
 	
 	virtual const float getValue() const override { return 6 ; }
 	
@@ -192,19 +234,27 @@ public:
 
 class Queen : public Piece {
 	
-protected:
-	
 public:
 	
 	static Symbols symbols ;
 	
 	static ImageFiles imageFiles ;
 	
+	Queen(const Queen & other) :
+		Piece(other) {}
+	
 	Queen(const Color color, const Position * position) ;
 	
 	Queen(const wstring & symbol, const Position * position) ;
 	
 	~Queen() {}
+	
+	Queen & operator = (const Queen & other) {
+		if (this != & other) {
+			this->Piece::operator=(other) ;
+		}
+		return * this ;
+	}
 	
 	virtual const float getValue() const override { return 10 ; }
 	
@@ -213,20 +263,28 @@ public:
 };
 
 class King : public Piece {
-	
-protected:
-	
+
 public:
 	
 	static Symbols symbols ;
 	
 	static ImageFiles imageFiles ;
 	
+	King(const King & other) :
+		Piece(other) {}
+	
 	King(const Color color, const Position * position) ;
 	
 	King(const wstring & symbol, const Position * position) ;
 	
 	~King() {}
+	
+	King & operator = (const King & other) {
+		if (this != & other) {
+			this->Piece::operator=(other) ;
+		}
+		return * this ;
+	}
 	
 	virtual const float getValue() const override { return 48 ; }
 	

@@ -36,7 +36,7 @@ ImageFiles Knight::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\
 
 ImageFiles Bishop::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Bishop.png" } ;
 
-ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Rook.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Rook.png" } ;
+ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Rook.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Rook.jpg" } ;
 
 ImageFiles Queen::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Queen.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Queen.png" } ;
 
@@ -89,9 +89,24 @@ Piece * Piece::init(const wstring & symbol, const Position * position) {
 	return piece ;
 }
 
+Piece::Piece (const Piece & other) :
+	symbol(other.symbol),
+	spriteImageFilePath(other.spriteImageFilePath),
+	spriteImage(other.spriteImage),
+	sprite(other.sprite),
+	color(other.color),
+	position(other.position)
+{
+	
+}
+
 Piece & Piece::operator = (const Piece & rhs) {
 	if (this != & rhs) {
 		this->symbol = rhs.symbol ;
+		this->spriteImageFilePath = rhs.spriteImageFilePath ;
+		this->spriteImage = rhs.spriteImage ;
+		this->sprite = rhs.sprite ;
+		this->color = rhs.color ;
 		this->position = rhs.position ;
 		//add any other newer members here
 	}
@@ -113,7 +128,7 @@ Pawn::Pawn(const Color color, const Position * position) :
 		  color,
 		  position)
 {
-	
+	sprite.setPosition(50, 50) ;
 }
 
 Pawn::Pawn(const wstring & symbol, const Position * position) :

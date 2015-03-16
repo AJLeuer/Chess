@@ -10,6 +10,13 @@
 
 using namespace std ;
 
+Square::Square(const Square & other) :
+	rankAndFile(other.rankAndFile),
+	position(other.position),
+	piece(Piece::init(other.piece->getSymbol(), other.piece->getPosition()))
+{
+	
+}
 
 Square::Square(const char file, const unsigned rank) :
 	rankAndFile(file, rank),
@@ -27,6 +34,16 @@ Square::Square(Piece * piece, const char file, const unsigned rank) :
 
 Square::Square(const string & pieceSymbol, const char file, const unsigned rank) :
 	Square(Piece::init(stringConverter.from_bytes(pieceSymbol), & position), file, rank) {}
+
+Square & Square::operator = (const Square & other) {
+	if (this != & other) {
+		this->rankAndFile = other.rankAndFile ;
+		this->position = other.position ;
+		delete this->piece ;
+		piece = Piece::init(other.piece->getSymbol(), other.piece->getPosition()) ;
+	}
+	return * this ;
+}
 
 
 void Square::registerForPieceMovement() {
@@ -94,6 +111,18 @@ Board::Board() :
 	
 }
 
+Board::Board(const Board & other) :
+	boardRepresentation(other.boardRepresentation)
+{
+
+}
+
+Board & Board::operator = (const Board & other) {
+	if (this != & other) {
+		this->boardRepresentation = other.boardRepresentation ;
+	}
+	return * this ;
+}
 
 
 

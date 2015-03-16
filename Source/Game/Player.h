@@ -38,6 +38,13 @@ protected:
 	
 public:
 	
+	Player(const Player & other) = delete ;
+	
+	/**
+	 * Move constructor
+	 */
+	Player(Player && other) ;
+	
 	template <typename Iterator>
 	Player(Iterator squares_start, Iterator squares_end) :
 		squaresWithPieces(squares_start, squares_end),
@@ -46,6 +53,15 @@ public:
 	{
 		
 	}
+	
+	virtual ~Player() {}
+	
+	Player & operator = (const Player & other) = delete ;
+	
+	/**
+	 * Move assignment operator
+	 */
+	Player & operator = (Player && other) ;
 	
 	virtual MoveIntent decideNextMove() ;
 	

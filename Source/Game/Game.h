@@ -17,6 +17,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include "Config.h"
+#include "Random.hpp"
 #include "Board.h"
 #include "Player.h"
 #include "Window.h"
@@ -35,6 +36,12 @@ protected:
 public:
 	
 	Game() ;
+	
+	Game(const Game & other) = delete ;
+	
+	~Game() ;
+	
+	Game & operator = (const Game & other) = delete ;
 	
 	void updateGameState() ;
 	
