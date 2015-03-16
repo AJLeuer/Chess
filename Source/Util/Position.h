@@ -72,24 +72,22 @@ sf::Vector2<NumericType> convertToSFMLVectorType(const vec2<NumericType> & nativ
 }
 
 /**
- * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
- * data types as well)
+ * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector data types as well)
  */
-template<typename NumericType0, typename NumericType1>
-vec2<NumericType0> convertToNativeVectorType(const sf::Vector2<NumericType1> & sf_vec) {
-	vec2<NumericType0> vector ;
+template<typename OutputNumericType, typename InputNumericType>
+vec2<OutputNumericType> convertToNativeVectorType(const sf::Vector2<InputNumericType> & sf_vec) {
+	vec2<OutputNumericType> vector ;
 	vector[0] = sf_vec.x ;
 	vector[1] = sf_vec.y ;
 	return vector ;
 }
 
 /**
- * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
- * data types as well)
+ * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector data types as well)
  */
-template <typename NumericType0, typename NumericType1>
-sf::Vector2<NumericType0> convertToSFMLVectorType(const vec2<NumericType1> & native_vec) {
-	sf::Vector2<NumericType0> vector ;
+template <typename OutputNumericType, typename InputNumericType>
+sf::Vector2<OutputNumericType> convertToSFMLVectorType(const vec2<InputNumericType> & native_vec) {
+	sf::Vector2<OutputNumericType> vector ;
 	vector.x = native_vec[0] ;
 	vector.y = native_vec[1]  ;
 	return vector ;
@@ -107,7 +105,7 @@ basic_ostream<Character> & operator << (basic_ostream<Character> & out, const ve
  * with (0, 0) equal to a1, etc. Can be explicitely converted to a RankAndFile object, 
  * and vice versa.
  */
-typedef vec2<unsigned int> Position ;
+typedef vec2<int> Position ;
 
 
 

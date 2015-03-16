@@ -12,12 +12,20 @@ using namespace std ;
 using namespace sf ;
 
 
-VideoMode ChessWindow::videoMode = VideoMode::getDesktopMode() ;
+VideoMode ChessWindow::videoMode = setVideoMode() ;
+
+VideoMode ChessWindow::setVideoMode() {
+	vec2<float> baseWindowSize {static_cast<float>(mainWindowSize.x), static_cast<float>(mainWindowSize.y)} ;
+	float dpiScale = DisplayData::getDisplayScalingFactor<float>() ;
+	vec2<float> scaledWindowSize = baseWindowSize * dpiScale ;
+	VideoMode vm(scaledWindowSize.x, scaledWindowSize.y) ;
+	return vm ;
+}
 
 Font ChessWindow::font = ChessWindow::initFont() ;
 
 Font & ChessWindow::initFont() {
-	font.loadFromFile("Apple Color Emoji.ttf") ;
+	font.loadFromFile("Menlo-Regular.ttf") ;
 	return font ;
 }
 
@@ -26,7 +34,7 @@ ChessWindow::ChessWindow(const string & title) :
 	RenderWindow(videoMode, title, Style::Default, ContextSettings())
 {
 	text.setFont(font) ;
-	text.setCharacterSize(84) ;
+	text.setCharacterSize(60) ;
 }
 
 

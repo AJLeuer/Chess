@@ -9,13 +9,14 @@
 #include <iostream>
 #include <chrono>
 
-
+#include "Config.h"
 #include "Game.h"
 
 using namespace std ;
 
 
 int main(int argc, const char * argv[]) {
+	currentDirectory = *argv ;
 
 	Game game ;
 	game.runTests() ;

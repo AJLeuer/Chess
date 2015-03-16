@@ -28,8 +28,8 @@ void Game::display() {
 	*stream << board ;
 	wstring * str = new wstring(stream->str()) ;
 	
-	vec2<unsigned> windowSize = convertToNativeVectorType(window.getSize()) ;
-	vec2<unsigned> middle = windowSize / 2 ;
+	vec2<int> windowSize = convertToNativeVectorType<int>(window.getSize()) ;
+	vec2<int> middle = windowSize / 2 ;
 	
 	window.clear(sf::Color(0, 202, 255, 128)) ;
 	window.draw(*str, middle) ;
@@ -55,7 +55,7 @@ void Game::monitorMouse() {
 		while (true) {
 			if (Mouse::isButtonPressed(buttonMain)) {
 		
-				Position mousePosition = convertToNativeVectorType<unsigned, int>(Mouse::getPosition()) ;
+				Position mousePosition = convertToNativeVectorType<int, int>(Mouse::getPosition()) ;
 				
 				//cout << "Main mouse button pressed." << endl ;
 				//cout << "Coordinates: " << mousePosition << endl ;

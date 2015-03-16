@@ -13,6 +13,9 @@
 #include <functional>
 #include <string>
 
+#include <SFML/Graphics/Image.hpp>
+
+#include "Config.h"
 #include "Util.h"
 #include "Color.h"
 #include "NotificationSystem.h"
@@ -20,12 +23,25 @@
 
 using namespace std ;
 
+struct Symbols {
+	const wstring black ;
+	const wstring white ;
+} ;
+
+struct ImageFiles {
+	const string black ;
+	const string white ;
+};
 
 class Piece {
 	
 protected:
 	
 	wstring symbol ;
+	
+	const string spriteImageFile ;
+	
+	sf::Image sprite ;
 	
 	const Position * position ;
 	
@@ -38,12 +54,6 @@ protected:
 	friend void runTests() ;
 	
 public:
-	
-	struct Symbols {
-		const wstring black ;
-		const wstring white ;
-	} ;
-	
 	
 	static Piece * init(const wstring & symbol, const Position * position) ;
 	
@@ -77,7 +87,14 @@ protected:
 	
 	Position * getPosition() { return new Position{0, 0} ; } //todo implement
 	
-	Piece(const wstring & symbol, const Color color, const Position * position) : symbol(symbol), color(color), position(position) {}
+	Piece(const wstring & symbol, const string & spriteImageFile, const Color color, const Position * position) :
+		symbol(symbol),
+		spriteImageFile(spriteImageFile),
+		color(color),
+		position(position)
+	{
+		bool loadedOK = sprite.loadFromFile(spriteImageFile) ;
+	}
 	
 };
 
@@ -90,6 +107,8 @@ protected:
 public:
 	
 	static Symbols symbols ;
+	
+	static ImageFiles imageFiles ;
 	
 	Pawn(const Color color, const Position * position) ;
 	
@@ -112,6 +131,8 @@ public:
 	
 	static Symbols symbols ;
 	
+	static ImageFiles imageFiles ;
+	
 	Knight(const Color color, const Position * position) ;
 	
 	Knight(const wstring & symbol, const Position * position) ;
@@ -131,6 +152,8 @@ protected:
 public:
 	
 	static Symbols symbols ;
+	
+	static ImageFiles imageFiles ;
 
 	Bishop(const Color color, const Position * position) ;
 	
@@ -152,6 +175,8 @@ protected:
 public:
 	
 	static Symbols symbols ;
+	
+	static ImageFiles imageFiles ;
 
 	Rook(const Color color, const Position * position) ;
 	
@@ -173,6 +198,8 @@ public:
 	
 	static Symbols symbols ;
 	
+	static ImageFiles imageFiles ;
+	
 	Queen(const Color color, const Position * position) ;
 	
 	Queen(const wstring & symbol, const Position * position) ;
@@ -192,6 +219,8 @@ protected:
 public:
 	
 	static Symbols symbols ;
+	
+	static ImageFiles imageFiles ;
 	
 	King(const Color color, const Position * position) ;
 	

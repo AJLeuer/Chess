@@ -41,9 +41,9 @@ string RankAndFile::toString() const {
 }
 
 Position RankAndFile::convertToPosition() const {
-	unsigned ind0 = this->getRank() ;
+	int ind0 = this->getRank() ;
 	ind0-- ;
-	unsigned ind1 = static_cast<unsigned>(getFile() - lowerCaseA) ;
+	int ind1 = static_cast<int>(getFile() - lowerCaseA) ;
 	return Position{ind0, ind1} ;
 }
 

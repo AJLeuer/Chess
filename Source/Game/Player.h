@@ -70,7 +70,7 @@ public:
 	
 	template <typename Iterator>
 	AI(Iterator squares_start, Iterator squares_end) :
-	Player(squares_start, squares_end) {}
+		Player(squares_start, squares_end) {}
 	
 	MoveIntent decideNextMove() ;
 	

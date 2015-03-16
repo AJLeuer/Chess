@@ -12,22 +12,36 @@
 using namespace std ;
 
 
-Piece::Symbols Pawn::symbols {/* black */ L"♟", /* white */ L"♙"} ;
+Symbols Pawn::symbols {/* black */ L"♟", /* white */ L"♙"} ;
 
 
-Piece::Symbols Knight::symbols {/* black */ L"♞", /* white */ L"♘"} ;
+Symbols Knight::symbols {/* black */ L"♞", /* white */ L"♘"} ;
 
 
-Piece::Symbols Bishop::symbols {/* black */ L"♝", /* white */ L"♗"} ;
+Symbols Bishop::symbols {/* black */ L"♝", /* white */ L"♗"} ;
 
 
-Piece::Symbols Rook::symbols {/* black */ L"♜", /* white */ L"♖"} ;
+Symbols Rook::symbols {/* black */ L"♜", /* white */ L"♖"} ;
 
 
-Piece::Symbols Queen::symbols {/* black */ L"♛", /* white */ L"♕"} ;
+Symbols Queen::symbols {/* black */ L"♛", /* white */ L"♕"} ;
 
 
-Piece::Symbols King::symbols {/* black */ L"♚", /* white */ L"♔"} ;
+Symbols King::symbols {/* black */ L"♚", /* white */ L"♔"} ;
+
+
+ImageFiles Pawn::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Pawn.png" } ;
+
+ImageFiles Knight::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Knight.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Knight.png" } ;
+
+ImageFiles Bishop::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Bishop.png" } ;
+
+ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Rook.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Rook.png" } ;
+
+ImageFiles Queen::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Queen.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Queen.png" } ;
+
+ImageFiles King::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ King.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ King.png" } ;
+
 
 
 
@@ -94,13 +108,19 @@ void Piece::sendMoveNotification(const Position newPosition) {
 }
 
 Pawn::Pawn(const Color color, const Position * position) :
-	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white,
+		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+		  color,
+		  position)
 {
 	
 }
 
 Pawn::Pawn(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
+		  (symbol == symbols.black) ? Color::black : Color::white,
+		  position)
 {
 	
 }
@@ -118,13 +138,19 @@ void Pawn::move(const Position to) {
 }
 
 Knight::Knight(const Color color, const Position * position) :
-	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white,
+		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+		  color,
+		  position)
 {
 	
 }
 
 Knight::Knight(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
+		  (symbol == symbols.black) ? Color::black : Color::white,
+		  position)
 {
 	
 }
@@ -135,13 +161,19 @@ void Knight::move(const Position to) {
 }
 
 Bishop::Bishop(const Color color, const Position * position) :
-	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white,
+		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+		  color,
+		  position)
 {
 	
 }
 
 Bishop::Bishop(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
+		  (symbol == symbols.black) ? Color::black : Color::white,
+		  position)
 {
 	
 }
@@ -152,13 +184,19 @@ void Bishop::move(const Position to) {
 }
 
 Rook::Rook(const Color color, const Position * position) :
-	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white,
+		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+		  color,
+		  position)
 {
 	
 }
 
 Rook::Rook(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
+		  (symbol == symbols.black) ? Color::black : Color::white,
+		  position)
 {
 	
 }
@@ -169,13 +207,19 @@ void Rook::move(const Position to) {
 }
 
 Queen::Queen(const Color color, const Position * position) :
-	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white,
+		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+		  color,
+		  position)
 {
 	
 }
 
 Queen::Queen(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
+		  (symbol == symbols.black) ? Color::black : Color::white,
+		  position)
 {
 	
 }
@@ -186,13 +230,19 @@ void Queen::move(const Position to) {
 }
 
 King::King(const Color color, const Position * position) :
-	Piece((color == Color::black) ? symbols.black : symbols.white, color, position)
+	Piece((color == Color::black) ? symbols.black : symbols.white,
+		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+		  color,
+		  position)
 {
 	
 }
 
 King::King(const wstring & symbol, const Position * position) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white, (symbol == symbols.black) ? Color::black : Color::white, position)
+	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
+		  (symbol == symbols.black) ? Color::black : Color::white,
+		  position)
 {
 	
 }

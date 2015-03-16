@@ -9,8 +9,22 @@
 #ifndef Chess_Config_h
 #define Chess_Config_h
 
+#include <iostream>
+#include <string>
+
 #include <SFML/Window/Mouse.hpp>
 
+#include "Position.h"
+#include "DisplayData.h"
+
+using namespace std ;
+
 constexpr auto buttonMain = sf::Mouse::Button::Left ;
+
+extern vec2<unsigned> mainWindowSize ;
+
+extern vec2<unsigned> setMainWindowSize() ;
+
+extern string currentDirectory ;
 
 #endif

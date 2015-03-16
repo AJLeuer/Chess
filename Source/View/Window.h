@@ -16,7 +16,9 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "Config.h"
 #include "Position.h"
+#include "DisplayData.h"
 
 using namespace std ;
 using namespace sf ;
@@ -26,6 +28,8 @@ class ChessWindow : public sf::RenderWindow {
 protected:
 	
 	static VideoMode videoMode ;
+	
+	static VideoMode setVideoMode() ;
 	
 	/**
 	 * The Font used for displaying most text onscreen.
@@ -62,11 +66,11 @@ void ChessWindow::draw(const StringType & chars, const Position where) {
 	
 	auto textSize = text.getLocalBounds() ;
 	
-	Position middle = {static_cast<unsigned>((textSize.width / 2)), static_cast<unsigned>((textSize.height / 2)) } ;
+	Position middle = {static_cast<int>((textSize.width / 2)), static_cast<int>((textSize.height / 2)) } ;
 	
 	Position adjustedPos = where - middle ;
 	
-	text.setPosition(convertToSFMLVectorType<float, unsigned>(adjustedPos)) ;
+	text.setPosition(convertToSFMLVectorType<float, int>(adjustedPos)) ;
 	
 	this->RenderWindow::draw(text) ;
 }
