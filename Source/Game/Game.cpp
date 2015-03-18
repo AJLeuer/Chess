@@ -9,6 +9,7 @@
 #include "Game.h"
 
 Game::Game() :
+	board(),	/* Note: Must be initialized first */
 	player0(new AI(& board.boardRepresentation[0][0], & board.boardRepresentation[1][8])), //holds references to pieces at index (0, 0) through (1, 15)
 	player1(new Human(& board.boardRepresentation[6][0], & board.boardRepresentation[7][8])) //holds references to pieces at index (6, 0) through (7, 7)
 {
@@ -16,8 +17,13 @@ Game::Game() :
 }
 
 Game::~Game() {
-	delete player0 ;
-	delete player1 ;
+	if (player0 != nullptr) {
+		delete player0 ;
+	}
+	
+	if (player1 != nullptr) {
+		delete player1 ;
+	}
 }
 
 

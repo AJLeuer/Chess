@@ -12,6 +12,7 @@
 #include <iostream>
 #include <functional>
 #include <string>
+#include <exception>
 
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -47,7 +48,7 @@ protected:
 	
 	sf::Sprite sprite ;
 	
-	const Position * position ;
+	const Position * position = nullptr ;
 	
 	void sendMoveNotification(const Position newPosition) ;
 	
@@ -63,7 +64,7 @@ public:
 	
 	Piece (const Piece & other) ;
 	
-	virtual ~Piece() {} ;
+	virtual ~Piece() {} ; //position isn't ours, don't delete it
 	
 	Piece & operator = (const Piece & rhs) ;
 	
@@ -72,6 +73,12 @@ public:
 	 * at its last location the and Square at its new, current location
 	 */
 	virtual void move(const Position to) ;//inheriting pieces will define
+	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	virtual bool canMove() ;
 	
 	const Color getColor() const { return color ; }
 	
@@ -92,9 +99,7 @@ public:
 protected:
 	
 	Color color ;
-	
-	Position * getPosition() { return new Position{0, 0} ; } //todo implement
-	
+
 	Piece(const wstring & symbol, const string & spriteImageFilePath, const Color color, const Position * position) :
 		symbol(symbol),
 		spriteImageFilePath(spriteImageFilePath),
@@ -138,6 +143,12 @@ public:
 	virtual const float getValue() const override ;
 	
 	void move(const Position to) override ;
+	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	bool canMove() override ;
 
 } ;
 
@@ -169,6 +180,12 @@ public:
 	
 	void move(const Position to) override ;
 	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	bool canMove() override ;
+	
 };
 
 class Bishop : public Piece {
@@ -198,6 +215,12 @@ public:
 	virtual const float getValue() const override { return 4 ; }
 	
 	void move(const Position to) override ;
+	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	bool canMove() override ;
 
 };
 
@@ -230,6 +253,12 @@ public:
 	
 	void move(const Position to) override ;
 	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	bool canMove() override ;
+	
 };
 
 class Queen : public Piece {
@@ -260,6 +289,12 @@ public:
 	
 	void move(const Position to) override ;
 	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	bool canMove() override ;
+	
 };
 
 class King : public Piece {
@@ -289,6 +324,12 @@ public:
 	virtual const float getValue() const override { return 48 ; }
 	
 	void move(const Position to) override ;
+	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	bool canMove() override ;
 	
 };
 

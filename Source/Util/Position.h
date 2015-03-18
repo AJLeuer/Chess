@@ -21,6 +21,13 @@ using namespace std ;
 
 constexpr unsigned lowerCaseA{97} ;
 
+enum class Directions {
+	up,
+	down,
+	left,
+	right
+};
+
 template <typename NumericType>
 using vec2 = NumericType __attribute__((ext_vector_type(2))) ;
 

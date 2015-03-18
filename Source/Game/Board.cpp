@@ -13,7 +13,7 @@ using namespace std ;
 Square::Square(const Square & other) :
 	rankAndFile(other.rankAndFile),
 	position(other.position),
-	piece(Piece::init(other.piece->getSymbol(), other.piece->getPosition()))
+	piece((other.piece != nullptr) ? Piece::init(other.piece->getSymbol(), & other.position) : nullptr)
 {
 	
 }
@@ -39,12 +39,25 @@ Square & Square::operator = (const Square & other) {
 	if (this != & other) {
 		this->rankAndFile = other.rankAndFile ;
 		this->position = other.position ;
-		delete this->piece ;
-		piece = Piece::init(other.piece->getSymbol(), other.piece->getPosition()) ;
+		
+		if (this->piece != nullptr) {
+			delete this->piece ;
+		}
+		
+		if (other.piece != nullptr) {
+			piece = Piece::init(other.piece->getSymbol(), other.piece->getPosition()) ;
+		}
+		
 	}
 	return * this ;
 }
 
+void Square::clearCurrentPiece(Piece * ignored) {
+	if (piece != nullptr) {
+		this->piece->setCurrentPosition(nullptr) ;
+		this->piece = nullptr ;
+	}
+}
 
 void Square::registerForPieceMovement() {
 	

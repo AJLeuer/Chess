@@ -26,10 +26,11 @@ class Game {
 	
 protected:
 	
+	/** Note: Must be initialized first */
+	Board board ;
+	
 	Player * player0 ;
 	Player * player1 ;
-	
-	Board board ;
 	
 	ChessWindow window ;
 		

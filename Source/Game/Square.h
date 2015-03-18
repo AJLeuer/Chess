@@ -20,7 +20,7 @@ protected:
 	
 	Position position ;
 	
-	Piece * piece ;
+	Piece * piece = nullptr ;
 	
 	friend class Game ;
 	
@@ -36,13 +36,13 @@ public:
 	
 	Square(const string & pieceSymbol, const char file, const unsigned rank) ;
 	
-	~Square() { delete piece ; }
+	~Square() { if (piece != nullptr) { delete piece ; } ; }
 	
 	Square & operator = (const Square & rhs) ;
 	
 	void setCurrentPiece(Piece * piece) { this->piece = piece ; this->piece->setCurrentPosition(& this->position) ;}
 	
-	void clearCurrentPiece(Piece * ignored = nullptr) { this->piece->setCurrentPosition(nullptr) ; this->piece = nullptr ; }
+	void clearCurrentPiece(Piece * ignored = nullptr) ;
 	
 	bool isEmpty() const { return piece == nullptr ; }
 	

@@ -7,6 +7,7 @@
 //
 
 #include "Piece.h"
+#include "Square.h"
 
 
 using namespace std ;
@@ -36,7 +37,7 @@ ImageFiles Knight::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\
 
 ImageFiles Bishop::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Bishop.png" } ;
 
-ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Rook.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Rook.jpg" } ;
+ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Rook.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Rook.png" } ;
 
 ImageFiles Queen::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Queen.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Queen.png" } ;
 
@@ -117,7 +118,18 @@ void Piece::move(const Position to) {
 	sendMoveNotification(to) ;
 }
 
+bool Piece::canMove() {
+	//debug code, this should never be called (always overriden)
+	throw exception() ;
+}
+
 void Piece::sendMoveNotification(const Position newPosition) {
+	
+	//debug code
+	if (this->position == nullptr) {
+		throw std::exception() ;
+	}
+	
 	Notification<Piece, Position>::notify(EventType::pieceLeaving, this, *this->position) ;
 	Notification<Piece, Position>::notify(EventType::pieceArriving, this, newPosition) ;
 }
@@ -152,6 +164,21 @@ void Pawn::move(const Position to) {
 	Piece::move(to) ;
 }
 
+bool Pawn::canMove() {
+	Position start = *this->position ;
+	
+	auto checkForEmptySquares = [] (const Square *) -> bool {
+		
+	} ;
+	
+	
+	
+	
+	
+	
+	return true ;
+}
+
 Knight::Knight(const Color color, const Position * position) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
@@ -173,6 +200,17 @@ Knight::Knight(const wstring & symbol, const Position * position) :
 void Knight::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
+}
+
+bool Knight::canMove() {
+	Position start = *this->position ;
+	
+	
+	
+	
+	
+	
+	return true ;
 }
 
 Bishop::Bishop(const Color color, const Position * position) :
@@ -198,6 +236,17 @@ void Bishop::move(const Position to) {
 	Piece::move(to) ;
 }
 
+bool Bishop::canMove() {
+	Position start = *this->position ;
+	
+	
+	
+	
+	
+	
+	return true ;
+}
+
 Rook::Rook(const Color color, const Position * position) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
@@ -219,6 +268,17 @@ Rook::Rook(const wstring & symbol, const Position * position) :
 void Rook::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
+}
+
+bool Rook::canMove() {
+	Position start = *this->position ;
+	
+	
+	
+	
+	
+	
+	return true ;
 }
 
 Queen::Queen(const Color color, const Position * position) :
@@ -244,6 +304,17 @@ void Queen::move(const Position to) {
 	Piece::move(to) ;
 }
 
+bool Queen::canMove() {
+	Position start = *this->position ;
+	
+	
+	
+	
+	
+	
+	return true ;
+}
+
 King::King(const Color color, const Position * position) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
@@ -265,6 +336,17 @@ King::King(const wstring & symbol, const Position * position) :
 void King::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
+}
+
+bool King::canMove() {
+	Position start = *this->position ;
+	
+	
+	
+	
+	
+	
+	return true ;
 }
 
 

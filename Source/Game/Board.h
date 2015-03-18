@@ -14,6 +14,8 @@
 #include <sstream>
 #include <string>
 #include <array>
+#include <vector>
+#include <functional>
 #include <initializer_list>
 
 #include "Util.h"
@@ -23,7 +25,7 @@
 #include "Piece.h"
 #include "Square.h"
 
-
+using namespace std ;
 
 class Board {
 	
@@ -59,6 +61,8 @@ public:
 	
 	const Square * getSquare(unsigned rank, char file) const ;
 	
+	const Square * getSquare(vec2<int> index) const { return getSquare(static_cast<unsigned>(index.x), static_cast<unsigned>(index.y)) ; }
+	
 	const Square * getSquare(unsigned arrIndexX, unsigned arrIndexY) const ;
 	
 	friend std::ostream & operator << (std::ostream & , const Board &) ;
@@ -66,7 +70,64 @@ public:
 	template <typename Character>
 	friend basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Board & board) ;
 	
+	/**
+	 * Calls a function, searchFunction, intended to process specific squares on the board, starting at startingSquare and including all 
+	 * other squares within searchRadius that lie in directions specified by directions. The function in question should take a vector of   
+	 * squares as an argument, and will return a result of the specified type T.
+	 *
+	 * @param T The type returned by searchFunction
+	 * @param squares An array of square pointers
+	 * @param searchFunction The function to run over the specified squares
+	 * @param startingSquare The first square processed
+	 * @param directions The directions in which to search
+	 * @param searchRadius The distance to search in all specified directions
+	 */
+	template <typename T>
+	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, Position startingSquare, vector<Directions> directions, int searchRadius) {
+		
+		vector<const Square *> argSquares ;
 
+		
+		for (unsigned i = 0 ; i < squares.size() ; i++) {
+			
+			for (auto dir = directions.begin() ; dir != directions.end() ; dir++) {
+				if (* dir == Directions::up) {
+					;
+				}
+			}
+			
+		}
+		return searchFunction(argSquares) ;
+	}
+	
+	/**
+	 * Calls a function, searchFunction, intended to process squares in an area of the board. The function in question should take
+	 * a square as an argument, and will return a result of the specified type T. The function will be applied to a vector
+	 * of all squares specified withing searchRadius, starting at startingSquare
+	 *
+	 * @param T The type returned by searchFunction
+	 * @param squares An array of square pointers, constructed from the parameters startingSquare and searchRadius, that will be passed to searchFunction
+	 * @param searchFunction The function to run over the specified squares
+	 * @param startingSquare The first square processed
+	 * @param searchRadius Specifies the range of other squares to include
+	 */
+	template <typename T>
+	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, Position startingSquare, int searchRadius) {
+		
+		vector<const Square *> argSquares ;
+		//const Square * start = getSquare((unsigned)startingSquare.x, (unsigned)startingSquare.y) ;
+
+		for (vec2<int> currentIndex {(startingSquare.x - searchRadius),(startingSquare.y - searchRadius) } ; currentIndex.x <= (startingSquare.x + searchRadius) ; currentIndex.x++) {
+			for (currentIndex.y = (startingSquare.y - searchRadius) ; currentIndex.y <= (startingSquare.y + searchRadius) ; currentIndex.y++) {
+				if ((currentIndex.x < boardRepresentation.size()) && (currentIndex.y < boardRepresentation[currentIndex.x].size())) {
+					const Square * sq { getSquare(currentIndex) } ;
+					argSquares.push_back(sq) ;
+				}
+			}
+		}
+		return searchFunction(argSquares) ;
+	}
+	
 	/**
 	 * Calculates a numeric value based on the current state of the chess board (including the existence and configuration of pieces)m
 	 * from the perspective of the player playing the Color color. In other words, if e.g. the player playing white requests the current
