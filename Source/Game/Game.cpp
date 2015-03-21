@@ -54,11 +54,8 @@ void Game::display() {
 	auto x = chooseAtRand(randm_x_1(), randm_x_2()) ;
 	auto y = randm_y() ;
 	
-	auto pc = this->board.getSquare(unsigned(0), unsigned(0))->getPiece() ;
+	auto pc = this->board.getSquare(unsigned(1), unsigned(0))->getPiece() ;
 	auto spr = pc->getSprite() ;
-	
-	FastRand<unsigned> randXPos(0, 2000) ;
-	FastRand<unsigned> randYPos(0, 1000) ;
 	
 	x = 1200 ;
 	y = 700 ;

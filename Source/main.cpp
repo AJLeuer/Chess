@@ -10,13 +10,15 @@
 #include <chrono>
 
 #include "Config.h"
-#include "Game.h"
+#include "./Util/Position.h"
+#include "./Game/Game.h"
 
 using namespace std ;
 
 
 int main(int argc, const char * argv[]) {
 	currentDirectory = *argv ;
+
 
 	Game game ;
 	game.runTests() ;

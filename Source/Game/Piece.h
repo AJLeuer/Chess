@@ -36,6 +36,10 @@ struct ImageFiles {
 	const string white ;
 };
 
+class Board ;
+
+class Square ;
+
 class Piece {
 	
 protected:
@@ -50,6 +54,10 @@ protected:
 	
 	const Position * position = nullptr ;
 	
+	const Board * const * board ;
+	
+	const Square * square ;
+	
 	void sendMoveNotification(const Position newPosition) ;
 	
 	void setCurrentPosition(const Position * position) { this->position = position ; }
@@ -60,7 +68,7 @@ protected:
 	
 public:
 	
-	static Piece * init(const wstring & symbol, const Position * position) ;
+	static Piece * init(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
 	Piece (const Piece & other) ;
 	
@@ -100,7 +108,7 @@ protected:
 	
 	Color color ;
 
-	Piece(const wstring & symbol, const string & spriteImageFilePath, const Color color, const Position * position) :
+	Piece(const wstring & symbol, const string & spriteImageFilePath, const Color color, const Position * position, const Board * const * board, const Square * square) :
 		symbol(symbol),
 		spriteImageFilePath(spriteImageFilePath),
 		color(color),
@@ -127,9 +135,9 @@ public:
 	Pawn(const Pawn & other) :
 		Piece(other) {}
 	
-	Pawn(const Color color, const Position * position) ;
+	Pawn(const Color color, const Position * position, const Board * const * board, const Square * square) ;
 	
-	Pawn(const wstring & symbol, const Position * position) ;
+	Pawn(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
 	~Pawn() {}
 	
@@ -163,9 +171,9 @@ public:
 	Knight(const Knight & other) :
 		Piece(other) {}
 	
-	Knight(const Color color, const Position * position) ;
+	Knight(const Color color, const Position * position, const Board * const * board, const Square * square) ;
 	
-	Knight(const wstring & symbol, const Position * position) ;
+	Knight(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
 	~Knight() {}
 	
@@ -199,9 +207,9 @@ public:
 	Bishop(const Bishop & other) :
 		Piece(other) {}
 
-	Bishop(const Color color, const Position * position) ;
+	Bishop(const Color color, const Position * position, const Board * const * board, const Square * square) ;
 	
-	Bishop(const wstring & symbol, const Position * position) ;
+	Bishop(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
 	~Bishop() {}
 	
@@ -236,9 +244,9 @@ public:
 	Rook(const Rook & other) :
 		Piece(other) {}
 
-	Rook(const Color color, const Position * position) ;
+	Rook(const Color color, const Position * position, const Board * const * board, const Square * square) ;
 	
-	Rook(const wstring & symbol, const Position * position) ;
+	Rook(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
 	~Rook() {}
 	
@@ -272,9 +280,9 @@ public:
 	Queen(const Queen & other) :
 		Piece(other) {}
 	
-	Queen(const Color color, const Position * position) ;
+	Queen(const Color color, const Position * position, const Board * const * board, const Square * square) ;
 	
-	Queen(const wstring & symbol, const Position * position) ;
+	Queen(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
 	~Queen() {}
 	
@@ -308,9 +316,9 @@ public:
 	King(const King & other) :
 		Piece(other) {}
 	
-	King(const Color color, const Position * position) ;
+	King(const Color color, const Position * position, const Board * const * board, const Square * square) ;
 	
-	King(const wstring & symbol, const Position * position) ;
+	King(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
 	~King() {}
 	

@@ -11,6 +11,8 @@
 
 using namespace std ;
 
+/* Forward declaring */
+class Board ;
 
 struct Square {
 	
@@ -19,6 +21,8 @@ protected:
 	RankAndFile rankAndFile ;
 	
 	Position position ;
+	
+	const Board * board ;
 	
 	Piece * piece = nullptr ;
 	
@@ -30,11 +34,11 @@ public:
 	
 	Square(const Square & other) ;
 	
-	Square(const char file, const unsigned rank) ;
+	Square(const char file, const unsigned rank, const Board * board) ;
 	
-	Square(Piece * piece, const char file, const unsigned rank) ;
+	Square(Piece * piece, const char file, const unsigned rank, const Board * board) ;
 	
-	Square(const string & pieceSymbol, const char file, const unsigned rank) ;
+	Square(const string & pieceSymbol, const char file, const unsigned rank, const Board * board) ;
 	
 	~Square() { if (piece != nullptr) { delete piece ; } ; }
 	

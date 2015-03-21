@@ -8,6 +8,7 @@
 
 #include "Piece.h"
 #include "Square.h"
+#include "Board.h"
 
 
 using namespace std ;
@@ -46,43 +47,43 @@ ImageFiles King::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ K
 
 
 
-Piece * Piece::init(const wstring & symbol, const Position * position) {
+Piece * Piece::init(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) {
 	Piece * piece ;
 	if (symbol == Pawn::symbols.white) {
-		piece = new Pawn(Color::white, position) ;
+		piece = new Pawn(Color::white, position, board, square) ;
 	}
 	else if (symbol == Pawn::symbols.black) {
-		piece = new Pawn(Color::black, position) ;
+		piece = new Pawn(Color::black, position, board, square) ;
 	}
 	else if (symbol == Knight::symbols.white) {
-		piece = new Knight(Color::white, position) ;
+		piece = new Knight(Color::white, position, board, square) ;
 	}
 	else if (symbol == Knight::symbols.black) {
-		piece = new Knight(Color::black, position) ;
+		piece = new Knight(Color::black, position, board, square) ;
 	}
 	else if (symbol == Bishop::symbols.white) {
-		piece = new Bishop(Color::white, position) ;
+		piece = new Bishop(Color::white, position, board, square) ;
 	}
 	else if (symbol == Bishop::symbols.black) {
-		piece = new Bishop(Color::black, position) ;
+		piece = new Bishop(Color::black, position, board, square) ;
 	}
 	else if (symbol == Rook::symbols.white) {
-		piece = new Rook(Color::white, position) ;
+		piece = new Rook(Color::white, position, board, square) ;
 	}
 	else if (symbol == Rook::symbols.black) {
-		piece = new Rook(Color::black, position) ;
+		piece = new Rook(Color::black, position, board, square) ;
 	}
 	else if (symbol == Queen::symbols.white) {
-		piece = new Queen(Color::white, position) ;
+		piece = new Queen(Color::white, position, board, square) ;
 	}
 	else if (symbol == Queen::symbols.black) {
-		piece = new Queen(Color::black, position) ;
+		piece = new Queen(Color::black, position, board, square) ;
 	}
 	else if (symbol == King::symbols.white) {
-		piece = new King(Color::white, position) ;
+		piece = new King(Color::white, position, board, square) ;
 	}
 	else if (symbol == King::symbols.black) {
-		piece = new King(Color::black, position) ;
+		piece = new King(Color::black, position, board, square) ;
 	}
 	else {
 		piece = nullptr ;
@@ -95,8 +96,11 @@ Piece::Piece (const Piece & other) :
 	spriteImageFilePath(other.spriteImageFilePath),
 	spriteImage(other.spriteImage),
 	sprite(other.sprite),
-	color(other.color),
-	position(other.position)
+	position(other.position),
+	board(other.board),
+	square(other.square),
+	color(other.color)
+	/* add any other newer members here */
 {
 	
 }
@@ -107,9 +111,11 @@ Piece & Piece::operator = (const Piece & rhs) {
 		this->spriteImageFilePath = rhs.spriteImageFilePath ;
 		this->spriteImage = rhs.spriteImage ;
 		this->sprite = rhs.sprite ;
-		this->color = rhs.color ;
 		this->position = rhs.position ;
-		//add any other newer members here
+		this->board = rhs.board ;
+		this->square = rhs.square ;
+		this->color = rhs.color ;
+		/* add any other newer members here */
 	}
 	return * this ;
 }
@@ -134,20 +140,24 @@ void Piece::sendMoveNotification(const Position newPosition) {
 	Notification<Piece, Position>::notify(EventType::pieceArriving, this, newPosition) ;
 }
 
-Pawn::Pawn(const Color color, const Position * position) :
+Pawn::Pawn(const Color color, const Position * position, const Board * const * board, const Square * square) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	sprite.setPosition(50, 50) ;
 }
 
-Pawn::Pawn(const wstring & symbol, const Position * position) :
+Pawn::Pawn(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
 		  (symbol == symbols.black) ? Color::black : Color::white,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
@@ -167,32 +177,53 @@ void Pawn::move(const Position to) {
 bool Pawn::canMove() {
 	Position start = *this->position ;
 	
-	auto checkForEmptySquares = [] (const Square *) -> bool {
+	auto checkForEmptySquares = [] (vector<const Square *> & squares) -> bool {
 		
+		for (auto i = 0 ; i < squares.size() ; i++) {
+			if (squares.at(i)->isEmpty()) {
+				return true ;
+			}
+		}
+		return false ;
 	} ;
 	
+	vector<Direction> directions ;
 	
+	if (this->color == Color::black) {
+		directions.push_back(Direction::down) ;
+		directions.push_back(Direction::downLeft) ;
+		directions.push_back(Direction::downRight) ;
+	}
 	
+	else { /* if (this->color == Color::white) */
+		directions.push_back(Direction::up) ;
+		directions.push_back(Direction::upLeft) ;
+		directions.push_back(Direction::upRight) ;
+	}
 	
-	
+	(*board)->runSearchFunction<bool>(checkForEmptySquares, *this->position, directions, 2) ;
 	
 	return true ;
 }
 
-Knight::Knight(const Color color, const Position * position) :
+Knight::Knight(const Color color, const Position * position, const Board * const * board, const Square * square) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
 
-Knight::Knight(const wstring & symbol, const Position * position) :
+Knight::Knight(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
 		  (symbol == symbols.black) ? Color::black : Color::white,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
@@ -213,20 +244,24 @@ bool Knight::canMove() {
 	return true ;
 }
 
-Bishop::Bishop(const Color color, const Position * position) :
+Bishop::Bishop(const Color color, const Position * position, const Board * const * board, const Square * square) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
 
-Bishop::Bishop(const wstring & symbol, const Position * position) :
+Bishop::Bishop(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
 		  (symbol == symbols.black) ? Color::black : Color::white,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
@@ -247,20 +282,24 @@ bool Bishop::canMove() {
 	return true ;
 }
 
-Rook::Rook(const Color color, const Position * position) :
+Rook::Rook(const Color color, const Position * position, const Board * const * board, const Square * square) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
 
-Rook::Rook(const wstring & symbol, const Position * position) :
+Rook::Rook(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
 		  (symbol == symbols.black) ? Color::black : Color::white,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
@@ -281,20 +320,24 @@ bool Rook::canMove() {
 	return true ;
 }
 
-Queen::Queen(const Color color, const Position * position) :
+Queen::Queen(const Color color, const Position * position, const Board * const * board, const Square * square) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
 
-Queen::Queen(const wstring & symbol, const Position * position) :
+Queen::Queen(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
 		  (symbol == symbols.black) ? Color::black : Color::white,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
@@ -315,20 +358,24 @@ bool Queen::canMove() {
 	return true ;
 }
 
-King::King(const Color color, const Position * position) :
+King::King(const Color color, const Position * position, const Board * const * board, const Square * square) :
 	Piece((color == Color::black) ? symbols.black : symbols.white,
 		  (color == Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }
 
-King::King(const wstring & symbol, const Position * position) :
+King::King(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
 		  (symbol == symbols.black) ? Color::black : Color::white,
-		  position)
+		  position,
+		  board,
+		  square)
 {
 	
 }

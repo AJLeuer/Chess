@@ -13,39 +13,42 @@ using namespace std ;
 Square::Square(const Square & other) :
 	rankAndFile(other.rankAndFile),
 	position(other.position),
-	piece((other.piece != nullptr) ? Piece::init(other.piece->getSymbol(), & other.position) : nullptr)
+	board(other.board),
+	piece((other.piece != nullptr) ? Piece::init(other.piece->getSymbol(), & other.position, & other.board, & other) : nullptr)
 {
 	
 }
 
-Square::Square(const char file, const unsigned rank) :
+Square::Square(const char file, const unsigned rank, const Board * board) :
 	rankAndFile(file, rank),
 	position(rankAndFile),
+	board(board),
 	piece(nullptr)
 {
 	registerForPieceMovement() ;
 }
 
-Square::Square(Piece * piece, const char file, const unsigned rank) :
-	Square(file, rank)
+Square::Square(Piece * piece, const char file, const unsigned rank, const Board * board) :
+	Square(file, rank, board)
 {
 	this->piece = piece ;
 }
 
-Square::Square(const string & pieceSymbol, const char file, const unsigned rank) :
-	Square(Piece::init(stringConverter.from_bytes(pieceSymbol), & position), file, rank) {}
+Square::Square(const string & pieceSymbol, const char file, const unsigned rank, const Board * board) :
+	Square(Piece::init(stringConverter.from_bytes(pieceSymbol), & position, & board, this), file, rank, board) {}
 
 Square & Square::operator = (const Square & other) {
 	if (this != & other) {
 		this->rankAndFile = other.rankAndFile ;
 		this->position = other.position ;
+		board = other.board ;
 		
 		if (this->piece != nullptr) {
 			delete this->piece ;
 		}
 		
 		if (other.piece != nullptr) {
-			piece = Piece::init(other.piece->getSymbol(), other.piece->getPosition()) ;
+			piece = Piece::init(other.piece->getSymbol(), other.piece->getPosition(), & other.board, this) ;
 		}
 		
 	}
@@ -73,6 +76,17 @@ void Square::registerForPieceMovement() {
 	notifyWhenPieceLeaves.registerForCallback() ;
 }
 
+const Square * Board::operator () (unsigned arrIndexX, unsigned arrIndexY) const {
+	return & boardRepresentation[arrIndexY][arrIndexX] ;
+}
+
+const Square * Board::getSquare(unsigned rank, char file) const {
+	return & boardRepresentation[0][0] ; //todo implement properly
+}
+
+const Square * Board::getSquare(unsigned arrIndexX, unsigned arrIndexY) const {
+	return this->operator()(arrIndexX, arrIndexY) ;
+}
 
 ostream & operator << (ostream & out, const Square & square) {
 	if (square.isEmpty()) {
@@ -94,31 +108,23 @@ basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Square
 	return out ;
 }
 
-const Square * Board::getSquare(unsigned rank, char file) const {
-	return & boardRepresentation[0][0] ; //todo implement properly
-}
-
-const Square * Board::getSquare(unsigned arrIndexX, unsigned arrIndexY) const {
-	return & boardRepresentation[arrIndexX][arrIndexY] ;
-}
-
 Board::Board() :
 	boardRepresentation{{
-		{{{"♖", 'a', 1}, {"♘", 'b', 1}, {"♗", 'c', 1}, {"♕", 'd', 1}, {"♔", 'e', 1}, {"♗", 'f', 1}, {"♘", 'g', 1}, {"♖", 'h', 1}}},
+		{{{"♖", 'a', 1, this}, {"♘", 'b', 1, this}, {"♗", 'c', 1, this}, {"♕", 'd', 1, this}, {"♔", 'e', 1, this}, {"♗", 'f', 1, this}, {"♘", 'g', 1, this}, {"♖", 'h', 1, this}}},
 		
-		{{{"♙", 'a', 2}, {"♙", 'b', 2}, {"♙", 'c', 2}, {"♙", 'd', 2}, {"♙", 'e', 2}, {"♙", 'f', 2}, {"♙", 'g', 2}, {"♙", 'h', 2}}},
+		{{{"♙", 'a', 2, this}, {"♙", 'b', 2, this}, {"♙", 'c', 2, this}, {"♙", 'd', 2, this}, {"♙", 'e', 2, this}, {"♙", 'f', 2, this}, {"♙", 'g', 2, this}, {"♙", 'h', 2, this}}},
 		
-		{{{" ", 'a', 3}, {" ", 'b', 3}, {" ", 'c', 3}, {" ", 'd', 3}, {" ", 'e', 3}, {" ", 'f', 3}, {" ", 'g', 3}, {" ", 'h', 3}}},
+		{{{" ", 'a', 3, this}, {" ", 'b', 3, this}, {" ", 'c', 3, this}, {" ", 'd', 3, this}, {" ", 'e', 3, this}, {" ", 'f', 3, this}, {" ", 'g', 3, this}, {" ", 'h', 3, this}}},
 		
-		{{{" ", 'a', 4}, {" ", 'b', 4}, {" ", 'c', 4}, {" ", 'd', 4}, {" ", 'e', 4}, {" ", 'f', 4}, {" ", 'g', 4}, {" ", 'h', 4}}},
+		{{{" ", 'a', 4, this}, {" ", 'b', 4, this}, {" ", 'c', 4, this}, {" ", 'd', 4, this}, {" ", 'e', 4, this}, {" ", 'f', 4, this}, {" ", 'g', 4, this}, {" ", 'h', 4, this}}},
 		
-		{{{" ", 'a', 5}, {" ", 'b', 5}, {" ", 'c', 5}, {" ", 'd', 5}, {" ", 'e', 5}, {" ", 'f', 5}, {" ", 'g', 5}, {" ", 'h', 5}}},
+		{{{" ", 'a', 5, this}, {" ", 'b', 5, this}, {" ", 'c', 5, this}, {" ", 'd', 5, this}, {" ", 'e', 5, this}, {" ", 'f', 5, this}, {" ", 'g', 5, this}, {" ", 'h', 5, this}}},
 		
-		{{{" ", 'a', 6}, {" ", 'b', 6}, {" ", 'c', 6}, {" ", 'd', 6}, {" ", 'e', 6}, {" ", 'f', 6}, {" ", 'g', 6}, {" ", 'h', 6}}},
+		{{{" ", 'a', 6, this}, {" ", 'b', 6, this}, {" ", 'c', 6, this}, {" ", 'd', 6, this}, {" ", 'e', 6, this}, {" ", 'f', 6, this}, {" ", 'g', 6, this}, {" ", 'h', 6, this}}},
 		
-		{{{"♟", 'a', 7}, {"♟", 'b', 7}, {"♟", 'c', 7}, {"♟", 'd', 7}, {"♟", 'e', 7}, {"♟", 'f', 7}, {"♟", 'g', 7}, {"♟", 'h', 7}}},
+		{{{"♟", 'a', 7, this}, {"♟", 'b', 7, this}, {"♟", 'c', 7, this}, {"♟", 'd', 7, this}, {"♟", 'e', 7, this}, {"♟", 'f', 7, this}, {"♟", 'g', 7, this}, {"♟", 'h', 7, this}}},
 		
-		{{{"♜", 'a', 8}, {"♞", 'b', 8}, {"♝", 'c', 8}, {"♛", 'd', 8}, {"♚", 'e', 8}, {"♝", 'f', 8}, {"♞", 'g', 8}, {"♜", 'h', 8}}}
+		{{{"♜", 'a', 8, this}, {"♞", 'b', 8, this}, {"♝", 'c', 8, this}, {"♛", 'd', 8, this}, {"♚", 'e', 8, this}, {"♝", 'f', 8, this}, {"♞", 'g', 8, this}, {"♜", 'h', 8, this}}}
 	}}
 {
 	
@@ -135,6 +141,20 @@ Board & Board::operator = (const Board & other) {
 		this->boardRepresentation = other.boardRepresentation ;
 	}
 	return * this ;
+}
+
+bool Board::isInsideBoardBounds(const Position pos) const {
+	if (pos.x < boardRepresentation.size()) {
+		if (pos.y < boardRepresentation[pos.x].size()) {
+			return false ;
+		}
+		else {
+			return false ;
+		}
+	}
+	else {
+		return false ;
+	}
 }
 
 

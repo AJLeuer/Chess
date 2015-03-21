@@ -21,27 +21,64 @@ using namespace std ;
 
 constexpr unsigned lowerCaseA{97} ;
 
-enum class Directions {
-	up,
-	down,
-	left,
-	right
-};
-
 template <typename NumericType>
 using vec2 = NumericType __attribute__((ext_vector_type(2))) ;
 
-/* //Apparently illegal. Boo
-template<typename N>
-bool operator==(vec2<N> lhs, vec2<N> rhs) {
-	if (lhs[0] == rhs[0]) {
-		if (lhs[1] == rhs[1]) {
-			return true ;
-		}
-		return false ;
-	}
-	return false ;
-} */
+/**
+ * @note A good example of a C++ literal type
+ */
+struct Direction {
+	
+protected:
+	
+	const vec2<int> value ;
+	
+public:
+
+	constexpr Direction(const vec2<int> val) : value(val) {}
+	
+	constexpr operator vec2<int>() const { return this->value ; }
+	
+	template <typename NumericType>
+	friend vec2<NumericType> operator * (const Direction &, const NumericType) ;
+	
+	template <typename NumericType>
+	friend vec2<NumericType> operator + (const Direction &, const vec2<NumericType>) ;
+	
+	static const Direction up ; /* = vec2<int>{0, -1}  ; */
+	static const Direction down ; /* = vec2<int>{0, 1}  ; */
+	static const Direction left ; /* = vec2<int>{-1, 0}  ; */
+	static const Direction right ; /* = vec2<int>{1, 0}  ; */
+	
+	static const Direction upLeft ; /* = vec2<int>{-1, -1}  ; */
+	static const Direction upRight ; /* = vec2<int>{1, -1}  ; */
+	static const Direction downLeft ; /* = vec2<int>{-1, 1}  ; */
+	static const Direction downRight ; /* = vec2<int>{1, 1}  ; */
+
+} ;
+
+template <typename NumericType>
+vec2<NumericType> operator * (const Direction & direction, const NumericType n) {
+	
+	vec2<NumericType> ret ;
+	
+	ret.x = direction.value.x * n ;
+	ret.y = direction.value.y * n ;
+	
+	return ret ;
+}
+
+template <typename NumericType>
+vec2<NumericType> operator + (const Direction & direction, const vec2<NumericType> vec) {
+	
+	vec2<NumericType> ret ;
+	
+	ret.x = direction.value.x + vec.x ;
+	ret.y = direction.value.y + vec.y ;
+	
+	return ret ;
+}
+
 
 template <typename N>
 bool equal(vec2<N> lhs, vec2<N> rhs) {
@@ -114,7 +151,10 @@ basic_ostream<Character> & operator << (basic_ostream<Character> & out, const ve
  */
 typedef vec2<int> Position ;
 
-
+template <typename NumericType>
+NumericType calculateDistance(const Position startingPosition) {
+	return NumericType() ;
+}
 
 /**
  * Used to represents a position on the chess board in algebraic notation, where the first square

@@ -59,11 +59,25 @@ public:
 	
 	Board & operator = (const Board & other) ;
 	
+	/**
+	 * Array access
+	 *
+	 * @note see getSquare()
+	 */
+	const Square * operator () (unsigned arrIndexX, unsigned arrIndexY) const ;
+	
 	const Square * getSquare(unsigned rank, char file) const ;
 	
 	const Square * getSquare(vec2<int> index) const { return getSquare(static_cast<unsigned>(index.x), static_cast<unsigned>(index.y)) ; }
 	
 	const Square * getSquare(unsigned arrIndexX, unsigned arrIndexY) const ;
+	
+	/**
+	 * @param pos This function checks whether pos is within the bounds of the Chess board
+	 *
+	 * @return true if Position pos exists on the board, false otherwise
+	 */
+	bool isInsideBoardBounds(const Position pos) const ;
 	
 	friend std::ostream & operator << (std::ostream & , const Board &) ;
 	
@@ -72,31 +86,38 @@ public:
 	
 	/**
 	 * Calls a function, searchFunction, intended to process specific squares on the board, starting at startingSquare and including all 
-	 * other squares within searchRadius that lie in directions specified by directions. The function in question should take a vector of   
-	 * squares as an argument, and will return a result of the specified type T.
+	 * other squares within a distance less than or equal to searchRadius that lie in directions specified by directions. The function in
+	 * question should take a vector of squares as an argument, and will return a result of the specified type T.
 	 *
 	 * @param T The type returned by searchFunction
 	 * @param squares An array of square pointers
 	 * @param searchFunction The function to run over the specified squares
 	 * @param startingSquare The first square processed
 	 * @param directions The directions in which to search
-	 * @param searchRadius The distance to search in all specified directions
+	 * @param searchDistance The distance to search in all specified directions
 	 */
 	template <typename T>
-	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, Position startingSquare, vector<Directions> directions, int searchRadius) {
+	T runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const Position startingSquarePosition, const vector<Direction> & directions, int searchDistance) const {
 		
 		vector<const Square *> argSquares ;
-
 		
-		for (unsigned i = 0 ; i < squares.size() ; i++) {
+		if (isInsideBoardBounds(startingSquarePosition)) {
+			const Square * firstSquare { getSquare(startingSquarePosition) } ;
+			argSquares.push_back(firstSquare) ;
+		}
+
+		for (auto dir = directions.begin() ; dir != directions.end() ; dir++) {
 			
-			for (auto dir = directions.begin() ; dir != directions.end() ; dir++) {
-				if (* dir == Directions::up) {
-					;
+			vec2<int> offset { * dir } ; //directions convert to vectors like (0, 1)
+			
+			for (Position next = startingSquarePosition ; ! equal(next, (startingSquarePosition + (* dir * searchDistance))) ; next = (next + offset)) {
+				if (isInsideBoardBounds(next)) {
+					const Square * nextSquare { getSquare(next) } ;
+					argSquares.push_back(nextSquare) ;
 				}
 			}
-			
 		}
+		
 		return searchFunction(argSquares) ;
 	}
 	
@@ -112,19 +133,21 @@ public:
 	 * @param searchRadius Specifies the range of other squares to include
 	 */
 	template <typename T>
-	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, Position startingSquare, int searchRadius) {
+	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, const Position startingSquarePosition, int searchRadius) const {
 		
 		vector<const Square *> argSquares ;
-		//const Square * start = getSquare((unsigned)startingSquare.x, (unsigned)startingSquare.y) ;
 
-		for (vec2<int> currentIndex {(startingSquare.x - searchRadius),(startingSquare.y - searchRadius) } ; currentIndex.x <= (startingSquare.x + searchRadius) ; currentIndex.x++) {
-			for (currentIndex.y = (startingSquare.y - searchRadius) ; currentIndex.y <= (startingSquare.y + searchRadius) ; currentIndex.y++) {
-				if ((currentIndex.x < boardRepresentation.size()) && (currentIndex.y < boardRepresentation[currentIndex.x].size())) {
+		for (vec2<int> currentIndex {(startingSquarePosition.x - searchRadius),(startingSquarePosition.y - searchRadius) } ; currentIndex.x <= (startingSquarePosition.x + searchRadius) ; currentIndex.x++) {
+			
+			for (currentIndex.y = (startingSquarePosition.y - searchRadius) ; currentIndex.y <= (startingSquarePosition.y + searchRadius) ; currentIndex.y++) {
+				if (isInsideBoardBounds(currentIndex)) {
 					const Square * sq { getSquare(currentIndex) } ;
 					argSquares.push_back(sq) ;
 				}
 			}
+			
 		}
+		
 		return searchFunction(argSquares) ;
 	}
 	
@@ -176,7 +199,7 @@ basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Bo
 	
 	for (unsigned i = 0; i < Board::ranks ; i++) {
 		
-		out << L"│ " << *(board.getSquare(i, (unsigned)0)) << L" │ " << *(board.getSquare(i, (unsigned)1)) << L" │ " << *(board.getSquare(i, (unsigned)2)) << L" │ " << *(board.getSquare(i, (unsigned)3)) << L" │ " << *(board.getSquare(i, (unsigned)4)) << L" │ " << *(board.getSquare(i, (unsigned)5)) << L" │ " << *(board.getSquare(i, (unsigned)6)) << L" │ " << *(board.getSquare(i, (unsigned)7)) << L" │" << endl ;
+		out << L"│ " << *(board.getSquare((unsigned)0, i)) << L" │ " << *(board.getSquare((unsigned)1, i)) << L" │ " << *(board.getSquare((unsigned)2, i)) << L" │ " << *(board.getSquare((unsigned)3, i)) << L" │ " << *(board.getSquare((unsigned)4, i)) << L" │ " << *(board.getSquare((unsigned)5, i)) << L" │ " << *(board.getSquare((unsigned)6, i)) << L" │ " << *(board.getSquare((unsigned)7, i)) << L" │" << endl ;
 		
 		if (i < 7) {
 			out << L"├───┼───┼───┼───┼───┼───┼───┼───┤" << endl ;
