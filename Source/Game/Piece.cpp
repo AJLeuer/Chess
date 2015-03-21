@@ -124,10 +124,11 @@ void Piece::move(const Position to) {
 	sendMoveNotification(to) ;
 }
 
-bool Piece::canMove() {
+/*
+bool Piece::canMove() const {
 	//debug code, this should never be called (always overriden)
 	throw exception() ;
-}
+} */
 
 void Piece::sendMoveNotification(const Position newPosition) {
 	
@@ -174,7 +175,7 @@ void Pawn::move(const Position to) {
 	Piece::move(to) ;
 }
 
-bool Pawn::canMove() {
+bool Pawn::canMove() const {
 	Position start = *this->position ;
 	
 	auto checkForEmptySquares = [] (vector<const Square *> & squares) -> bool {
@@ -233,7 +234,7 @@ void Knight::move(const Position to) {
 	Piece::move(to) ;
 }
 
-bool Knight::canMove() {
+bool Knight::canMove() const {
 	Position start = *this->position ;
 	
 	
@@ -271,7 +272,7 @@ void Bishop::move(const Position to) {
 	Piece::move(to) ;
 }
 
-bool Bishop::canMove() {
+bool Bishop::canMove() const {
 	Position start = *this->position ;
 	
 	
@@ -309,7 +310,7 @@ void Rook::move(const Position to) {
 	Piece::move(to) ;
 }
 
-bool Rook::canMove() {
+bool Rook::canMove() const {
 	Position start = *this->position ;
 	
 	
@@ -347,7 +348,7 @@ void Queen::move(const Position to) {
 	Piece::move(to) ;
 }
 
-bool Queen::canMove() {
+bool Queen::canMove() const {
 	Position start = *this->position ;
 	
 	
@@ -385,7 +386,7 @@ void King::move(const Position to) {
 	Piece::move(to) ;
 }
 
-bool King::canMove() {
+bool King::canMove() const {
 	Position start = *this->position ;
 	
 	

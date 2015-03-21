@@ -86,7 +86,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	virtual bool canMove() ;
+	virtual bool canMove() const = 0 ;
 	
 	const Color getColor() const { return color ; }
 	
@@ -156,7 +156,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() override ;
+	bool canMove() const override ;
 
 } ;
 
@@ -192,7 +192,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() override ;
+	bool canMove() const override ;
 	
 };
 
@@ -228,7 +228,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() override ;
+	bool canMove() const override ;
 
 };
 
@@ -265,7 +265,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() override ;
+	bool canMove() const override ;
 	
 };
 
@@ -301,7 +301,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() override ;
+	bool canMove() const override ;
 	
 };
 
@@ -337,7 +337,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() override ;
+	bool canMove() const override ;
 	
 };
 

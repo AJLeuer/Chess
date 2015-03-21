@@ -54,8 +54,10 @@ void Game::display() {
 	auto x = chooseAtRand(randm_x_1(), randm_x_2()) ;
 	auto y = randm_y() ;
 	
-	auto pc = this->board.getSquare(unsigned(1), unsigned(0))->getPiece() ;
-	auto spr = pc->getSprite() ;
+	auto pawn = this->board.getSquare(unsigned(0), unsigned(1))->getPiece() ;
+	auto spr = pawn->getSprite() ;
+	
+	bool canMove = pawn->canMove() ;
 	
 	x = 1200 ;
 	y = 700 ;
