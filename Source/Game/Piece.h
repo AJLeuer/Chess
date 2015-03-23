@@ -112,7 +112,9 @@ protected:
 		symbol(symbol),
 		spriteImageFilePath(spriteImageFilePath),
 		color(color),
-		position(position)
+		position(position),
+		board(board),
+		square(square)
 	{
 		bool loadedImageOK = spriteImage.loadFromFile(spriteImageFilePath) ;
 		sf::Texture texture ;

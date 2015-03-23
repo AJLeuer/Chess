@@ -202,9 +202,7 @@ bool Pawn::canMove() const {
 		directions.push_back(Direction::upRight) ;
 	}
 	
-	(*board)->runSearchFunction<bool>(checkForEmptySquares, *this->position, directions, 2) ;
-	
-	return true ;
+	return (*board)->runSearchFunction<bool>(checkForEmptySquares, *this->position, directions, 2) ;
 }
 
 Knight::Knight(const Color color, const Position * position, const Board * const * board, const Square * square) :

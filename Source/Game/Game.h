@@ -33,6 +33,17 @@ protected:
 	Player * player1 ;
 	
 	ChessWindow window ;
+	
+	void display() ;
+	
+	void updateGameState() ;
+	
+	/**
+	 * Purely for development and debugging
+	 */
+	void testAndDebug() ;
+	
+	void monitorMouse() ;
 		
 public:
 	
@@ -44,13 +55,13 @@ public:
 	
 	Game & operator = (const Game & other) = delete ;
 	
-	void updateGameState() ;
+	void playGame() ;
 	
-	void display() ;
+	/**
+	 * For development and debugging
+	 */
+	void playDebugGame() ;
 	
-	void runTests() ;
-	
-	void monitorMouse() ;
 };
 
 

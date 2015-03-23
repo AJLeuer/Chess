@@ -28,11 +28,13 @@ Game::~Game() {
 
 
 void Game::updateGameState() {
-	
-	auto sq = board.getSquare((unsigned)0, (unsigned)1) ;
-	Piece * piece = sq->piece ;
-	
-	//piece->move({1, 3}) ;
+	//todo
+}
+
+void Game::testAndDebug() {
+	auto pawn = this->board(0, 1)->getPiece() ;
+	bool canMove = pawn->canMove() ;
+	auto i = 1 ;
 }
 
 void Game::display() {
@@ -47,24 +49,6 @@ void Game::display() {
 	window.clear(sf::Color(0, 202, 255, 128)) ;
 	window.displayText(*str, middle) ;
 	
-	FastRand<unsigned> randm_x_1(0, 1) ;
-	FastRand<unsigned> randm_x_2(6, 7) ;
-	FastRand<unsigned> randm_y(0, 7) ;
-	
-	auto x = chooseAtRand(randm_x_1(), randm_x_2()) ;
-	auto y = randm_y() ;
-	
-	auto pawn = this->board.getSquare(unsigned(0), unsigned(1))->getPiece() ;
-	auto spr = pawn->getSprite() ;
-	
-	bool canMove = pawn->canMove() ;
-	
-	x = 1200 ;
-	y = 700 ;
-	
-	spr.setPosition(x, y) ;
-	window.draw(spr) ;
-	
 	window.display() ;
 	
 	delete stream ;
@@ -72,7 +56,7 @@ void Game::display() {
 }
 
 
-void Game::runTests() {
+void Game::playGame() {
 	
 	monitorMouse() ;
 	
@@ -82,6 +66,16 @@ void Game::runTests() {
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}
 	
+}
+
+void Game::playDebugGame() {
+	monitorMouse() ;
+	
+	while (true) {
+		testAndDebug() ;
+		display() ;
+		this_thread::sleep_for(chrono::milliseconds(4)) ;
+	}
 }
 
 void Game::monitorMouse() {

@@ -29,7 +29,7 @@ protected:
 	
 	static VideoMode videoMode ;
 	
-	static VideoMode setVideoMode() ;
+	static VideoMode & setVideoMode() ;
 	
 	/**
 	 * The Font used for displaying most text onscreen.

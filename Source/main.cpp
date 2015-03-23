@@ -21,7 +21,7 @@ int main(int argc, const char * argv[]) {
 
 
 	Game game ;
-	game.runTests() ;
+	game.playDebugGame() ;
 	
     return 0 ;
 }

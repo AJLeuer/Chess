@@ -11,6 +11,13 @@
 using namespace std ;
 using namespace sf ;
 
+Font ChessWindow::font = ChessWindow::initFont() ;
+
+Font & ChessWindow::initFont() {
+	font.loadFromFile(mainFontFilePath) ;
+	return font ; //self assigns
+}
+
 ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
 	if (this != & other) {
 		this->text = other.text ;
@@ -20,21 +27,13 @@ ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
 
 VideoMode ChessWindow::videoMode = setVideoMode() ;
 
-VideoMode ChessWindow::setVideoMode() {
+VideoMode & ChessWindow::setVideoMode() {
 	vec2<float> baseWindowSize {static_cast<float>(mainWindowSize.x), static_cast<float>(mainWindowSize.y)} ;
 	float dpiScale = DisplayData::getDisplayScalingFactor<float>() ;
 	vec2<float> scaledWindowSize = baseWindowSize * dpiScale ;
-	VideoMode vm(scaledWindowSize.x, scaledWindowSize.y) ;
-	return vm ;
+	videoMode = VideoMode(scaledWindowSize.x, scaledWindowSize.y) ;
+	return videoMode ; //self assigns
 }
-
-Font ChessWindow::font = ChessWindow::initFont() ;
-
-Font & ChessWindow::initFont() {
-	font.loadFromFile("Menlo-Regular.ttf") ;
-	return font ;
-}
-
 
 ChessWindow::ChessWindow(const string & title) :
 	RenderWindow(videoMode, title, Style::Default, ContextSettings())

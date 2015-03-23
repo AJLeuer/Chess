@@ -66,11 +66,11 @@ public:
 	 */
 	const Square * operator () (unsigned arrIndexX, unsigned arrIndexY) const ;
 	
-	const Square * getSquare(unsigned rank, char file) const ;
+	const Square * getSquare(const RankAndFile &) const ;
 	
-	const Square * getSquare(vec2<int> index) const { return getSquare(static_cast<unsigned>(index.x), static_cast<unsigned>(index.y)) ; }
+	const Square * getSquare(const Position) const ;
 	
-	const Square * getSquare(unsigned arrIndexX, unsigned arrIndexY) const ;
+	const Square * getSquare(unsigned x, unsigned y) const ;
 	
 	/**
 	 * @param pos This function checks whether pos is within the bounds of the Chess board

@@ -8,7 +8,12 @@
 
 #include "Config.h"
 
-string currentDirectory = "" ;
+string currentDirectory("") ;
+
+string aglobalstr ;
+
+const string & mainFontFilePath {"./Assets/Fonts/Menlo-Regular.ttf"} ;
+
 
 vec2<unsigned> mainWindowSize = setMainWindowSize() ;
 
