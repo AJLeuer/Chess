@@ -9,7 +9,11 @@
 #ifndef Chess_Square_h
 #define Chess_Square_h
 
+#include "Piece.h"
+
 using namespace std ;
+
+//namespace Chess {
 
 /* Forward declaring */
 class Board ;
@@ -50,6 +54,8 @@ public:
 	
 	bool isEmpty() const { return piece == nullptr ; }
 	
+	bool isOccupied() const { return isEmpty() == false ; }
+	
 	const Position & getPosition() const { return this->position ; }
 	
 	const Piece * getPiece() const { return piece ; }
@@ -65,5 +71,7 @@ public:
 	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Square &) ;
 	
 } ;
+	
+//}
 
 #endif

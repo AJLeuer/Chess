@@ -32,8 +32,11 @@ void Game::updateGameState() {
 }
 
 void Game::testAndDebug() {
+	
 	auto pawn = this->board(0, 1)->getPiece() ;
 	bool canMove = pawn->canMove() ;
+	
+	short val = board.evaluate<ChessColor>() ;
 	auto i = 1 ;
 }
 
@@ -76,6 +79,7 @@ void Game::playDebugGame() {
 		display() ;
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}
+	
 }
 
 void Game::monitorMouse() {
@@ -91,7 +95,6 @@ void Game::monitorMouse() {
 			}
 			this_thread::sleep_for(chrono::microseconds(100)) ;
 		}
-		
 	} ;
 	
 	std::thread mouseThread(mouseMonitor) ;

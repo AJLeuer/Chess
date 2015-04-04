@@ -29,18 +29,18 @@ Player & Player::operator = (Player && other) {
 	return * this ;
 }
 
-MoveIntent Player::decideNextMove() {
-	return MoveIntent() ;
+Piece::Move Player::decideNextMove() {
+	return Piece::Move() ;
 }
 
 
-MoveIntent Human::decideNextMove() {
-	return MoveIntent() ; //todo: implement
+Piece::Move Human::decideNextMove() {
+	return Piece::Move() ; //todo: implement
 }
 
 
-MoveIntent AI::decideNextMove() {
-	return MoveIntent() ; //todo: implement
+Piece::Move AI::decideNextMove() {
+	return Piece::Move() ; //todo: implement
 }
 
 void AI::runSearchAlgorithm() {

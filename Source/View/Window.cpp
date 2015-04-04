@@ -11,11 +11,13 @@
 using namespace std ;
 using namespace sf ;
 
-Font ChessWindow::font = ChessWindow::initFont() ;
+Font & ChessWindow::font = ChessWindow::initFont() ;
 
 Font & ChessWindow::initFont() {
-	font.loadFromFile(mainFontFilePath) ;
-	return font ; //self assigns
+	static Font storedFont ;
+	string mainFontFilePathCopy(mainFontFilePath) ; //debug code
+	storedFont.loadFromFile(mainFontFilePath) ;
+	return storedFont ; //self assigns
 }
 
 ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
@@ -28,9 +30,9 @@ ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
 VideoMode ChessWindow::videoMode = setVideoMode() ;
 
 VideoMode & ChessWindow::setVideoMode() {
-	vec2<float> baseWindowSize {static_cast<float>(mainWindowSize.x), static_cast<float>(mainWindowSize.y)} ;
-	float dpiScale = DisplayData::getDisplayScalingFactor<float>() ;
-	vec2<float> scaledWindowSize = baseWindowSize * dpiScale ;
+	const vec2<unsigned> baseWindowSize {mainWindowSize.x, mainWindowSize.y} ;
+	const float dpiScale (DisplayData::getDisplayScalingFactor<float>()) ;
+	vec2<unsigned> scaledWindowSize { static_cast<unsigned>(baseWindowSize.x * dpiScale), static_cast<unsigned>(baseWindowSize.y * dpiScale) } ;
 	videoMode = VideoMode(scaledWindowSize.x, scaledWindowSize.y) ;
 	return videoMode ; //self assigns
 }

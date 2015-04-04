@@ -12,9 +12,9 @@ vec2<unsigned> DisplayData::calculateScreenResolution() {
 	NSScreen * screen = [NSScreen mainScreen] ;
 	auto vf = [screen visibleFrame] ;
 	
-	unsigned x = vf.size.width + vf.origin.x ;
-	unsigned y = vf.size.height + vf.origin.y ;
-	return vec2<unsigned>{x, y} ;
+	auto x = vf.size.width + vf.origin.x ;
+	auto y = vf.size.height + vf.origin.y ;
+	return vec2<unsigned>{static_cast<unsigned>(x), static_cast<unsigned>(y)} ;
 }
 
 void DisplayData::calculateDisplayScalingFactor() {
@@ -23,7 +23,7 @@ void DisplayData::calculateDisplayScalingFactor() {
     if ([[NSScreen mainScreen] respondsToSelector:@selector(backingScaleFactor)]) {
         screens = [NSScreen screens];
         for (int i = 0; i < [screens count]; i++) {
-            float s = [[screens objectAtIndex:i] backingScaleFactor];
+			float s = static_cast<float>([[screens objectAtIndex:i] backingScaleFactor]);
             if (s > displayScale)
                 displayScale = s;
         }

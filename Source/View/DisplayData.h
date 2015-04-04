@@ -20,8 +20,6 @@ private:
 	
 	static bool isInit ;
 	
-	/* Using several extra layers of indirection to help
-	 ensure everything is properly initialized at runtime */
 	static bool hiDPI_referenceVal ;
 	
 	/**
@@ -30,9 +28,6 @@ private:
 	 * this value will be 2.0
 	 */
 	static float displayScalingFactor_referenceVal ;
-	
-	/* Using several extra layers of indirection to help
-	 ensure everything is properly initialized at runtime */
 	
 	static void init() ;
 	

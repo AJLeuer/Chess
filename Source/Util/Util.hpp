@@ -18,7 +18,8 @@
 
 using namespace std ;
 
-constexpr auto pi = 3.141592653589793238462643383279502884197169399375105820974944L ; /* needs UTF-8 support */
+constexpr long double 𝜋 = 3.141592653589793238462643383279502884197169399375105820974944L ; /* needs UTF-8 support */
+static constexpr auto & pi = 𝜋 ; //easier to type
 
 /**
  * Used to avoid ambiguity when calling various constructors
@@ -293,28 +294,15 @@ FloatPosition * roundF(FloatPosition * pos) {
 template<typename Radians = double>
 double convertToDegrees(const Radians angle_rad) {
 	double angle_in_radians = static_cast<double>(angle_rad) ;
-	double angle_in_degrees = angle_in_radians * (180.0L / pi) ;
+	double angle_in_degrees = angle_in_radians * (180.0 / static_cast<double>(pi)) ;
 	return angle_in_degrees ;
 }
 
 template<typename Degrees = double>
 double convertToRadians(const Degrees angle_deg) {
 	double angle_in_degrees = static_cast<double>(angle_deg) ;
-	double angle_in_radians = angle_in_degrees / (180.0L / pi) ;
+	double angle_in_radians = angle_in_degrees / (180.0 / static_cast<double>(pi)) ;
 	return angle_in_radians ;
-}
-
-
-
-
-inline unsigned termWidth() {
-	unsigned r = atoi(getenv("COLUMNS")) ;
-	return r ;
-}
-
-inline unsigned termHeight() {
-	unsigned r = atoi(getenv("LINES")) ;
-	return r ;
 }
 
 /**
@@ -337,13 +325,6 @@ inline string operator +(const string & str, const char * rhs) {
 	ret += app ;
 	return ret ;
 }
-
-/* powerup. other */
-extern char * basicAlphabet ;
-
-const string generateName(unsigned int length) ;
-
-
 
 
 

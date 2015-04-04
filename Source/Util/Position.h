@@ -14,6 +14,7 @@
 #include <ostream>
 #include <sstream>
 #include <utility>
+#include <stdexcept>
 
 #include <SFML/System/Vector2.hpp>
 
@@ -37,25 +38,32 @@ public:
 
 	constexpr Direction(const vec2<int> val) : value(val) {}
 	
+	constexpr Direction(const int h, const int v) : value(vec2<int> {h, v}) {}
+
 	constexpr operator vec2<int>() const { return this->value ; }
-	
+
 	template <typename NumericType>
 	friend vec2<NumericType> operator * (const Direction &, const NumericType) ;
 	
 	template <typename NumericType>
 	friend vec2<NumericType> operator + (const Direction &, const vec2<NumericType>) ;
-	
-	static const Direction up ; /* = vec2<int>{0, -1}  ; */
-	static const Direction down ; /* = vec2<int>{0, 1}  ; */
-	static const Direction left ; /* = vec2<int>{-1, 0}  ; */
-	static const Direction right ; /* = vec2<int>{1, 0}  ; */
-	
-	static const Direction upLeft ; /* = vec2<int>{-1, -1}  ; */
-	static const Direction upRight ; /* = vec2<int>{1, -1}  ; */
-	static const Direction downLeft ; /* = vec2<int>{-1, 1}  ; */
-	static const Direction downRight ; /* = vec2<int>{1, 1}  ; */
 
 } ;
+
+namespace Directions {
+	
+	static constexpr Direction up  		 { vec2<int>{ 0, -1} } ;
+	static constexpr Direction down 	 { vec2<int>{ 0,  1} } ;
+	static constexpr Direction left 	 { vec2<int>{-1,  0} } ;
+	static constexpr Direction right 	 { vec2<int>{ 1,  0} } ;
+	
+	static constexpr Direction upLeft    { vec2<int>{-1, -1} } ;
+	static constexpr Direction upRight   { vec2<int>{ 1, -1} } ;
+	static constexpr Direction downLeft  { vec2<int>{-1,  1} } ;
+	static constexpr Direction downRight { vec2<int>{ 1,  1} } ;
+	
+}
+
 
 template <typename NumericType>
 vec2<NumericType> operator * (const Direction & direction, const NumericType n) {

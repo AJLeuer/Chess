@@ -9,9 +9,14 @@
 #ifndef Chess_Color_h
 #define Chess_Color_h
 
-enum class Color {
+//namespace Chess {
+	
+enum class ChessColor {
 	black,
 	white
 } ;
+	
+//}
+
 
 #endif

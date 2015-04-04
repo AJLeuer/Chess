@@ -10,15 +10,6 @@
 
 using namespace std ;
 
-const Direction Direction::up  		 { vec2<int>{ 0, -1} } ;
-const Direction Direction::down 	 { vec2<int>{ 0,  1} } ;
-const Direction Direction::left 	 { vec2<int>{-1,  0} } ;
-const Direction Direction::right 	 { vec2<int>{ 1,  0} } ;
-
-const Direction Direction::upLeft    { vec2<int>{-1, -1} } ;
-const Direction Direction::upRight   { vec2<int>{ 1, -1} } ;
-const Direction Direction::downLeft  { vec2<int>{-1,  1} } ;
-const Direction Direction::downRight { vec2<int>{ 1,  1} } ; 
 
 RankAndFile::RankAndFile(const Position & pos) :
 	RankAndFile(convertToFile(pos[0]), convertToRank(pos[1]))

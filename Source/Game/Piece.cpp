@@ -12,6 +12,7 @@
 
 
 using namespace std ;
+using namespace Directions ;
 
 
 Symbols Pawn::symbols {/* black */ L"♟", /* white */ L"♙"} ;
@@ -36,7 +37,7 @@ ImageFiles Pawn::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ P
 
 ImageFiles Knight::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Knight.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Knight.png" } ;
 
-ImageFiles Bishop::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Bishop.png" } ;
+ImageFiles Bishop::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Bishop.png" } ;
 
 ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Rook.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Rook.png" } ;
 
@@ -50,40 +51,40 @@ ImageFiles King::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ K
 Piece * Piece::init(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) {
 	Piece * piece ;
 	if (symbol == Pawn::symbols.white) {
-		piece = new Pawn(Color::white, position, board, square) ;
+		piece = new Pawn(ChessColor::white, position, board, square) ;
 	}
 	else if (symbol == Pawn::symbols.black) {
-		piece = new Pawn(Color::black, position, board, square) ;
+		piece = new Pawn(ChessColor::black, position, board, square) ;
 	}
 	else if (symbol == Knight::symbols.white) {
-		piece = new Knight(Color::white, position, board, square) ;
+		piece = new Knight(ChessColor::white, position, board, square) ;
 	}
 	else if (symbol == Knight::symbols.black) {
-		piece = new Knight(Color::black, position, board, square) ;
+		piece = new Knight(ChessColor::black, position, board, square) ;
 	}
 	else if (symbol == Bishop::symbols.white) {
-		piece = new Bishop(Color::white, position, board, square) ;
+		piece = new Bishop(ChessColor::white, position, board, square) ;
 	}
 	else if (symbol == Bishop::symbols.black) {
-		piece = new Bishop(Color::black, position, board, square) ;
+		piece = new Bishop(ChessColor::black, position, board, square) ;
 	}
 	else if (symbol == Rook::symbols.white) {
-		piece = new Rook(Color::white, position, board, square) ;
+		piece = new Rook(ChessColor::white, position, board, square) ;
 	}
 	else if (symbol == Rook::symbols.black) {
-		piece = new Rook(Color::black, position, board, square) ;
+		piece = new Rook(ChessColor::black, position, board, square) ;
 	}
 	else if (symbol == Queen::symbols.white) {
-		piece = new Queen(Color::white, position, board, square) ;
+		piece = new Queen(ChessColor::white, position, board, square) ;
 	}
 	else if (symbol == Queen::symbols.black) {
-		piece = new Queen(Color::black, position, board, square) ;
+		piece = new Queen(ChessColor::black, position, board, square) ;
 	}
 	else if (symbol == King::symbols.white) {
-		piece = new King(Color::white, position, board, square) ;
+		piece = new King(ChessColor::white, position, board, square) ;
 	}
 	else if (symbol == King::symbols.black) {
-		piece = new King(Color::black, position, board, square) ;
+		piece = new King(ChessColor::black, position, board, square) ;
 	}
 	else {
 		piece = nullptr ;
@@ -124,11 +125,26 @@ void Piece::move(const Position to) {
 	sendMoveNotification(to) ;
 }
 
-/*
-bool Piece::canMove() const {
-	//debug code, this should never be called (always overriden)
-	throw exception() ;
-} */
+
+const bool Piece::canMove() const {
+	
+	const vector<Direction> movementDirections(this->getLegalMovementDirections()) ;
+	
+	for (auto direction = movementDirections.begin() ; direction != movementDirections.end(); direction++) {
+		
+		auto nearbySquareCoordinates = *(this->position) + (* direction) ;
+		
+		auto board = this->getBoard() ;
+		
+		auto square = (**board).getSquare(nearbySquareCoordinates) ;
+		
+		if (square->isEmpty()) {
+			return true ;
+		}
+	}
+
+	return false ;
+}
 
 void Piece::sendMoveNotification(const Position newPosition) {
 	
@@ -141,9 +157,9 @@ void Piece::sendMoveNotification(const Position newPosition) {
 	Notification<Piece, Position>::notify(EventType::pieceArriving, this, newPosition) ;
 }
 
-Pawn::Pawn(const Color color, const Position * position, const Board * const * board, const Square * square) :
-	Piece((color == Color::black) ? symbols.black : symbols.white,
-		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+Pawn::Pawn(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
+		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -155,7 +171,7 @@ Pawn::Pawn(const Color color, const Position * position, const Board * const * b
 Pawn::Pawn(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? Color::black : Color::white,
+		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
 		  position,
 		  board,
 		  square)
@@ -170,13 +186,23 @@ const float Pawn::getValue() const  {
 	return (pawnValue + adjustedRank) ;
 }
 
+const vector<Direction> Pawn::getLegalMovementDirections() const {
+	
+	if (this->color == ChessColor::black) {
+		return vector<Direction> { down, downLeft, downRight } ;
+	}
+	else /* if (this->color == ChessColor::white) */ {
+		return vector<Direction> { up, upLeft, upRight } ;
+	}
+}
+
 void Pawn::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
 }
 
-bool Pawn::canMove() const {
-	Position start = *this->position ;
+const bool Pawn::canMove() const {
+	Position start = *(this->position) ;
 	
 	auto checkForEmptySquares = [] (vector<const Square *> & squares) -> bool {
 		
@@ -190,24 +216,24 @@ bool Pawn::canMove() const {
 	
 	vector<Direction> directions ;
 	
-	if (this->color == Color::black) {
-		directions.push_back(Direction::down) ;
-		directions.push_back(Direction::downLeft) ;
-		directions.push_back(Direction::downRight) ;
+	if (this->color == ChessColor::black) {
+		directions.push_back(down) ;
+		directions.push_back(downLeft) ;
+		directions.push_back(downRight) ;
 	}
 	
-	else { /* if (this->color == Color::white) */
-		directions.push_back(Direction::up) ;
-		directions.push_back(Direction::upLeft) ;
-		directions.push_back(Direction::upRight) ;
+	else { /* if (this->color == ChessColor::white) */
+		directions.push_back(up) ;
+		directions.push_back(upLeft) ;
+		directions.push_back(upRight) ;
 	}
 	
 	return (*board)->runSearchFunction<bool>(checkForEmptySquares, *this->position, directions, 2) ;
 }
 
-Knight::Knight(const Color color, const Position * position, const Board * const * board, const Square * square) :
-	Piece((color == Color::black) ? symbols.black : symbols.white,
-		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+Knight::Knight(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
+		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -219,7 +245,7 @@ Knight::Knight(const Color color, const Position * position, const Board * const
 Knight::Knight(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? Color::black : Color::white,
+		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
 		  position,
 		  board,
 		  square)
@@ -227,25 +253,38 @@ Knight::Knight(const wstring & symbol, const Position * position, const Board * 
 	
 }
 
+const vector<Direction> Knight::getLegalMovementDirections() const {
+	
+	vector<Direction> directions ;
+	
+	for (int v = -2 ; v <= 2 ; v++) { //primarily vertical movement
+		for (int h = -1 ; h <= 1 ; h++) {
+			directions.push_back(Direction(h, v)) ;
+		}
+	}
+	
+	for (int h = -2 ; h <= 2 ; h++) { //primarily horizontal movement
+		for (int v = -1 ; v <= 1 ; v++) {
+			directions.push_back(Direction(h, v)) ;
+		}
+	}
+	
+	return directions ;
+}
+
+
 void Knight::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
 }
 
-bool Knight::canMove() const {
-	Position start = *this->position ;
-	
-	
-	
-	
-	
-	
+const bool Knight::canMove() const {
 	return true ;
 }
 
-Bishop::Bishop(const Color color, const Position * position, const Board * const * board, const Square * square) :
-	Piece((color == Color::black) ? symbols.black : symbols.white,
-		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+Bishop::Bishop(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
+		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -257,7 +296,7 @@ Bishop::Bishop(const Color color, const Position * position, const Board * const
 Bishop::Bishop(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? Color::black : Color::white,
+		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
 		  position,
 		  board,
 		  square)
@@ -265,25 +304,26 @@ Bishop::Bishop(const wstring & symbol, const Position * position, const Board * 
 	
 }
 
+const vector<Direction> Bishop::getLegalMovementDirections() const {
+	return vector<Direction> { Directions::upLeft, Directions::upRight, Directions::downLeft, Directions::downRight } ;
+}
+
 void Bishop::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
 }
 
-bool Bishop::canMove() const {
+
+const bool Bishop::canMove() const {
+	//todo
 	Position start = *this->position ;
-	
-	
-	
-	
-	
-	
+
 	return true ;
 }
 
-Rook::Rook(const Color color, const Position * position, const Board * const * board, const Square * square) :
-	Piece((color == Color::black) ? symbols.black : symbols.white,
-		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+Rook::Rook(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
+		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -295,7 +335,7 @@ Rook::Rook(const Color color, const Position * position, const Board * const * b
 Rook::Rook(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? Color::black : Color::white,
+		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
 		  position,
 		  board,
 		  square)
@@ -303,25 +343,24 @@ Rook::Rook(const wstring & symbol, const Position * position, const Board * cons
 	
 }
 
+const vector<Direction> Rook::getLegalMovementDirections() const {
+	return vector<Direction> { Directions::up, Directions::down, Directions::left, Directions::right } ;
+}
+
 void Rook::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
 }
 
-bool Rook::canMove() const {
+const bool Rook::canMove() const {
 	Position start = *this->position ;
-	
-	
-	
-	
-	
-	
+
 	return true ;
 }
 
-Queen::Queen(const Color color, const Position * position, const Board * const * board, const Square * square) :
-	Piece((color == Color::black) ? symbols.black : symbols.white,
-		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+Queen::Queen(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
+		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -333,7 +372,7 @@ Queen::Queen(const Color color, const Position * position, const Board * const *
 Queen::Queen(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? Color::black : Color::white,
+		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
 		  position,
 		  board,
 		  square)
@@ -341,12 +380,17 @@ Queen::Queen(const wstring & symbol, const Position * position, const Board * co
 	
 }
 
+const vector<Direction> Queen::getLegalMovementDirections() const {
+	return vector<Direction> { Directions::up, Directions::down, Directions::left, Directions::right,
+		Directions::upLeft, Directions::upRight, Directions::downLeft, Directions::downRight } ;
+}
+
 void Queen::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
 }
 
-bool Queen::canMove() const {
+const bool Queen::canMove() const {
 	Position start = *this->position ;
 	
 	
@@ -357,9 +401,9 @@ bool Queen::canMove() const {
 	return true ;
 }
 
-King::King(const Color color, const Position * position, const Board * const * board, const Square * square) :
-	Piece((color == Color::black) ? symbols.black : symbols.white,
-		  (color == Color::black) ? imageFiles.black : imageFiles.white,
+King::King(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
+		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -371,7 +415,7 @@ King::King(const Color color, const Position * position, const Board * const * b
 King::King(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) :
 	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? Color::black : Color::white,
+		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
 		  position,
 		  board,
 		  square)
@@ -379,12 +423,17 @@ King::King(const wstring & symbol, const Position * position, const Board * cons
 	
 }
 
+const vector<Direction> King::getLegalMovementDirections() const {
+	return vector<Direction> { Directions::up, Directions::down, Directions::left, Directions::right,
+		Directions::upLeft, Directions::upRight, Directions::downLeft, Directions::downRight } ;
+}
+
 void King::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
 }
 
-bool King::canMove() const {
+const bool King::canMove() const {
 	Position start = *this->position ;
 	
 	

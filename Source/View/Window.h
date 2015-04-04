@@ -37,7 +37,7 @@ protected:
 	 * Currently using Apple's menlo font (which is based on Bitstream Vera Sans
 	 * mono), until I can find something better suited for chess
 	 */
-	static Font font ;
+	static Font & font ;
 	
 	/**
 	 * @note Need to create a quick initialization function

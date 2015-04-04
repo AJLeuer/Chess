@@ -13,6 +13,8 @@
 #include <functional>
 #include <string>
 #include <exception>
+#include <vector>
+#include <valarray>
 
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -22,7 +24,7 @@
 #include "Util.h"
 #include "Color.h"
 #include "NotificationSystem.h"
-#include "Position.h"
+#include "../Util/Position.h"
 
 using namespace std ;
 
@@ -58,6 +60,8 @@ protected:
 	
 	const Square * square ;
 	
+	auto getBoard() const { return board ; }
+	
 	void sendMoveNotification(const Position newPosition) ;
 	
 	void setCurrentPosition(const Position * position) { this->position = position ; }
@@ -67,6 +71,11 @@ protected:
 	friend void runTests() ;
 	
 public:
+	
+	struct Move {
+		Piece * piece ;
+		Square * destination ;
+	} ;
 	
 	static Piece * init(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
@@ -86,9 +95,9 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	virtual bool canMove() const = 0 ;
+	virtual const bool canMove() const ;
 	
-	const Color getColor() const { return color ; }
+	const ChessColor getColor() const { return color ; }
 	
 	const wstring & getSymbol() const { return symbol ; }
 	
@@ -98,6 +107,8 @@ public:
 	
 	virtual const float getValue() const = 0 ;
 	
+	virtual const vector<Direction> getLegalMovementDirections() const = 0 ;
+	
 	friend ostream & operator<< (ostream & , const Piece &) ;
 	
 	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Piece &) ;
@@ -106,9 +117,9 @@ public:
 	
 protected:
 	
-	Color color ;
+	ChessColor color ;
 
-	Piece(const wstring & symbol, const string & spriteImageFilePath, const Color color, const Position * position, const Board * const * board, const Square * square) :
+	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
 		symbol(symbol),
 		spriteImageFilePath(spriteImageFilePath),
 		color(color),
@@ -137,7 +148,7 @@ public:
 	Pawn(const Pawn & other) :
 		Piece(other) {}
 	
-	Pawn(const Color color, const Position * position, const Board * const * board, const Square * square) ;
+	Pawn(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
 	
 	Pawn(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
@@ -150,7 +161,9 @@ public:
 		return * this ;
 	}
 	
-	virtual const float getValue() const override ;
+	const float getValue() const override ;
+	
+	const vector<Direction> getLegalMovementDirections() const override ;
 	
 	void move(const Position to) override ;
 	
@@ -158,7 +171,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() const override ;
+	const bool canMove() const override ;
 
 } ;
 
@@ -173,7 +186,7 @@ public:
 	Knight(const Knight & other) :
 		Piece(other) {}
 	
-	Knight(const Color color, const Position * position, const Board * const * board, const Square * square) ;
+	Knight(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
 	
 	Knight(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
@@ -186,7 +199,9 @@ public:
 		return * this ;
 	}
 	
-	virtual const float getValue() const override { return 2 ; }
+	const float getValue() const override { return 2 ; }
+	
+	const vector<Direction> getLegalMovementDirections() const override ;
 	
 	void move(const Position to) override ;
 	
@@ -194,7 +209,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() const override ;
+	const bool canMove() const override ;
 	
 };
 
@@ -209,7 +224,7 @@ public:
 	Bishop(const Bishop & other) :
 		Piece(other) {}
 
-	Bishop(const Color color, const Position * position, const Board * const * board, const Square * square) ;
+	Bishop(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
 	
 	Bishop(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
@@ -224,13 +239,15 @@ public:
 	
 	virtual const float getValue() const override { return 4 ; }
 	
+	const vector<Direction> getLegalMovementDirections() const override ;
+	
 	void move(const Position to) override ;
 	
 	/**
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() const override ;
+	const bool canMove() const override ;
 
 };
 
@@ -246,7 +263,7 @@ public:
 	Rook(const Rook & other) :
 		Piece(other) {}
 
-	Rook(const Color color, const Position * position, const Board * const * board, const Square * square) ;
+	Rook(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
 	
 	Rook(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
@@ -261,13 +278,15 @@ public:
 	
 	virtual const float getValue() const override { return 6 ; }
 	
+	const vector<Direction> getLegalMovementDirections() const override ;
+	
 	void move(const Position to) override ;
 	
 	/**
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() const override ;
+	const bool canMove() const override ;
 	
 };
 
@@ -282,7 +301,7 @@ public:
 	Queen(const Queen & other) :
 		Piece(other) {}
 	
-	Queen(const Color color, const Position * position, const Board * const * board, const Square * square) ;
+	Queen(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
 	
 	Queen(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
@@ -297,13 +316,15 @@ public:
 	
 	virtual const float getValue() const override { return 10 ; }
 	
+	const vector<Direction> getLegalMovementDirections() const override ;
+	
 	void move(const Position to) override ;
 	
 	/**
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() const override ;
+	const bool canMove() const override ;
 	
 };
 
@@ -318,7 +339,7 @@ public:
 	King(const King & other) :
 		Piece(other) {}
 	
-	King(const Color color, const Position * position, const Board * const * board, const Square * square) ;
+	King(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
 	
 	King(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
 	
@@ -333,13 +354,15 @@ public:
 	
 	virtual const float getValue() const override { return 48 ; }
 	
+	const vector<Direction> getLegalMovementDirections() const override ;
+	
 	void move(const Position to) override ;
 	
 	/**
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	bool canMove() const override ;
+	const bool canMove() const override ;
 	
 };
 

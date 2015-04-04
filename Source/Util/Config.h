@@ -27,14 +27,8 @@ extern vec2<unsigned> setMainWindowSize() ;
 
 extern string currentDirectory ;
 
-static string astaticstr("im static") ;
-
-extern string aglobalstr ;
-
-extern const string & mainFontFilePath ;
+extern const string & mainFontFilePath ; 
 
 constexpr auto mainFontFilePathRef("./Assets/Fonts/Menlo-Regular.ttf");
-
-constexpr char * mainFontFilePathAsCString {(char *) "dd"} ;
 
 #endif

@@ -19,10 +19,6 @@
 
 using namespace std ;
 
-struct MoveIntent {
-	Piece * piece ;
-	Square * destination ;
-} ;
 
 class Player {
 	
@@ -45,8 +41,8 @@ public:
 	 */
 	Player(Player && other) ;
 	
-	template <typename Iterator>
-	Player(Iterator squares_start, Iterator squares_end) :
+	template <typename SquareIterator>
+	Player(SquareIterator squares_start, SquareIterator squares_end) :
 		squaresWithPieces(squares_start, squares_end),
 		ID(uniqueIDs++),
 		name("Player " + to_string(ID))
@@ -63,7 +59,7 @@ public:
 	 */
 	Player & operator = (Player && other) ;
 	
-	virtual MoveIntent decideNextMove() ;
+	virtual Piece::Move decideNextMove() ;
 	
 };
 
@@ -72,11 +68,11 @@ class Human : public Player {
 
 public:
 
-	template <typename Iterator>
-	Human(Iterator squares_start, Iterator squares_end) :
+	template <typename SquareIterator>
+	Human(SquareIterator squares_start, SquareIterator squares_end) :
 		Player(squares_start, squares_end) {}
 	
-	MoveIntent decideNextMove() ;
+	Piece::Move decideNextMove() override ;
 	
 };
 
@@ -84,11 +80,11 @@ class AI : public Player {
 	
 public:
 	
-	template <typename Iterator>
-	AI(Iterator squares_start, Iterator squares_end) :
+	template <typename SquareIterator>
+	AI(SquareIterator squares_start, SquareIterator squares_end) :
 		Player(squares_start, squares_end) {}
 	
-	MoveIntent decideNextMove() ;
+	Piece::Move decideNextMove() override ;
 	
 	void runSearchAlgorithm() ;
 	

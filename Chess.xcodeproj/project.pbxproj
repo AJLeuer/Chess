@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		660A3FCC1ACF7BFA00E68035 /* Assets in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66D0AFA41AB6D026001AD733 /* Assets */; };
+		6659B8BA1AB75ADD0068B607 /* DisplayData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6659B8B91AB75ADD0068B607 /* DisplayData.cpp */; };
+		6659B8BC1AB75B540068B607 /* DisplayData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6659B8BB1AB75B540068B607 /* DisplayData.mm */; };
+		6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6659B8BE1AB75BB40068B607 /* AppKit.framework */; };
+		6663DC9B1AB7414200F10B4F /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6663DC9A1AB7414200F10B4F /* Config.cpp */; };
 		66AD6CF61A93D3080008F0ED /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AD6CF41A93D3080008F0ED /* Util.cpp */; };
 		66BE095E1A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */; };
 		66BE095F1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */; };
@@ -30,12 +35,22 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				660A3FCC1ACF7BFA00E68035 /* Assets in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		66243F691ABF84F70002560B /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Config; sourceTree = "<group>"; };
+		6659B8B41AB75A210068B607 /* Util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
+		6659B8B81AB75ADD0068B607 /* DisplayData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayData.h; sourceTree = "<group>"; };
+		6659B8B91AB75ADD0068B607 /* DisplayData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayData.cpp; sourceTree = "<group>"; };
+		6659B8BB1AB75B540068B607 /* DisplayData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DisplayData.mm; sourceTree = "<group>"; };
+		6659B8BD1AB75B8C0068B607 /* Decl_Apple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Decl_Apple.h; sourceTree = "<group>"; };
+		6659B8BE1AB75BB40068B607 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		6659B8C01AB779A20068B607 /* Random.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Random.hpp; sourceTree = "<group>"; };
+		6663DC9A1AB7414200F10B4F /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		66AD6CF41A93D3080008F0ED /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		66AD6CF51A93D3080008F0ED /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		66AF8EC31AB40F0000FECDA7 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -58,6 +73,7 @@
 		66BE09731A8E4AC200C5F1CC /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
 		66BE09751A8E4AC200C5F1CC /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		66BE09761A8E4AC200C5F1CC /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildConfig.xcconfig; sourceTree = "<group>"; };
 		66C10DB41A0030B10074ED36 /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C10DB71A0030B10074ED36 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		66D0AFA41AB6D026001AD733 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
@@ -70,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */,
 				66BE095E1A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib in Frameworks */,
 				66BE095F1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib in Frameworks */,
 				66BE09601A8E382300C5F1CC /* libsfml-network.2.2.0.dylib in Frameworks */,
@@ -103,8 +120,11 @@
 			children = (
 				66AF8EC31AB40F0000FECDA7 /* Config.h */,
 				66AD6CF51A93D3080008F0ED /* Util.h */,
+				6659B8B41AB75A210068B607 /* Util.hpp */,
+				6659B8C01AB779A20068B607 /* Random.hpp */,
 				66BE09731A8E4AC200C5F1CC /* Position.h */,
 				66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */,
+				6663DC9A1AB7414200F10B4F /* Config.cpp */,
 				66AD6CF41A93D3080008F0ED /* Util.cpp */,
 				66BE09721A8E4AC200C5F1CC /* Position.cpp */,
 				66BE09701A8E4AC200C5F1CC /* NotificationSystem.cpp */,
@@ -115,7 +135,11 @@
 		66BE09741A8E4AC200C5F1CC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				6659B8BD1AB75B8C0068B607 /* Decl_Apple.h */,
+				6659B8B81AB75ADD0068B607 /* DisplayData.h */,
 				66BE09761A8E4AC200C5F1CC /* Window.h */,
+				6659B8B91AB75ADD0068B607 /* DisplayData.cpp */,
+				6659B8BB1AB75B540068B607 /* DisplayData.mm */,
 				66BE09751A8E4AC200C5F1CC /* Window.cpp */,
 			);
 			path = View;
@@ -124,11 +148,14 @@
 		66C10DAB1A0030B10074ED36 = {
 			isa = PBXGroup;
 			children = (
+				66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */,
+				6659B8BE1AB75BB40068B607 /* AppKit.framework */,
 				66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */,
 				66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */,
 				66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */,
 				66BE095C1A8E382300C5F1CC /* libsfml-system.2.2.0.dylib */,
 				66BE095D1A8E382300C5F1CC /* libsfml-window.2.2.0.dylib */,
+				66243F691ABF84F70002560B /* Config */,
 				66D0AFA41AB6D026001AD733 /* Assets */,
 				66C10DB61A0030B10074ED36 /* Source */,
 				66C10DB51A0030B10074ED36 /* Products */,
@@ -211,13 +238,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				66AD6CF61A93D3080008F0ED /* Util.cpp in Sources */,
+				6659B8BA1AB75ADD0068B607 /* DisplayData.cpp in Sources */,
 				66BE09791A8E4AC200C5F1CC /* Piece.cpp in Sources */,
 				66BE09781A8E4AC200C5F1CC /* Game.cpp in Sources */,
+				6663DC9B1AB7414200F10B4F /* Config.cpp in Sources */,
 				66BE09771A8E4AC200C5F1CC /* Board.cpp in Sources */,
 				66BE097D1A8E4AC200C5F1CC /* Window.cpp in Sources */,
 				66C10DB81A0030B10074ED36 /* main.cpp in Sources */,
 				66BE097A1A8E4AC200C5F1CC /* Player.cpp in Sources */,
 				66BE097C1A8E4AC200C5F1CC /* Position.cpp in Sources */,
+				6659B8BC1AB75B540068B607 /* DisplayData.mm in Sources */,
 				66BE097B1A8E4AC200C5F1CC /* NotificationSystem.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,10 +266,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -253,11 +286,14 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -286,10 +322,13 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -299,11 +338,14 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -312,13 +354,16 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		66C10DBC1A0030B10074ED36 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/sfml/2.2/lib,
@@ -329,7 +374,9 @@
 		};
 		66C10DBD1A0030B10074ED36 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/sfml/2.2/lib,
