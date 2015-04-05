@@ -15,6 +15,7 @@
 #include <array>
 #include <iterator>
 
+#include "Color.h"
 #include "Board.h"
 
 using namespace std ;
@@ -26,11 +27,15 @@ protected:
 	
 	static unsigned long uniqueIDs ;
 	
-	list<const Square *> squaresWithPieces ;
-	
+	static list <const Square *> initSquares(ChessColor playerColor, const Board & board) ;
+
 	unsigned long ID ;
 	
 	string name ;
+	
+	ChessColor color ;
+	
+	list<const Square *> squaresWithPieces ;
 	
 public:
 	
@@ -41,11 +46,11 @@ public:
 	 */
 	Player(Player && other) ;
 	
-	template <typename SquareIterator>
-	Player(SquareIterator squares_start, SquareIterator squares_end) :
-		squaresWithPieces(squares_start, squares_end),
+	Player(ChessColor color, const Board & board) :
 		ID(uniqueIDs++),
-		name("Player " + to_string(ID))
+		name("Player " + to_string(ID)),
+		color(color),
+		squaresWithPieces(initSquares(color, board))
 	{
 		
 	}
@@ -68,9 +73,8 @@ class Human : public Player {
 
 public:
 
-	template <typename SquareIterator>
-	Human(SquareIterator squares_start, SquareIterator squares_end) :
-		Player(squares_start, squares_end) {}
+	Human(ChessColor color, const Board & board) :
+		Player(color, board) {}
 	
 	Piece::Move decideNextMove() override ;
 	
@@ -80,9 +84,8 @@ class AI : public Player {
 	
 public:
 	
-	template <typename SquareIterator>
-	AI(SquareIterator squares_start, SquareIterator squares_end) :
-		Player(squares_start, squares_end) {}
+	AI(ChessColor color, const Board & board) :
+		Player(color, board) {}
 	
 	Piece::Move decideNextMove() override ;
 	

@@ -10,8 +10,8 @@
 
 Game::Game() :
 	board(),	/* Note: Must be initialized first */
-	player0(new AI(& board.boardRepresentation[0][0], & board.boardRepresentation[1][8])), //holds references to pieces at index (0, 0) through (1, 15)
-	player1(new Human(& board.boardRepresentation[6][0], & board.boardRepresentation[7][8])) //holds references to pieces at index (6, 0) through (7, 7)
+	player0(new AI(ChessColor::white, this->board)), //holds references to pieces at index (0, 0) through (1, 15)
+	player1(new Human(ChessColor::black, this->board)) //holds references to pieces at index (6, 0) through (7, 7)
 {
 	
 }

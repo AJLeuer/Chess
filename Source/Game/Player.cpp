@@ -12,6 +12,43 @@ using namespace std ;
 
 unsigned long Player::uniqueIDs = 1 ;
 
+
+list <const Square *> Player::initSquares(ChessColor playerColor, const Board & board) {
+	
+	list<const Square *> squares ;
+	
+	if (playerColor == ChessColor::black) { //grab black's squares at their starting positions
+		
+		for (auto x = 0 ; x < board.boardRepresentation.size() ; x++) {
+			
+			for (auto y = 7 ; y >= 6 ; y--) {
+				
+				const Square * squarePointer = & (board.boardRepresentation[x][y]) ;
+				
+				squares.push_front(squarePointer) ;
+
+			}
+		}
+	}
+	
+	else /* if (playerColor == ChessColor::white) */ { //grab white's squares at their starting positions
+		
+		for (auto x = 0 ; x < board.boardRepresentation.size() ; x++) {
+			
+			for (auto y = 0 ; y <= 1 ; y++) {
+				
+				const Square * squarePointer = & (board.boardRepresentation[x][y]) ;
+				
+				squares.push_front(squarePointer) ;
+				
+			}
+		}
+	}
+	
+	return squares ;
+}
+
+
 Player::Player(Player && other) :
 	squaresWithPieces(std::move(other.squaresWithPieces)),
 	ID(other.ID),

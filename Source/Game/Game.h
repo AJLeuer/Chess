@@ -16,11 +16,13 @@
 
 #include <SFML/Window/Mouse.hpp>
 
-#include "Config.h"
-#include "Random.hpp"
+#include "../Util/Config.h"
+#include "../Util/Random.hpp"
+
 #include "Board.h"
 #include "Player.h"
-#include "Window.h"
+
+#include "../View/Window.h"
 
 class Game {
 	
