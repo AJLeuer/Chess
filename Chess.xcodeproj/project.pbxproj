@@ -41,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = BuildConfig.xcconfig; path = Config/BuildConfig.xcconfig; sourceTree = "<group>"; };
 		66243F691ABF84F70002560B /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Config; sourceTree = "<group>"; };
 		6659B8B41AB75A210068B607 /* Util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
 		6659B8B81AB75ADD0068B607 /* DisplayData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayData.h; sourceTree = "<group>"; };
@@ -71,7 +72,6 @@
 		66BE09731A8E4AC200C5F1CC /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
 		66BE09751A8E4AC200C5F1CC /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		66BE09761A8E4AC200C5F1CC /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BuildConfig.xcconfig; sourceTree = "<group>"; };
 		66C10DB41A0030B10074ED36 /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C10DB71A0030B10074ED36 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		66D0AFA41AB6D026001AD733 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		66C10DAB1A0030B10074ED36 = {
 			isa = PBXGroup;
 			children = (
-				66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */,
+				661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */,
 				6659B8BE1AB75BB40068B607 /* AppKit.framework */,
 				66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */,
 				66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */,
@@ -357,7 +357,7 @@
 		};
 		66C10DBC1A0030B10074ED36 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */;
+			baseConfigurationReference = 661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
 				LIBRARY_SEARCH_PATHS = (
@@ -370,7 +370,7 @@
 		};
 		66C10DBD1A0030B10074ED36 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 66BF554D1ACE653300B199F0 /* BuildConfig.xcconfig */;
+			baseConfigurationReference = 661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */;
 			buildSettings = {
 				CLANG_CXX_LIBRARY = "libc++";
 				LIBRARY_SEARCH_PATHS = (
@@ -391,7 +391,7 @@
 				66C10DBA1A0030B10074ED36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		66C10DBB1A0030B10074ED36 /* Build configuration list for PBXNativeTarget "Chess" */ = {
 			isa = XCConfigurationList;
@@ -400,7 +400,7 @@
 				66C10DBD1A0030B10074ED36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
