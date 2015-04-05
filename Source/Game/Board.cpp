@@ -67,10 +67,10 @@ void Square::registerForPieceMovement() {
 	using namespace std::placeholders ;
 	
 	auto setCurrentP = std::bind(&Square::setCurrentPiece, this, _1) ;
-	Notification<Piece, Position> notifyWhenPieceMovesHere (EventType::pieceArriving, setCurrentP, this->getPosition()) ;
+	Notification<Piece, size_t> notifyWhenPieceMovesHere (EventType::pieceArriving, setCurrentP, hashTwoVector(this->getPosition())) ;
 	
 	auto clearCurrentP = std::bind(&Square::clearCurrentPiece, this, _1) ;
-	Notification<Piece, Position> notifyWhenPieceLeaves (EventType::pieceLeaving, clearCurrentP, this->getPosition()) ;
+	Notification<Piece, size_t> notifyWhenPieceLeaves (EventType::pieceLeaving, clearCurrentP, hashTwoVector(this->getPosition())) ;
 	
 	notifyWhenPieceMovesHere.registerForCallback() ;
 	notifyWhenPieceLeaves.registerForCallback() ;

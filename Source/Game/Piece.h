@@ -95,7 +95,7 @@ public:
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	virtual const bool canMove() const ;
+	const bool canMove() const ;
 	
 	const ChessColor getColor() const { return color ; }
 	
@@ -167,12 +167,6 @@ public:
 	
 	void move(const Position to) override ;
 	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
-	 * false otherwise
-	 */
-	const bool canMove() const override ;
-
 } ;
 
 class Knight : public Piece {
@@ -204,12 +198,6 @@ public:
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
 	void move(const Position to) override ;
-	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
-	 * false otherwise
-	 */
-	const bool canMove() const override ;
 	
 };
 
@@ -243,12 +231,6 @@ public:
 	
 	void move(const Position to) override ;
 	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
-	 * false otherwise
-	 */
-	const bool canMove() const override ;
-
 };
 
 
@@ -281,13 +263,7 @@ public:
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
 	void move(const Position to) override ;
-	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
-	 * false otherwise
-	 */
-	const bool canMove() const override ;
-	
+
 };
 
 class Queen : public Piece {
@@ -320,12 +296,6 @@ public:
 	
 	void move(const Position to) override ;
 	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
-	 * false otherwise
-	 */
-	const bool canMove() const override ;
-	
 };
 
 class King : public Piece {
@@ -357,12 +327,6 @@ public:
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
 	void move(const Position to) override ;
-	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
-	 * false otherwise
-	 */
-	const bool canMove() const override ;
 	
 };
 

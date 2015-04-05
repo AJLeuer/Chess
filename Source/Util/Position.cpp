@@ -42,19 +42,35 @@ string RankAndFile::toString() const {
 }
 
 Position RankAndFile::convertToPosition() const {
-	int ind0 = this->getRank() ;
-	ind0-- ;
-	int ind1 = static_cast<int>(getFile() - lowerCaseA) ;
-	return Position{ind0, ind1} ;
+	
+	/* Chess ranks start with 1 at the bottom and increase as we move up the board,
+	 but window coordinates start with y = 0 at the top, and y increases with descent.
+	 So to convert our rank to a y-coordinate, we'll need to essentially swap each rank
+	 value across the horizontal axis, and subtract 1 from it (rank values start at 1, but
+	 Position values start at 0)
+	 
+	 Chess files can be converted from x-coordinates by subtracting the Unicode decimal value for 'a' -
+	 97 - from the decimal value of the char representing the rank. Applied to 'a', this gives an x-coord
+	 of 0, 'b' outputs as 1, 'c' is 2, etc.
+	 */
+	
+	//convert rank to y:
+	int y = this->getRank() ;
+	y = (RANK_LAST - y) % RANK_LAST ;
+	
+	//convert file to x:
+	int x = static_cast<int>(getFile() - lowerCaseA) ;
+	
+	return Position{x, y} ;
 }
 
-char RankAndFile::convertToFile(const unsigned arrIndex0) {
-	char c = static_cast<char>(arrIndex0 + lowerCaseA) ;
+char RankAndFile::convertToFile(const unsigned x) {
+	char c = static_cast<char>(x + lowerCaseA) ;
 	return c ;
 }
 
-unsigned RankAndFile::convertToRank(const unsigned arrIndex1) {
-	auto ret = arrIndex1 + 1 ;
+unsigned RankAndFile::convertToRank(const unsigned y) {
+	auto ret = y + 1 ;
 	return ret ;
 }
 

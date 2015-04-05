@@ -158,11 +158,13 @@ T Board::runSearchFunction(function<T (vector<const Square *> & squares)> search
 		
 		vec2<int> offset { * dir } ; //directions convert to vectors like (0, 1)
 		
-		for (Position next = startingSquarePosition ; ! equal(next, (startingSquarePosition + (* dir * searchDistance))) ; next = (next + offset)) {
+		for (Position next = startingSquarePosition ; hashTwoVector(next) != hashTwoVector((startingSquarePosition + (* dir * searchDistance))) ; next = (next + offset)) {
+			
 			if (isInsideBoardBounds(next)) {
 				const Square * nextSquare { getSquare(next) } ;
 				argSquares.push_back(nextSquare) ;
 			}
+			
 		}
 	}
 	

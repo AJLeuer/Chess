@@ -26,12 +26,12 @@ enum class EventType {
 
 
 
-template<class Data, class UniqueIdentifier>
+template<class Data, typename UniqueNumericIdentifier>
 struct Notification {
 	
 protected:
 	
-	static vector< vector<Notification<Data, UniqueIdentifier>> > registeredMessageRecipients ;
+	static vector< vector<Notification<Data, UniqueNumericIdentifier>> > registeredMessageRecipients ;
 	
 	EventType eventType ;
 	
@@ -42,29 +42,29 @@ protected:
 	 */
 	function<void (Data *)> callBackFunction ;
 	
-	const UniqueIdentifier match ;
+	UniqueNumericIdentifier hash ;
 	
 	void notify(Data * data) ;
 
 public:
 	
-	static void notify(EventType eventType, Data * data, const UniqueIdentifier match) ;
+	static void notify(EventType eventType, Data * data, const UniqueNumericIdentifier hash) ;
 	
-	Notification(EventType eventType, function<void (Data *)> callBackFunction, const UniqueIdentifier & match) : //
-		eventType(eventType), callBackFunction(callBackFunction), match(match) {}
+	Notification(EventType eventType, function<void (Data *)> callBackFunction, const UniqueNumericIdentifier hash) : //
+		eventType(eventType), callBackFunction(callBackFunction), hash(hash) {}
 	
 
 	/**
 	 * Copy constructor
 	 */
 	Notification(const Notification & other) :
-		eventType(other.eventType), callBackFunction(other.callBackFunction), match(other.match) {}
+		eventType(other.eventType), callBackFunction(other.callBackFunction), hash(other.hash) {}
 	
 	/**
 	 * Move constructor
 	 */
 	Notification(Notification && other) :
-		eventType(std::move(other.eventType)), callBackFunction(std::move(other.callBackFunction)), match(std::move(other.match)) {}
+		eventType(std::move(other.eventType)), callBackFunction(std::move(other.callBackFunction)), hash(std::move(other.hash)) {}
 	
 	~Notification() {}
 	
@@ -73,31 +73,37 @@ public:
 	
 } ;
 
-template<class Data, class UniqueIdentifier>
-vector< vector<Notification<Data, UniqueIdentifier>> > Notification<Data, UniqueIdentifier>::registeredMessageRecipients ;
+template<class Data, typename UniqueNumericIdentifier>
+vector< vector<Notification<Data, UniqueNumericIdentifier>> > Notification<Data, UniqueNumericIdentifier>::registeredMessageRecipients ;
 
-template<class Data, class UniqueIdentifier>
-void Notification<Data, UniqueIdentifier>::notify(EventType eventType, Data * data, const UniqueIdentifier match) {
+template<class Data, typename UniqueNumericIdentifier>
+void Notification<Data, UniqueNumericIdentifier>::notify(EventType eventType, Data * data, const UniqueNumericIdentifier hash) {
+	
 	for (auto i = 0 ; i < registeredMessageRecipients.size() ; i++) {
+		
 		if ((registeredMessageRecipients.at(i).size() > 0) && (registeredMessageRecipients.at(i).at(0).eventType == eventType)) {
+			
 			for (auto j = 0 ; j < registeredMessageRecipients.at(i).size() ; j++) {
-				if (equal(registeredMessageRecipients.at(i).at(j).match, match)) {
+				
+				if (registeredMessageRecipients.at(i).at(j).hash == hash) {
 					registeredMessageRecipients.at(i).at(j).notify(data) ;
 					break ; //may want to comment this out 
 				}
+				
 			}
+			
 			break ;
 		}
 	}
 }
 
-template<class Data, class UniqueIdentifier>
-void Notification<Data, UniqueIdentifier>::notify(Data * data) {
+template<class Data, typename UniqueNumericIdentifier>
+void Notification<Data, UniqueNumericIdentifier>::notify(Data * data) {
 	callBackFunction(data) ;
 }
 
-template<class Data, class UniqueIdentifier>
-void Notification<Data, UniqueIdentifier>::registerForCallback() {
+template<class Data, typename UniqueNumericIdentifier>
+void Notification<Data, UniqueNumericIdentifier>::registerForCallback() {
 	
 	bool firstEventOfType = true ;
 	
@@ -109,7 +115,7 @@ void Notification<Data, UniqueIdentifier>::registerForCallback() {
 	}
 	
 	if (firstEventOfType) {
-		registeredMessageRecipients.push_back(vector<Notification<Data, UniqueIdentifier>>()) ;
+		registeredMessageRecipients.push_back(vector<Notification<Data, UniqueNumericIdentifier>>()) ;
 		auto sz = registeredMessageRecipients.size() ;
 		registeredMessageRecipients.at(sz - 1).push_back(*this) ;
 	}

@@ -26,7 +26,7 @@ protected:
 	
 	static unsigned long uniqueIDs ;
 	
-	list<Square> squaresWithPieces ;
+	list<const Square *> squaresWithPieces ;
 	
 	unsigned long ID ;
 	

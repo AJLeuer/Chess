@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <chrono>
+#include <functional>
 
 #include "Config.h"
 #include "./Util/Position.h"

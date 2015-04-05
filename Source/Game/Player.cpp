@@ -40,6 +40,11 @@ Piece::Move Human::decideNextMove() {
 
 
 Piece::Move AI::decideNextMove() {
+	
+	for (auto square = squaresWithPieces.begin() ; square != squaresWithPieces.end() ; square++) {
+		const Piece * piece = (*square)->getPiece() ;
+		piece->canMove() ;
+	}
 	return Piece::Move() ; //todo: implement
 }
 

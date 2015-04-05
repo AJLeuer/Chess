@@ -20,10 +20,32 @@
 
 using namespace std ;
 
-constexpr unsigned lowerCaseA{97} ;
+constexpr unsigned lowerCaseA {97} ;
 
 template <typename NumericType>
 using vec2 = NumericType __attribute__((ext_vector_type(2))) ;
+
+/**
+ * Code partial credit StackOverflow:
+ * @link http://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
+ */
+template <typename VectorType>
+inline size_t hashVector(const VectorType & vect, size_t vectorSize) {
+	size_t seed = 0;
+
+	for (auto i = 0 ; i < vectorSize ; i++) {
+		seed ^= vect[i] + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+	}
+	
+	return seed;
+}
+
+template <typename VectorType>
+inline size_t hashTwoVector(const VectorType twoVect) {
+	auto hash = hashVector(twoVect, 2) ;
+	return hash ;
+}
+	
 
 /**
  * @note A good example of a C++ literal type
@@ -87,7 +109,7 @@ vec2<NumericType> operator + (const Direction & direction, const vec2<NumericTyp
 	return ret ;
 }
 
-
+/*
 template <typename N>
 bool equal(vec2<N> lhs, vec2<N> rhs) {
 	if (lhs[0] == rhs[0]) {
@@ -97,7 +119,7 @@ bool equal(vec2<N> lhs, vec2<N> rhs) {
 		return false ;
 	}
 	return false ;
-}
+} */
 
 /**
  * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
@@ -174,12 +196,18 @@ struct RankAndFile {
 	
 protected:
 	
+	static constexpr char FILE_FIRST {'a'} ;
+	static constexpr char FILE_LAST  {'h'} ;
+	
+	static constexpr unsigned short RANK_FIRST {1} ;
+	static constexpr unsigned short RANK_LAST  {8} ;
+	
 	char file ;
 	
 	unsigned rank ;
 	
-	static char convertToFile(const unsigned arrIndex0) ;
-	static unsigned convertToRank(const unsigned arrIndex1) ;
+	static char convertToFile(const unsigned x) ;
+	static unsigned convertToRank(const unsigned y) ;
 	
 	friend void runChessGameTests() ;
 	
