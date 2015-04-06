@@ -28,6 +28,8 @@ class Game {
 	
 protected:
 	
+	unsigned long gameLoops = 0 ;
+	
 	/** Note: Must be initialized first */
 	Board board ;
 	

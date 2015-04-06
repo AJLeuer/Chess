@@ -33,8 +33,14 @@ void Game::updateGameState() {
 
 void Game::testAndDebug() {
 	
-	auto pawn = this->board(0, 1)->getPiece() ;
+	static Piece * pawn  ;
+	
+	if (gameLoops == 0) {
+		pawn = this->board(0, 1)->getPieceUnsafe() ;
+	}
+	
 	bool canMove = pawn->canMove() ;
+	pawn->move({0, 2}) ;
 	
 	short val = board.evaluate<ChessColor>() ;
 	auto i = 1 ;
@@ -66,6 +72,7 @@ void Game::playGame() {
 	while (true) {
 		updateGameState() ;
 		display() ;
+		gameLoops++ ;
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}
 	
@@ -77,6 +84,7 @@ void Game::playDebugGame() {
 	while (true) {
 		testAndDebug() ;
 		display() ;
+		gameLoops++ ;
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}
 	

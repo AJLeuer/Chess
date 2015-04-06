@@ -55,21 +55,54 @@ Square & Square::operator = (const Square & other) {
 	return * this ;
 }
 
-void Square::clearCurrentPiece(Piece * ignored) {
+void Square::receiveMovingPiece(Piece * pieceMovingTo) {
+	if (this->isOccupied()) {
+		//then a piece was captured
+		handlePieceCapture(pieceMovingTo) ;
+	}
+	
+	clearCurrentPiece(this->piece) ;
+	setCurrentPiece(pieceMovingTo) ;
+}
+
+void Square::setCurrentPiece(Piece * pieceMovingTo) {
+	this->piece = pieceMovingTo ;
+	this->piece->setCurrentPosition(& this->position) ;
+}
+
+void Square::clearCurrentPiece(Piece * toClear) {
+	
+	//debug code only, remove this
+	assert(this->piece == toClear) ;
+	
 	if (piece != nullptr) {
 		this->piece->setCurrentPosition(nullptr) ;
 		this->piece = nullptr ;
 	}
 }
 
+void Square::destroyCurrentPiece() {
+	if (piece != nullptr) {
+		delete this->piece ;
+	}
+}
+
+void Square::handlePieceCapture(Piece * pieceCapturing) {
+	//notify everything that was registered for a capture event for our piece
+	Notification<Piece, size_t>::notify(EventType::pieceCapturing, pieceCapturing, hashTwoVector(*(pieceCapturing->position))) ;
+	Notification<Piece, size_t>::notify(EventType::pieceCaptured, this->piece, hashTwoVector(*(piece->position))) ;
+	
+	destroyCurrentPiece() ;
+}
+
 void Square::registerForPieceMovement() {
 	
 	using namespace std::placeholders ;
 	
-	auto setCurrentP = std::bind(&Square::setCurrentPiece, this, _1) ;
-	Notification<Piece, size_t> notifyWhenPieceMovesHere (EventType::pieceArriving, setCurrentP, hashTwoVector(this->getPosition())) ;
+	auto receiveMovingP = std::bind(&Square::receiveMovingPiece, this, _1) ;
+	Notification<Piece, size_t> notifyWhenPieceMovesHere (EventType::pieceArriving, receiveMovingP, hashTwoVector(this->getPosition())) ;
 	
-	auto clearCurrentP = std::bind(&Square::clearCurrentPiece, this, _1) ;
+	auto clearCurrentP = std::bind(& Square::clearCurrentPiece, this, _1) ;
 	Notification<Piece, size_t> notifyWhenPieceLeaves (EventType::pieceLeaving, clearCurrentP, hashTwoVector(this->getPosition())) ;
 	
 	notifyWhenPieceMovesHere.registerForCallback() ;
@@ -114,24 +147,23 @@ basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Square
 }
 
 Board::Board() :
-boardRepresentation{{
-	{{{"♖", 'a', 8, this}, {"♙", 'a', 7, this}, {" ", 'a', 6, this}, {" ", 'a', 5, this}, {" ", 'a', 4, this}, {" ", 'a', 3, this}, {"♟", 'a', 2, this}, {"♜", 'a', 1, this}}},
+	boardRepresentation{{
+		{{{"♖", 'a', 8, this}, {"♙", 'a', 7, this}, {" ", 'a', 6, this}, {" ", 'a', 5, this}, {" ", 'a', 4, this}, {" ", 'a', 3, this}, {"♟", 'a', 2, this}, {"♜", 'a', 1, this}}},
 	
-	{{{"♘", 'b', 8, this}, {"♙", 'b', 7, this}, {" ", 'b', 6, this}, {" ", 'b', 5, this}, {" ", 'b', 4, this}, {" ", 'c', 3, this}, {"♟", 'b', 2, this}, {"♞", 'b', 1, this}}},
+		{{{"♘", 'b', 8, this}, {"♙", 'b', 7, this}, {" ", 'b', 6, this}, {" ", 'b', 5, this}, {" ", 'b', 4, this}, {" ", 'c', 3, this}, {"♟", 'b', 2, this}, {"♞", 'b', 1, this}}},
 	
-	{{{"♗", 'c', 8, this}, {"♙", 'c', 7, this}, {" ", 'c', 6, this}, {" ", 'c', 5, this}, {" ", 'c', 4, this}, {" ", 'c', 3, this}, {"♟", 'c', 2, this}, {"♝", 'c', 1, this}}},
+		{{{"♗", 'c', 8, this}, {"♙", 'c', 7, this}, {" ", 'c', 6, this}, {" ", 'c', 5, this}, {" ", 'c', 4, this}, {" ", 'c', 3, this}, {"♟", 'c', 2, this}, {"♝", 'c', 1, this}}},
 	
-	{{{"♕", 'd', 8, this}, {"♙", 'd', 7, this}, {" ", 'd', 6, this}, {" ", 'd', 5, this}, {" ", 'd', 4, this}, {" ", 'e', 3, this}, {"♟", 'd', 2, this}, {"♛", 'd', 1, this}}},
+		{{{"♕", 'd', 8, this}, {"♙", 'd', 7, this}, {" ", 'd', 6, this}, {" ", 'd', 5, this}, {" ", 'd', 4, this}, {" ", 'e', 3, this}, {"♟", 'd', 2, this}, {"♛", 'd', 1, this}}},
 	
-	{{{"♔", 'e', 8, this}, {"♙", 'e', 7, this}, {" ", 'e', 6, this}, {" ", 'e', 5, this}, {" ", 'e', 4, this}, {" ", 'e', 3, this}, {"♟", 'e', 2, this}, {"♚", 'e', 1, this}}},
+		{{{"♔", 'e', 8, this}, {"♙", 'e', 7, this}, {" ", 'e', 6, this}, {" ", 'e', 5, this}, {" ", 'e', 4, this}, {" ", 'e', 3, this}, {"♟", 'e', 2, this}, {"♚", 'e', 1, this}}},
 	
-	{{{"♗", 'f', 8, this}, {"♙", 'f', 7, this}, {" ", 'f', 6, this}, {" ", 'f', 5, this}, {" ", 'f', 4, this}, {" ", 'f', 3, this}, {"♟", 'f', 2, this}, {"♝", 'f', 1, this}}},
+		{{{"♗", 'f', 8, this}, {"♙", 'f', 7, this}, {" ", 'f', 6, this}, {" ", 'f', 5, this}, {" ", 'f', 4, this}, {" ", 'f', 3, this}, {"♟", 'f', 2, this}, {"♝", 'f', 1, this}}},
 	
-	{{{"♘", 'g', 8, this}, {"♙", 'g', 7, this}, {" ", 'g', 6, this}, {" ", 'g', 5, this}, {" ", 'g', 4, this}, {" ", 'g', 3, this}, {"♟", 'g', 2, this}, {"♞", 'g', 1, this}}},
+		{{{"♘", 'g', 8, this}, {"♙", 'g', 7, this}, {" ", 'g', 6, this}, {" ", 'g', 5, this}, {" ", 'g', 4, this}, {" ", 'g', 3, this}, {"♟", 'g', 2, this}, {"♞", 'g', 1, this}}},
 	
-	{{{"♖", 'h', 8, this}, {"♙", 'h', 7, this}, {" ", 'h', 6, this}, {" ", 'h', 5, this}, {" ", 'h', 4, this}, {" ", 'h', 3, this}, {"♟", 'h', 2, this}, {"♜", 'h', 1, this}}}
-}}
-
+		{{{"♖", 'h', 8, this}, {"♙", 'h', 7, this}, {" ", 'h', 6, this}, {" ", 'h', 5, this}, {" ", 'h', 4, this}, {" ", 'h', 3, this}, {"♟", 'h', 2, this}, {"♜", 'h', 1, this}}}
+	}}
 {
 	
 }

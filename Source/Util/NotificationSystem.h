@@ -20,7 +20,10 @@ using namespace std ;
 
 enum class EventType {
 	pieceArriving,
-	pieceLeaving
+	pieceLeaving,
+	pieceCapturing,
+	pieceCaptured,
+	pawnPromotion
 	//add any more here
 };
 
@@ -87,7 +90,6 @@ void Notification<Data, UniqueNumericIdentifier>::notify(EventType eventType, Da
 				
 				if (registeredMessageRecipients.at(i).at(j).hash == hash) {
 					registeredMessageRecipients.at(i).at(j).notify(data) ;
-					break ; //may want to comment this out 
 				}
 				
 			}
@@ -121,11 +123,6 @@ void Notification<Data, UniqueNumericIdentifier>::registerForCallback() {
 	}
 
 }
-
-
-
-
-
 
 
 

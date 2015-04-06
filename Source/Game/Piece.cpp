@@ -123,33 +123,38 @@ Piece & Piece::operator = (const Piece & rhs) {
 
 void Piece::move(const Position to) {
 	sendMoveNotification(to) ;
+	movesMade++ ;
 }
 
 
 const bool Piece::canMove() const {
 
-	auto checkForEmptySquares = [] (vector<const Square *> & squares) -> bool {
+	auto checkForAvailableSquares = [this] (vector<const Square *> & squares) -> bool {
 		
-		for (auto i = 0 ; i < squares.size() ; i++) {
+		for (auto i = 0 ; i < squares.size() ; i++) { //true if there's a square we can move to that's empty...
 			if (squares.at(i)->isEmpty()) {
+				return true ;
+			}
+			else if ((squares.at(i)->getPiece() != nullptr) && (squares.at(i)->getPiece()->color != this->color)) { //... or that has an opponent piece
 				return true ;
 			}
 		}
 		return false ;
 	} ;
 	
-	return (*board)->runSearchFunction<bool>(checkForEmptySquares, *this->position, getLegalMovementDirections(), 2) ;
+	return (*board)->runSearchFunction<bool>(checkForAvailableSquares, *this->position, getLegalMovementDirections(), 2) ;
 }
 
 void Piece::sendMoveNotification(const Position newPosition) {
 	
-	//debug code
+	//debug code, remove
 	if (this->position == nullptr) {
 		throw std::exception() ;
 	}
 
-	Notification<Piece, size_t>::notify(EventType::pieceLeaving, this, hashTwoVector(*this->position)) ;
+	Notification<Piece, size_t>::notify(EventType::pieceLeaving, this, hashTwoVector(*(this->position))) ;
 	Notification<Piece, size_t>::notify(EventType::pieceArriving, this, hashTwoVector(newPosition)) ;
+	
 }
 
 Pawn::Pawn(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
@@ -174,26 +179,58 @@ Pawn::Pawn(const wstring & symbol, const Position * position, const Board * cons
 	
 }
 
-const float Pawn::getValue() const  {
-	constexpr float pawnValue = 1 ;
-	auto rank = position->x ;
-	auto adjustedRank = (rank / 8) ;
-	return (pawnValue + adjustedRank) ;
+const vector<Direction> Pawn::getLegalMovementDirections() const {
+	return getLegalCaptureDirections() + getLegalMovementDirectionToEmptySquares() ;
 }
 
-const vector<Direction> Pawn::getLegalMovementDirections() const {
-	
+const vector<Direction> Pawn::getLegalCaptureDirections() const {
 	if (this->color == ChessColor::black) {
-		return vector<Direction> { down, downLeft, downRight } ;
+		return vector<Direction> { downLeft, downRight } ;
 	}
 	else /* if (this->color == ChessColor::white) */ {
-		return vector<Direction> { up, upLeft, upRight } ;
+		return vector<Direction> { upLeft, upRight } ;
+	}
+}
+
+Direction Pawn::getLegalMovementDirectionToEmptySquares() const {
+	if (this->color == ChessColor::black) {
+		return down ;
+	}
+	else /* if (this->color == ChessColor::white) */ {
+		return up ;
 	}
 }
 
 void Pawn::move(const Position to) {
 	//todo add move legality checking
 	Piece::move(to) ;
+}
+
+const bool Pawn::canMove() const {
+	
+	auto checkForEmptyMoveableSquares = [this] (vector<const Square *> & squares) -> bool {
+		for (auto i = 0 ; i < squares.size() ; i++) { //true if there's a square we can move to that's empty...
+			if (squares.at(i)->isEmpty()) {
+				return true ;
+			}
+		}
+		return false ;
+	} ;
+	
+	auto checkForCapturableSquares = [this] (vector<const Square *> & squares) -> bool {
+		
+		for (auto i = 0 ; i < squares.size() ; i++) { //true if there's a square we can move to that's empty...
+			if ((squares.at(i)->getPiece() != nullptr) && (squares.at(i)->getPiece()->getColor() != this->color)) { //... or that has an opponent piece
+				return true ;
+			}
+		}
+		return false ;
+	} ;
+	
+	bool canMoveToEmptySquare = (*board)->runSearchFunction<bool>(checkForEmptyMoveableSquares, *this->position, {getLegalMovementDirectionToEmptySquares()}, 2) ;
+	bool canCapture = (*board)->runSearchFunction<bool>(checkForCapturableSquares, *this->position, getLegalCaptureDirections(), 2) ;
+	
+	return (canMoveToEmptySquare || canCapture) ;
 }
 
 
@@ -383,30 +420,6 @@ basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Piece 
 	out << piece.getSymbol() ;
 	return out ;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
