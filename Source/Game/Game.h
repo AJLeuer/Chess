@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <chrono>
 #include <thread>
 
 #include <SFML/Window/Mouse.hpp>
@@ -23,6 +24,8 @@
 #include "Player.h"
 
 #include "../View/Window.h"
+
+using namespace std ;
 
 class Game {
 	

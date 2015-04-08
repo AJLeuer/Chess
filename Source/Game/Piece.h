@@ -50,6 +50,10 @@ class Piece {
 	
 protected:
 	
+	static unsigned long iDs ;
+	
+	unsigned long iD ;
+	
 	wstring symbol ;
 	
 	string spriteImageFilePath ;
@@ -97,6 +101,8 @@ public:
 	 */
 	virtual void move(const Position to) ;//inheriting pieces will define
 	
+	const unsigned long getID() const { return iD ; }
+	
 	/**
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
@@ -126,6 +132,7 @@ protected:
 	ChessColor color ;
 
 	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+		iD(iDs++),
 		symbol(symbol),
 		spriteImageFilePath(spriteImageFilePath),
 		color(color),

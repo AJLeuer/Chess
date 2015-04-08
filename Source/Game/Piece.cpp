@@ -14,6 +14,8 @@
 using namespace std ;
 using namespace Directions ;
 
+unsigned long Piece::iDs = 0 ;
+
 
 Symbols Pawn::symbols {/* black */ L"♟", /* white */ L"♙"} ;
 
@@ -93,6 +95,7 @@ Piece * Piece::init(const wstring & symbol, const Position * position, const Boa
 }
 
 Piece::Piece (const Piece & other) :
+	iD(iDs++),
 	symbol(other.symbol),
 	spriteImageFilePath(other.spriteImageFilePath),
 	spriteImage(other.spriteImage),
@@ -142,7 +145,7 @@ const bool Piece::canMove() const {
 		return false ;
 	} ;
 	
-	return (*board)->runSearchFunction<bool>(checkForAvailableSquares, *this->position, getLegalMovementDirections(), 2) ;
+	return (*board)->runSearchFunction<bool>(checkForAvailableSquares, *this->position, getLegalMovementDirections(), 1) ;
 }
 
 void Piece::sendMoveNotification(const Position newPosition) {
@@ -154,7 +157,6 @@ void Piece::sendMoveNotification(const Position newPosition) {
 
 	Notification<Piece, size_t>::notify(EventType::pieceLeaving, this, hashTwoVector(*(this->position))) ;
 	Notification<Piece, size_t>::notify(EventType::pieceArriving, this, hashTwoVector(newPosition)) ;
-	
 }
 
 Pawn::Pawn(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
@@ -227,7 +229,7 @@ const bool Pawn::canMove() const {
 		return false ;
 	} ;
 	
-	bool canMoveToEmptySquare = (*board)->runSearchFunction<bool>(checkForEmptyMoveableSquares, *this->position, {getLegalMovementDirectionToEmptySquares()}, 2) ;
+	bool canMoveToEmptySquare = (*board)->runSearchFunction<bool>(checkForEmptyMoveableSquares, *this->position, {getLegalMovementDirectionToEmptySquares()}, (movesMade == 0) ? 2 : 1) ; //check 2x as far at beginning of game
 	bool canCapture = (*board)->runSearchFunction<bool>(checkForCapturableSquares, *this->position, getLegalCaptureDirections(), 2) ;
 	
 	return (canMoveToEmptySquare || canCapture) ;

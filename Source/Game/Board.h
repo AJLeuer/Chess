@@ -19,12 +19,15 @@
 #include <initializer_list>
 #include <limits>
 
-#include "Util.h"
-#include "NotificationSystem.h"
-#include "Position.h"
 #include "Color.h"
 #include "Piece.h"
 #include "Square.h"
+
+#include "../Util/Util.h"
+#include "../Util/NotificationSystem.h"
+#include "../Util/Position.h"
+
+
 
 using namespace std ;
 
@@ -118,10 +121,9 @@ public:
 	 * from the perspective of the player playing the ChessColor color. In other words, if e.g. the player playing white requests the current
 	 * value of the board, it will be calculated by subtracting the sum of the extant black pieces from the sum of the remaining white ones.
 	 *
-	 * @param PlayerByColor The player from whose perspective the value of the game state is calculated
+	 * @param callingPlayersColor The color of the player from whose perspective the value of the game state is calculated
 	 */
-	template <typename CallingPlayerColor>
-	short evaluate() ;
+	const short evaluate(const ChessColor callingPlayersColor) const ;
 	
 } ;
 
@@ -148,17 +150,13 @@ template <typename T>
 T Board::runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const Position startingSquarePosition, const vector<Direction> & directions, int searchDistance) const {
 	
 	vector<const Square *> argSquares ;
-	
-	if (isInsideBoardBounds(startingSquarePosition)) {
-		const Square * firstSquare { getSquare(startingSquarePosition) } ;
-		argSquares.push_back(firstSquare) ;
-	}
-	
-	for (auto dir = directions.begin() ; dir != directions.end() ; dir++) {
+
+	for (auto i = 0 ; i < directions.size() ; i++) {
 		
-		vec2<int> offset { * dir } ; //directions convert to vectors like (0, 1)
+		vec2<int> offset { directions[i] } ; //directions convert to vectors like (0, 1)
 		
-		for (Position next = startingSquarePosition ; hashTwoVector(next) != hashTwoVector((startingSquarePosition + (* dir * searchDistance))) ; next = (next + offset)) {
+		for (Position next = (startingSquarePosition + offset), end = (startingSquarePosition + (directions[i] * searchDistance));
+			 	hashTwoVector(next) != hashTwoVector(end) ; next = (next + offset)) {
 			
 			if (isInsideBoardBounds(next)) {
 				const Square * nextSquare { getSquare(next) } ;
@@ -187,48 +185,22 @@ T Board::runSearchFunction(function<T(vector<const Square *> & squares)> & searc
 	
 	vector<const Square *> argSquares ;
 	
-	for (vec2<int> currentIndex {(startingSquarePosition.x - searchRadius),(startingSquarePosition.y - searchRadius) } ; currentIndex.x <= (startingSquarePosition.x + searchRadius) ; currentIndex.x++) {
+	for (vec2<int> currentIndex {(startingSquarePosition.x - searchRadius),(startingSquarePosition.y - searchRadius) } ;
+		 	currentIndex.x <=(startingSquarePosition.x + searchRadius) ; currentIndex.x++) {
 		
-		for (currentIndex.y = (startingSquarePosition.y - searchRadius) ; currentIndex.y <= (startingSquarePosition.y + searchRadius) ; currentIndex.y++) {
+		for (currentIndex.y = (startingSquarePosition.y - searchRadius) ;
+			 	currentIndex.y <= (startingSquarePosition.y + searchRadius) ; currentIndex.y++) {
+			
 			if (isInsideBoardBounds(currentIndex)) {
 				const Square * sq { getSquare(currentIndex) } ;
 				argSquares.push_back(sq) ;
 			}
+			
 		}
 		
 	}
 	
 	return searchFunction(argSquares) ;
-}
-
-template <typename CallingPlayerColor>
-short Board::evaluate() {
-	
-	short black_sum = 0 ;
-	short white_sum = 0 ;
-	
-	for (auto & i : boardRepresentation) {
-		for (auto & j : i) {
-			if (j.piece != nullptr) {
-				if (j.piece->getColor() == ChessColor::black) {
-					black_sum += j.piece->getValue() ;
-				}
-				else { //if color == white
-					white_sum += j.piece->getValue() ;
-				}
-			}
-		}
-	}
-	
-	if (typeid(CallingPlayerColor) == typeid(ChessColor::black)) {
-		constexpr short largestShort = numeric_limits<short>::max() ;
-		short result = black_sum - white_sum ;
-		return result ;
-	}
-	else /* if (typeid(CallingPlayerColor) == typeid(ChessColor::white)) */ {
-		short result = white_sum - black_sum ;
-		return result ;
-	}
 }
 
 
