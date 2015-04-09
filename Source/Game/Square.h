@@ -9,6 +9,8 @@
 #ifndef Chess_Square_h
 #define Chess_Square_h
 
+#include <cassert>
+
 #include "Piece.h"
 
 using namespace std ;
@@ -32,9 +34,19 @@ protected:
 	
 	friend class Game ;
 	
+	friend class Player ;
+	
 	friend class Board ;
 	
-	Piece * getPieceMutable() { return piece ; }
+	void setCurrentPiece(Piece * pieceMovingTo) ;
+	
+	void clearCurrentPiece(Piece * toClear) ;
+	
+	void destroyCurrentPiece() ;
+	
+	void handlePieceCapture(Piece * pieceCapturing) ;
+	
+	Piece * getPieceUnsafe() const { return piece ; } //for debug only, remove later
 	
 public:
 	
@@ -50,9 +62,7 @@ public:
 	
 	Square & operator = (const Square & rhs) ;
 	
-	void setCurrentPiece(Piece * piece) { this->piece = piece ; this->piece->setCurrentPosition(& this->position) ;}
-	
-	void clearCurrentPiece(Piece * ignored = nullptr) ;
+	void receiveMovingPiece(Piece * pieceMovingTo) ;
 	
 	bool isEmpty() const { return piece == nullptr ; }
 	

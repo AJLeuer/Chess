@@ -20,7 +20,10 @@ using namespace std ;
 
 enum class EventType {
 	pieceArriving,
-	pieceLeaving
+	pieceLeaving,
+	pieceCapturing,
+	pieceCaptured,
+	pawnPromotion
 	//add any more here
 };
 
@@ -42,7 +45,7 @@ protected:
 	 */
 	function<void (Data *)> callBackFunction ;
 	
-	UniqueNumericIdentifier hash ;
+	const UniqueNumericIdentifier hash ;
 	
 	void notify(Data * data) ;
 
@@ -84,15 +87,11 @@ void Notification<Data, UniqueNumericIdentifier>::notify(EventType eventType, Da
 		if ((registeredMessageRecipients.at(i).size() > 0) && (registeredMessageRecipients.at(i).at(0).eventType == eventType)) {
 			
 			for (auto j = 0 ; j < registeredMessageRecipients.at(i).size() ; j++) {
-				
 				if (registeredMessageRecipients.at(i).at(j).hash == hash) {
 					registeredMessageRecipients.at(i).at(j).notify(data) ;
-					break ; //may want to comment this out 
 				}
-				
 			}
-			
-			break ;
+			break ; //we only need to iterate through the subvector of registeredMsgRecipients that matches our EventType
 		}
 	}
 }
@@ -121,11 +120,6 @@ void Notification<Data, UniqueNumericIdentifier>::registerForCallback() {
 	}
 
 }
-
-
-
-
-
 
 
 
