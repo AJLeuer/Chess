@@ -54,6 +54,8 @@ protected:
 	
 	sf::Sprite sprite ;
 	
+	unsigned long moves = 0 ;
+	
 	const Position * position = nullptr ;
 	
 	const Board * const * board ;
@@ -67,6 +69,8 @@ protected:
 	void setCurrentPosition(const Position * position) { this->position = position ; }
 	
 	friend class Square ;
+	
+	friend class Game ;
 	
 	friend void runTests() ;
 	
@@ -119,19 +123,7 @@ protected:
 	
 	ChessColor color ;
 
-	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
-		symbol(symbol),
-		spriteImageFilePath(spriteImageFilePath),
-		color(color),
-		position(position),
-		board(board),
-		square(square)
-	{
-		bool loadedImageOK = spriteImage.loadFromFile(spriteImageFilePath) ;
-		sf::Texture texture ;
-		texture.loadFromImage(spriteImage) ;
-		sprite.setTexture(texture) ;
-	}
+	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
 	
 };
 

@@ -33,7 +33,9 @@ void Game::updateGameState() {
 
 void Game::testAndDebug() {
 	
-	auto pawn = this->board(0, 1)->getPiece() ;
+	Piece * pawn = this->board(0, 1)->getPieceMutable() ;
+	
+	pawn->move() ;
 	bool canMove = pawn->canMove() ;
 	
 	short val = board.evaluate<ChessColor>() ;

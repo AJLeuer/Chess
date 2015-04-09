@@ -92,6 +92,20 @@ Piece * Piece::init(const wstring & symbol, const Position * position, const Boa
 	return piece ;
 }
 
+Piece::Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	symbol(symbol),
+	spriteImageFilePath(spriteImageFilePath),
+	color(color),
+	position(position),
+	board(board),
+	square(square)
+{
+	bool loadedImageOK = spriteImage.loadFromFile(spriteImageFilePath) ;
+	sf::Texture texture ;
+	texture.loadFromImage(spriteImage) ;
+	sprite.setTexture(texture) ;
+}
+
 Piece::Piece (const Piece & other) :
 	symbol(other.symbol),
 	spriteImageFilePath(other.spriteImageFilePath),

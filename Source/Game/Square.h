@@ -34,6 +34,8 @@ protected:
 	
 	friend class Board ;
 	
+	Piece * getPieceMutable() { return piece ; }
+	
 public:
 	
 	Square(const Square & other) ;

@@ -50,6 +50,8 @@ private:
 
 	friend void runChessGameTests() ;
 	
+	Square * operator () (unsigned arrIndexX, unsigned arrIndexY) ;
+	
 public:
 	
 	Board() ;

@@ -76,6 +76,10 @@ void Square::registerForPieceMovement() {
 	notifyWhenPieceLeaves.registerForCallback() ;
 }
 
+Square * Board::operator () (unsigned arrIndexX, unsigned arrIndexY) {
+	return & boardRepresentation[arrIndexX][arrIndexY] ;
+}
+
 const Square * Board::operator () (unsigned arrIndexX, unsigned arrIndexY) const {
 	return & boardRepresentation[arrIndexX][arrIndexY] ;
 }
