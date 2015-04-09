@@ -312,7 +312,7 @@ double convertToRadians(const Degrees angle_deg) {
  * @param rhs The text to append
  */
 template<class T>
-inline string operator+(const string & str, const T & rhs) {
+string operator+(const string & str, const T & rhs) {
 	string app = to_string(rhs) ;
 	string ret = str ;
 	ret += app ;
@@ -326,30 +326,6 @@ inline string operator +(const string & str, const char * rhs) {
 	return ret ;
 }
 
-template <typename T>
-vector<T> & operator += (vector<T> & vect, const T & t) {
-	vect.push_back(t) ;
-	return vect ;
-}
-
-template <typename T>
-vector<T> operator + (const vector<T> & vect, const T & t) {
-	vector<T> copy(vect) ;
-	copy.push_back(t) ;
-	return vect ;
-}
-
-template <typename T>
-vector<T> operator + (const vector<T> & leftSide, const vector<T> & rightSide) {
-	
-	vector<T> combined(leftSide) ; //copy leftSide
-	
-	for (typename vector<T>::size_type i = 0 ; i < rightSide.size() ; i++) {
-		combined += rightSide->at(i) ;
-	}
-	
-	return combined ;
-}
 
 
 #endif

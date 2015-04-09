@@ -27,21 +27,17 @@ protected:
 	
 	static unsigned long uniqueIDs ;
 	
-	static list <Piece *> initPieces(ChessColor playerColor, const Board & board) ;
-	
+	static list <const Square *> initSquares(ChessColor playerColor, const Board & board) ;
+
 	unsigned long ID ;
 	
 	string name ;
 	
 	ChessColor color ;
 	
-	list <Piece *> startingPieces ;
-	list <Piece *> remainingPieces ;
+	list<const Square *> squaresWithPieces ;
 	
 public:
-	
-	/* Any other constructors should call this as a delegating constructor */
-	Player(ChessColor color, const Board & board) ;
 	
 	Player(const Player & other) = delete ;
 	
@@ -49,6 +45,15 @@ public:
 	 * Move constructor
 	 */
 	Player(Player && other) ;
+	
+	Player(ChessColor color, const Board & board) :
+		ID(uniqueIDs++),
+		name("Player " + to_string(ID)),
+		color(color),
+		squaresWithPieces(initSquares(color, board))
+	{
+		
+	}
 	
 	virtual ~Player() {}
 	
@@ -58,10 +63,6 @@ public:
 	 * Move assignment operator
 	 */
 	Player & operator = (Player && other) ;
-	
-	void removePiece(Piece * piece) ;
-	
-	void registerForNotifications() ;
 	
 	virtual Piece::Move decideNextMove() ;
 	

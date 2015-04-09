@@ -20,15 +20,11 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+#include "Config.h"
+#include "Util.h"
 #include "Color.h"
-
-#include "../Util/Config.h"
-#include "../Util/Util.h"
-#include "../Util/Util.hpp"
+#include "NotificationSystem.h"
 #include "../Util/Position.h"
-#include "../Util/NotificationSystem.h"
-
-
 
 using namespace std ;
 
@@ -50,10 +46,6 @@ class Piece {
 	
 protected:
 	
-	static unsigned long iDs ;
-	
-	unsigned long iD ;
-	
 	wstring symbol ;
 	
 	string spriteImageFilePath ;
@@ -67,8 +59,6 @@ protected:
 	const Board * const * board ;
 	
 	const Square * square ;
-	
-	unsigned movesMade = 0 ;
 	
 	auto getBoard() const { return board ; }
 	
@@ -94,20 +84,18 @@ public:
 	virtual ~Piece() {} ; //position isn't ours, don't delete it
 	
 	Piece & operator = (const Piece & rhs) ;
-
+	
 	/**
 	 * Moves the piece to it's new square, and notifies both the Square object
 	 * at its last location the and Square at its new, current location
 	 */
 	virtual void move(const Position to) ;//inheriting pieces will define
 	
-	const unsigned long getID() const { return iD ; }
-	
 	/**
 	 * Returns true if there exists at least one Square that this Piece can move to,
 	 * false otherwise
 	 */
-	virtual const bool canMove() const ;
+	const bool canMove() const ;
 	
 	const ChessColor getColor() const { return color ; }
 	
@@ -132,7 +120,6 @@ protected:
 	ChessColor color ;
 
 	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
-		iD(iDs++),
 		symbol(symbol),
 		spriteImageFilePath(spriteImageFilePath),
 		color(color),
@@ -174,17 +161,11 @@ public:
 		return * this ;
 	}
 	
-	const float getValue() const override { return 1 ; }
+	const float getValue() const override ;
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
-	const vector<Direction> getLegalCaptureDirections() const ;
-	
-	Direction getLegalMovementDirectionToEmptySquares() const ;
-	
 	void move(const Position to) override ;
-	
-	const bool canMove() const override ;
 	
 } ;
 
@@ -212,7 +193,7 @@ public:
 		return * this ;
 	}
 	
-	const float getValue() const override { return 3 ; }
+	const float getValue() const override { return 2 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -244,7 +225,7 @@ public:
 		return * this ;
 	}
 	
-	virtual const float getValue() const override { return 3 ; }
+	virtual const float getValue() const override { return 4 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -277,7 +258,7 @@ public:
 		return * this ;
 	}
 	
-	virtual const float getValue() const override { return 5 ; }
+	virtual const float getValue() const override { return 6 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -309,7 +290,7 @@ public:
 		return * this ;
 	}
 	
-	virtual const float getValue() const override { return 9 ; }
+	virtual const float getValue() const override { return 10 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -341,10 +322,7 @@ public:
 		return * this ;
 	}
 	
-	/**
-	 * Equal to the combined values of all other Pieces, plus 1
-	 */
-	virtual const float getValue() const override { return 40 ; }
+	virtual const float getValue() const override { return 48 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	

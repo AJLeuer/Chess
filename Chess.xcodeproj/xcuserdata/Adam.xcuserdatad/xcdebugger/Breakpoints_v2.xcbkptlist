@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Game/Game.cpp"
-            timestampString = "450156153.808563"
+            filePath = "Source/Game/Piece.cpp"
+            timestampString = "449925830.150935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "Game::testAndDebug()"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
+            landmarkName = "Piece::canMove()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,14 +25,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Util/NotificationSystem.h"
-            timestampString = "450159421.679704"
+            filePath = "Source/Util/Position.cpp"
+            timestampString = "449940146.873958"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "notify(EventType eventType, Data * data, const UniqueNumericIdentifier hash)"
-            landmarkType = "7">
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "RankAndFile::convertToPosition()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Game/Board.cpp"
-            timestampString = "450159626.925814"
+            filePath = "Source/Game/Player.h"
+            timestampString = "449943386.462733"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "Square::clearCurrentPiece(Piece * toClear)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "Player(ChessColor color, const Board &amp; board)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

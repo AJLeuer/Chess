@@ -12,7 +12,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <chrono>
 #include <thread>
 
 #include <SFML/Window/Mouse.hpp>
@@ -25,13 +24,9 @@
 
 #include "../View/Window.h"
 
-using namespace std ;
-
 class Game {
 	
 protected:
-	
-	unsigned long gameLoops = 0 ;
 	
 	/** Note: Must be initialized first */
 	Board board ;

@@ -8,8 +8,6 @@
 
 #include "Game.h"
 
-using namespace std ;
-
 Game::Game() :
 	board(),	/* Note: Must be initialized first */
 	player0(new AI(ChessColor::white, this->board)), //holds references to pieces at index (0, 0) through (1, 15)
@@ -34,21 +32,11 @@ void Game::updateGameState() {
 }
 
 void Game::testAndDebug() {
-	//all for debugging
-	static Piece * pawn  ;
 	
-	if (gameLoops == 0) {
-		pawn = this->board(0, 1)->getPieceUnsafe() ;
-	}
-	
+	auto pawn = this->board(0, 1)->getPiece() ;
 	bool canMove = pawn->canMove() ;
-	Position pos = *(pawn->getPosition()) ;
-	pos.y++ ;
-	pawn->move({pos.x, pos.y}) ;
 	
-	this_thread::sleep_for(chrono::milliseconds(2000)) ;
-	
-	short val = board.evaluate(pawn->getColor()) ;
+	short val = board.evaluate<ChessColor>() ;
 	auto i = 1 ;
 }
 
@@ -78,7 +66,6 @@ void Game::playGame() {
 	while (true) {
 		updateGameState() ;
 		display() ;
-		gameLoops++ ;
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}
 	
@@ -90,7 +77,6 @@ void Game::playDebugGame() {
 	while (true) {
 		testAndDebug() ;
 		display() ;
-		gameLoops++ ;
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}
 	

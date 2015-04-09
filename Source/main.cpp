@@ -19,9 +19,10 @@ using namespace std ;
 
 int main(int argc, const char * argv[]) {
 	currentDirectory = *argv ;
-	
+
+
 	Game game ;
 	game.playDebugGame() ;
-
+	
     return 0 ;
 }
