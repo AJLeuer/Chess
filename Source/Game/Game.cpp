@@ -38,8 +38,9 @@ void Game::testAndDebug() {
 	static Piece * pawn  ;
 	
 	if (gameLoops == 0) {
-		pawn = this->board(0, 1)->getPieceUnsafe() ;
+		pawn = this->board(0, 1)->getPieceMutable() ;
 	}
+
 	
 	bool canMove = pawn->canMove() ;
 	Position pos = *(pawn->getPosition()) ;

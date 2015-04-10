@@ -41,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6603F9571AD73BAB00B3A5DD /* UniqueNumericID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UniqueNumericID.h; path = Source/Util/UniqueNumericID.h; sourceTree = SOURCE_ROOT; };
 		661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = BuildConfig.xcconfig; path = Config/BuildConfig.xcconfig; sourceTree = "<group>"; };
 		66243F691ABF84F70002560B /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Config; sourceTree = "<group>"; };
 		6659B8B41AB75A210068B607 /* Util.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Util.hpp; sourceTree = "<group>"; };
@@ -117,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				66AF8EC31AB40F0000FECDA7 /* Config.h */,
+				6603F9571AD73BAB00B3A5DD /* UniqueNumericID.h */,
 				66AD6CF51A93D3080008F0ED /* Util.h */,
 				6659B8B41AB75A210068B607 /* Util.hpp */,
 				6659B8C01AB779A20068B607 /* Random.hpp */,

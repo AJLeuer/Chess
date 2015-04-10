@@ -70,11 +70,13 @@ protected:
 	
 	unsigned movesMade = 0 ;
 	
-	auto getBoard() const { return board ; }
+	const Board * const * getBoard() const { return board ; }
 	
 	void sendMoveNotification(const Position newPosition) ;
 	
-	void setCurrentPosition(const Position * position) { this->position = position ; }
+	inline void setCurrentPosition(const Position * position) { this->position = position ; }
+	
+	inline void clearCurrentPosition() { setCurrentPosition(nullptr) ; }
 	
 	friend class Square ;
 	

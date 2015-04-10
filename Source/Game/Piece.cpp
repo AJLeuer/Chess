@@ -35,19 +35,17 @@ Symbols Queen::symbols {/* black */ L"♛", /* white */ L"♕"} ;
 Symbols King::symbols {/* black */ L"♚", /* white */ L"♔"} ;
 
 
-ImageFiles Pawn::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Pawn.png" } ;
+ImageFiles Pawn::imageFiles {/* black */ "./Assets/Bitmaps/BlackPawn.png", /* white */ "./Assets/Bitmaps/WhitePawn.png" } ;
 
-ImageFiles Knight::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Knight.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Knight.png" } ;
+ImageFiles Knight::imageFiles {/* black */ "./Assets/Bitmaps/BlackKnight.png", /* white */ "./Assets/Bitmaps/WhiteKnight.png" } ;
 
-ImageFiles Bishop::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black Pawn.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Bishop.png" } ;
+ImageFiles Bishop::imageFiles {/* black */ "./Assets/Bitmaps/BlackPawn.png", /* white */ "./Assets/Bitmaps/WhiteBishop.png" } ;
 
-ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Rook.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Rook.png" } ;
+ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps/BlackRook.png", /* white */ "./Assets/Bitmaps/WhiteRook.png" } ;
 
-ImageFiles Queen::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ Queen.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ Queen.png" } ;
+ImageFiles Queen::imageFiles {/* black */ "./Assets/Bitmaps/BlackQueen.png", /* white */ "./Assets/Bitmaps/WhiteQueen.png" } ;
 
-ImageFiles King::imageFiles {/* black */ "./Assets/Bitmaps\ \&\ Vectors/Black\ King.png", /* white */ "./Assets/Bitmaps\ \&\ Vectors/White\ King.png" } ;
-
-
+ImageFiles King::imageFiles {/* black */ "./Assets/Bitmaps/BlackKing.png", /* white */ "./Assets/Bitmaps/WhiteKing.png" } ;
 
 
 Piece * Piece::init(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) {
@@ -155,8 +153,8 @@ void Piece::sendMoveNotification(const Position newPosition) {
 		throw std::exception() ;
 	}
 
-	Notification<Piece, size_t>::notify(EventType::pieceLeaving, this, hashTwoVector(*(this->position))) ;
-	Notification<Piece, size_t>::notify(EventType::pieceArriving, this, hashTwoVector(newPosition)) ;
+	Notification<Piece>::notify(EventType::pieceLeavingPositionSpecifiedByID, this, generateID(*(this->position))) ;
+	Notification<Piece>::notify(EventType::pieceArrivingAtPositionSpecifiedByID, this, generateID(newPosition)) ;
 }
 
 Pawn::Pawn(const ChessColor color, const Position * position, const Board * const * board, const Square * square) :

@@ -114,7 +114,7 @@ void Player::registerForNotifications() {
 		
 		Piece * piece = *(pieceIterator) ;
 		auto removeP = std::bind(& Player::removePiece, this, _1) ;
-		Notification<Piece, size_t> pieceCapturedNotification(EventType::pieceCaptured, removeP, piece->getID()) ;
+		Notification<Piece> pieceCapturedNotification(EventType::pieceSpecifiedByIDWasCaptured, removeP, piece->getID()) ;
 		pieceCapturedNotification.registerForCallback() ;
 	
 		//.. we may need to be notified of other events as well, add them here:

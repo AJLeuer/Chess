@@ -55,6 +55,8 @@ private:
 	
 public:
 	
+	inline const vec2<int> getMaxPosition() { return vec2<int>{(int)boardRepresentation.size(), (int)boardRepresentation[0].size()} ; }
+	
 	Board() ;
 	
 	Board(const Board & other) ;
@@ -156,7 +158,7 @@ T Board::runSearchFunction(function<T (vector<const Square *> & squares)> search
 		vec2<int> offset { directions[i] } ; //directions convert to vectors like (0, 1)
 		
 		for (Position next = (startingSquarePosition + offset), end = (startingSquarePosition + (directions[i] * searchDistance));
-			 	hashTwoVector(next) != hashTwoVector(end) ; next = (next + offset)) {
+			 	generateID(next) != generateID(end) ; next = (next + offset)) {
 			
 			if (isInsideBoardBounds(next)) {
 				const Square * nextSquare { getSquare(next) } ;

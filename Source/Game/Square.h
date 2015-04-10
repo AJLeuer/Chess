@@ -46,7 +46,7 @@ protected:
 	
 	void handlePieceCapture(Piece * pieceCapturing) ;
 	
-	Piece * getPieceUnsafe() const { return piece ; } //for debug only, remove later
+	Piece * getPieceMutable() const { return piece ; } //for debug only, remove later
 	
 public:
 	

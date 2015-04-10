@@ -76,7 +76,7 @@ void Square::clearCurrentPiece(Piece * toClear) {
 	assert(this->piece == toClear) ;
 	
 	if (piece != nullptr) {
-		this->piece->setCurrentPosition(nullptr) ;
+		this->piece->clearCurrentPosition() ;
 		this->piece = nullptr ;
 	}
 }
@@ -90,8 +90,7 @@ void Square::destroyCurrentPiece() {
 
 void Square::handlePieceCapture(Piece * pieceCapturing) {
 	//notify everything that was registered for a capture event for our piece
-	Notification<Piece, size_t>::notify(EventType::pieceCapturing, pieceCapturing, pieceCapturing->getID()) ;
-	Notification<Piece, size_t>::notify(EventType::pieceCaptured, this->piece, pieceCapturing->getID()) ;
+	Notification<Piece>::notify(EventType::pieceSpecifiedByIDWasCaptured, this->piece, pieceCapturing->getID()) ;
 	
 	destroyCurrentPiece() ;
 }
@@ -101,10 +100,10 @@ void Square::registerForPieceMovement() {
 	using namespace std::placeholders ;
 	
 	auto receiveMovingP = std::bind(&Square::receiveMovingPiece, this, _1) ;
-	Notification<Piece, size_t> notifyWhenPieceMovesHere (EventType::pieceArriving, receiveMovingP, hashTwoVector(this->getPosition())) ;
+	Notification<Piece> notifyWhenPieceMovesHere (EventType::pieceArrivingAtPositionSpecifiedByID, receiveMovingP, generateID(this->getPosition())) ;
 	
 	auto clearCurrentP = std::bind(& Square::clearCurrentPiece, this, _1) ;
-	Notification<Piece, size_t> notifyWhenPieceLeaves (EventType::pieceLeaving, clearCurrentP, hashTwoVector(this->getPosition())) ;
+	Notification<Piece> notifyWhenPieceLeaves (EventType::pieceLeavingPositionSpecifiedByID, clearCurrentP, generateID(this->getPosition())) ;
 	
 	notifyWhenPieceMovesHere.registerForCallback() ;
 	notifyWhenPieceLeaves.registerForCallback() ;

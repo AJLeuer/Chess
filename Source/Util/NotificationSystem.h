@@ -14,27 +14,30 @@
 #include <vector>
 
 #include <SFML/Window.hpp>
+
+#include "../Util/UniqueNumericID.h"
 #include "../Util/Position.h"
+
 
 using namespace std ;
 
+
 enum class EventType {
-	pieceArriving,
-	pieceLeaving,
-	pieceCapturing,
-	pieceCaptured,
-	pawnPromotion
+	pieceArrivingAtPositionSpecifiedByID,
+	pieceLeavingPositionSpecifiedByID,
+	pieceSpecifiedByIDWasCaptured,
+	pawnSpecifiedByIDWasPromoted
 	//add any more here
 };
 
 
 
-template<class Data, typename UniqueNumericIdentifier>
+template<typename Data>
 struct Notification {
 	
 protected:
 	
-	static vector< vector<Notification<Data, UniqueNumericIdentifier>> > registeredMessageRecipients ;
+	static vector< vector<Notification<Data>> > registeredMessageRecipients ;
 	
 	EventType eventType ;
 	
@@ -45,29 +48,29 @@ protected:
 	 */
 	function<void (Data *)> callBackFunction ;
 	
-	const UniqueNumericIdentifier hash ;
+	const UniqueNumericIdentifier uniqueID ;
 	
 	void notify(Data * data) ;
 
 public:
 	
-	static void notify(EventType eventType, Data * data, const UniqueNumericIdentifier hash) ;
+	static void notify(EventType eventType, Data * data, const UniqueNumericIdentifier uniqueID) ;
 	
-	Notification(EventType eventType, function<void (Data *)> callBackFunction, const UniqueNumericIdentifier hash) : //
-		eventType(eventType), callBackFunction(callBackFunction), hash(hash) {}
+	Notification(EventType eventType, function<void (Data *)> callBackFunction, const UniqueNumericIdentifier uniqueID) : //
+		eventType(eventType), callBackFunction(callBackFunction), uniqueID(uniqueID) {}
 	
 
 	/**
 	 * Copy constructor
 	 */
 	Notification(const Notification & other) :
-		eventType(other.eventType), callBackFunction(other.callBackFunction), hash(other.hash) {}
+		eventType(other.eventType), callBackFunction(other.callBackFunction), uniqueID(other.uniqueID) {}
 	
 	/**
 	 * Move constructor
 	 */
 	Notification(Notification && other) :
-		eventType(std::move(other.eventType)), callBackFunction(std::move(other.callBackFunction)), hash(std::move(other.hash)) {}
+		eventType(std::move(other.eventType)), callBackFunction(std::move(other.callBackFunction)), uniqueID(std::move(other.uniqueID)) {}
 	
 	~Notification() {}
 	
@@ -76,33 +79,33 @@ public:
 	
 } ;
 
-template<class Data, typename UniqueNumericIdentifier>
-vector< vector<Notification<Data, UniqueNumericIdentifier>> > Notification<Data, UniqueNumericIdentifier>::registeredMessageRecipients ;
+template<typename Data>
+vector< vector<Notification<Data>> > Notification<Data>::registeredMessageRecipients ;
 
-template<class Data, typename UniqueNumericIdentifier>
-void Notification<Data, UniqueNumericIdentifier>::notify(EventType eventType, Data * data, const UniqueNumericIdentifier hash) {
+template<typename Data>
+void Notification<Data>::notify(EventType eventType, Data * data, const UniqueNumericIdentifier uniqueID) {
 	
 	for (auto i = 0 ; i < registeredMessageRecipients.size() ; i++) {
 		
 		if ((registeredMessageRecipients.at(i).size() > 0) && (registeredMessageRecipients.at(i).at(0).eventType == eventType)) {
 			
 			for (auto j = 0 ; j < registeredMessageRecipients.at(i).size() ; j++) {
-				if (registeredMessageRecipients.at(i).at(j).hash == hash) {
+				if (registeredMessageRecipients.at(i).at(j).uniqueID == uniqueID) {
 					registeredMessageRecipients.at(i).at(j).notify(data) ;
 				}
 			}
-			break ; //we only need to iterate through the subvector of registeredMsgRecipients that matches our EventType
+			break ; //we only need to iterate through the sub-vector of registeredMsgRecipients that matches our EventType
 		}
 	}
 }
 
-template<class Data, typename UniqueNumericIdentifier>
-void Notification<Data, UniqueNumericIdentifier>::notify(Data * data) {
+template<typename Data>
+void Notification<Data>::notify(Data * data) {
 	callBackFunction(data) ;
 }
 
-template<class Data, typename UniqueNumericIdentifier>
-void Notification<Data, UniqueNumericIdentifier>::registerForCallback() {
+template<typename Data>
+void Notification<Data>::registerForCallback() {
 	
 	bool firstEventOfType = true ;
 	
@@ -114,7 +117,7 @@ void Notification<Data, UniqueNumericIdentifier>::registerForCallback() {
 	}
 	
 	if (firstEventOfType) {
-		registeredMessageRecipients.push_back(vector<Notification<Data, UniqueNumericIdentifier>>()) ;
+		registeredMessageRecipients.push_back(vector<Notification<Data>>()) ;
 		auto sz = registeredMessageRecipients.size() ;
 		registeredMessageRecipients.at(sz - 1).push_back(*this) ;
 	}

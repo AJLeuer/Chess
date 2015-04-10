@@ -18,6 +18,8 @@
 
 #include <SFML/System/Vector2.hpp>
 
+#include "../Util/UniqueNumericID.h"
+
 using namespace std ;
 
 constexpr unsigned lowerCaseA {97} ;
@@ -30,8 +32,8 @@ using vec2 = NumericType __attribute__((ext_vector_type(2))) ;
  * @link http://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
  */
 template <typename VectorType>
-inline size_t hashVector(const VectorType & vect, size_t vectorSize) {
-	size_t seed = 0;
+inline UniqueNumericIdentifier hashVector(const VectorType & vect, size_t vectorSize) {
+	unsigned long seed = 0;
 
 	for (auto i = 0 ; i < vectorSize ; i++) {
 		seed ^= vect[i] + 0x9e3779b9 + (seed << 6) + (seed >> 2);
@@ -40,10 +42,20 @@ inline size_t hashVector(const VectorType & vect, size_t vectorSize) {
 	return seed;
 }
 
+
 template <typename VectorType>
-inline size_t hashTwoVector(const VectorType twoVect) {
+inline UniqueNumericIdentifier hashTwoVector(const VectorType twoVect) {
 	auto hash = hashVector(twoVect, 2) ;
 	return hash ;
+}
+
+/**
+ * Allows creating a unique identifying value for vec2, which isn't
+ * a class and can't store a UniqueNumericIdentifier as a member variable
+ */
+template <typename NumericType>
+inline UniqueNumericIdentifier generateID(vec2<NumericType> vect) {
+	return hashTwoVector<vec2<NumericType>>(vect) ;
 }
 	
 
@@ -109,17 +121,6 @@ vec2<NumericType> operator + (const Direction & direction, const vec2<NumericTyp
 	return ret ;
 }
 
-/*
-template <typename N>
-bool equal(vec2<N> lhs, vec2<N> rhs) {
-	if (lhs[0] == rhs[0]) {
-		if (lhs[1] == rhs[1]) {
-			return true ;
-		}
-		return false ;
-	}
-	return false ;
-} */
 
 /**
  * @note For conversion betweem SFML's vector type and native hardware (i.e. SSE, AltiVec, etc.) vector types (will probably work with other generic vector
