@@ -43,13 +43,16 @@ void Game::testAndDebug() {
 
 	
 	bool canMove = pawn->canMove() ;
-	Position pos = *(pawn->getPosition()) ;
-	pos.y++ ;
-	pawn->move({pos.x, pos.y}) ;
+	vec2<int> pos = *(pawn->getPosition()) ;
+	pos.value.y++ ;
+	pawn->move({pos.value.x, pos.value.y}) ;
+	
 	
 	this_thread::sleep_for(chrono::milliseconds(2000)) ;
 	
+	
 	short val = board.evaluate(pawn->getColor()) ;
+	
 	auto i = 1 ;
 }
 
@@ -60,7 +63,7 @@ void Game::display() {
 	wstring * str = new wstring(stream->str()) ;
 	
 	vec2<int> windowSize = convertToNativeVectorType<int>(window.getSize()) ;
-	vec2<int> middle = windowSize / 2 ;
+	auto middle = windowSize / 2 ;
 	
 	window.clear(sf::Color(0, 202, 255, 128)) ;
 	window.displayText(*str, middle) ;
@@ -103,7 +106,7 @@ void Game::monitorMouse() {
 		while (true) {
 			if (Mouse::isButtonPressed(buttonMain)) {
 		
-				Position mousePosition = convertToNativeVectorType<int, int>(Mouse::getPosition()) ;
+				vec2<int> mousePosition = convertToNativeVectorType<int, int>(Mouse::getPosition()) ;
 				
 				//cout << "Main mouse button pressed." << endl ;
 				//cout << "Coordinates: " << mousePosition << endl ;

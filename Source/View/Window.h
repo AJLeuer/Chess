@@ -16,8 +16,9 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "../Util/Vect.h"
+
 #include "Config.h"
-#include "Position.h"
 #include "DisplayData.h"
 
 using namespace std ;
@@ -64,21 +65,21 @@ public:
 	ChessWindow & operator = (const ChessWindow & other) ;
 	
 	template<class StringType>
-	void displayText(const StringType & chars, const Position where) ;
+	void displayText(const StringType & chars, const vec2<int> where) ;
 	
 };
 
 template<class StringType>
-void ChessWindow::displayText(const StringType & chars, const Position where) {
+void ChessWindow::displayText(const StringType & chars, const vec2<int> where) {
 	
 	text.setString(chars) ;
 	text.setColor(sf::Color(173, 255, 0)) ;
 	
 	auto textSize = text.getLocalBounds() ;
 	
-	Position middle = {static_cast<int>((textSize.width / 2)), static_cast<int>((textSize.height / 2)) } ;
+	vec2<int> middle = {static_cast<int>((textSize.width / 2)), static_cast<int>((textSize.height / 2)) } ;
 	
-	Position adjustedPos = where - middle ;
+	vec2<int> adjustedPos = where - middle ;
 	
 	text.setPosition(convertToSFMLVectorType<float, int>(adjustedPos)) ;
 	

@@ -14,7 +14,7 @@
 
 #include <SFML/Window/Mouse.hpp>
 
-#include "Position.h"
+#include "Vect.h"
 #include "DisplayData.h"
 
 using namespace std ;

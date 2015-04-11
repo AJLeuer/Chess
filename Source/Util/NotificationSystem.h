@@ -16,7 +16,7 @@
 #include <SFML/Window.hpp>
 
 #include "../Util/UniqueNumericID.h"
-#include "../Util/Position.h"
+#include "../Util/Vect.h"
 
 
 using namespace std ;

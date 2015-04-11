@@ -11,7 +11,7 @@
 #include <functional>
 
 #include "Config.h"
-#include "./Util/Position.h"
+#include "./Util/Vect.h"
 #include "./Game/Game.h"
 
 using namespace std ;
@@ -19,6 +19,7 @@ using namespace std ;
 
 int main(int argc, const char * argv[]) {
 	currentDirectory = *argv ;
+
 	
 	Game game ;
 	game.playDebugGame() ;

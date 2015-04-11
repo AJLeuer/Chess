@@ -22,7 +22,7 @@
 		66BE09781A8E4AC200C5F1CC /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09691A8E4AC200C5F1CC /* Game.cpp */; };
 		66BE09791A8E4AC200C5F1CC /* Piece.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE096B1A8E4AC200C5F1CC /* Piece.cpp */; };
 		66BE097A1A8E4AC200C5F1CC /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE096D1A8E4AC200C5F1CC /* Player.cpp */; };
-		66BE097C1A8E4AC200C5F1CC /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09721A8E4AC200C5F1CC /* Position.cpp */; };
+		66BE097C1A8E4AC200C5F1CC /* Vect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09721A8E4AC200C5F1CC /* Vect.cpp */; };
 		66BE097D1A8E4AC200C5F1CC /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09751A8E4AC200C5F1CC /* Window.cpp */; };
 		66C10DB81A0030B10074ED36 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66C10DB71A0030B10074ED36 /* main.cpp */; };
 /* End PBXBuildFile section */
@@ -69,8 +69,8 @@
 		66BE096D1A8E4AC200C5F1CC /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		66BE096E1A8E4AC200C5F1CC /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSystem.h; sourceTree = "<group>"; };
-		66BE09721A8E4AC200C5F1CC /* Position.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
-		66BE09731A8E4AC200C5F1CC /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Position.h; sourceTree = "<group>"; };
+		66BE09721A8E4AC200C5F1CC /* Vect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vect.cpp; sourceTree = "<group>"; };
+		66BE09731A8E4AC200C5F1CC /* Vect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vect.h; sourceTree = "<group>"; };
 		66BE09751A8E4AC200C5F1CC /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		66BE09761A8E4AC200C5F1CC /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		66C10DB41A0030B10074ED36 /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,11 +122,11 @@
 				66AD6CF51A93D3080008F0ED /* Util.h */,
 				6659B8B41AB75A210068B607 /* Util.hpp */,
 				6659B8C01AB779A20068B607 /* Random.hpp */,
-				66BE09731A8E4AC200C5F1CC /* Position.h */,
+				66BE09731A8E4AC200C5F1CC /* Vect.h */,
 				66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */,
 				6663DC9A1AB7414200F10B4F /* Config.cpp */,
 				66AD6CF41A93D3080008F0ED /* Util.cpp */,
-				66BE09721A8E4AC200C5F1CC /* Position.cpp */,
+				66BE09721A8E4AC200C5F1CC /* Vect.cpp */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -245,7 +245,7 @@
 				66BE097D1A8E4AC200C5F1CC /* Window.cpp in Sources */,
 				66C10DB81A0030B10074ED36 /* main.cpp in Sources */,
 				66BE097A1A8E4AC200C5F1CC /* Player.cpp in Sources */,
-				66BE097C1A8E4AC200C5F1CC /* Position.cpp in Sources */,
+				66BE097C1A8E4AC200C5F1CC /* Vect.cpp in Sources */,
 				6659B8BC1AB75B540068B607 /* DisplayData.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

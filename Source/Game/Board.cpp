@@ -100,10 +100,10 @@ void Square::registerForPieceMovement() {
 	using namespace std::placeholders ;
 	
 	auto receiveMovingP = std::bind(&Square::receiveMovingPiece, this, _1) ;
-	Notification<Piece> notifyWhenPieceMovesHere (EventType::pieceArrivingAtPositionSpecifiedByID, receiveMovingP, generateID(this->getPosition())) ;
+	Notification<Piece> notifyWhenPieceMovesHere (EventType::pieceArrivingAtPositionSpecifiedByID, receiveMovingP, generateID<int>(this->getPosition())) ;
 	
 	auto clearCurrentP = std::bind(& Square::clearCurrentPiece, this, _1) ;
-	Notification<Piece> notifyWhenPieceLeaves (EventType::pieceLeavingPositionSpecifiedByID, clearCurrentP, generateID(this->getPosition())) ;
+	Notification<Piece> notifyWhenPieceLeaves (EventType::pieceLeavingPositionSpecifiedByID, clearCurrentP, generateID<int>(this->getPosition())) ;
 	
 	notifyWhenPieceMovesHere.registerForCallback() ;
 	notifyWhenPieceLeaves.registerForCallback() ;
@@ -114,12 +114,12 @@ const Square * Board::operator () (unsigned arrIndexX, unsigned arrIndexY) const
 }
 
 const Square * Board::getSquare(const RankAndFile & rf) const {
-	Position pos { rf.convertToPosition() } ;
-	return this->operator()(pos.x, pos.y) ; //todo implement properly
+	vec2<int> pos { rf.convertToPosition() } ;
+	return this->operator()(pos.value.x, pos.value.y) ; //todo implement properly
 }
 
-const Square * Board::getSquare(const Position pos) const {
-	return this->operator()(pos.x, pos.y) ;
+const Square * Board::getSquare(const vec2<int> pos) const {
+	return this->operator()(pos.value.x, pos.value.y) ;
 }
 
 const Square * Board::getSquare(unsigned x, unsigned y) const {
@@ -181,9 +181,9 @@ Board & Board::operator = (const Board & other) {
 	return * this ;
 }
 
-bool Board::isInsideBoardBounds(const Position pos) const {
-	if (pos.x < boardRepresentation.size()) {
-		if (pos.y < boardRepresentation[pos.x].size()) {
+bool Board::isInsideBoardBounds(const vec2<int> pos) const {
+	if (pos.value.x < boardRepresentation.size()) {
+		if (pos.value.y < boardRepresentation[pos.value.x].size()) {
 			return true ;
 		}
 		else {

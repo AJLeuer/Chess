@@ -26,7 +26,7 @@ protected:
 	
 	RankAndFile rankAndFile ;
 	
-	Position position ;
+	vec2<int> position ;
 	
 	const Board * board ;
 	
@@ -68,7 +68,7 @@ public:
 	
 	bool isOccupied() const { return isEmpty() == false ; }
 	
-	const Position & getPosition() const { return this->position ; }
+	const vec2<int> & getPosition() const { return this->position ; }
 	
 	const Piece * getPiece() const { return piece ; }
 	

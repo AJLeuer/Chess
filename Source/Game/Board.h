@@ -25,7 +25,7 @@
 
 #include "../Util/Util.h"
 #include "../Util/NotificationSystem.h"
-#include "../Util/Position.h"
+#include "../Util/Vect.h"
 
 
 
@@ -74,16 +74,16 @@ public:
 	
 	const Square * getSquare(const RankAndFile &) const ;
 	
-	const Square * getSquare(const Position) const ;
+	const Square * getSquare(const vec2<int>) const ;
 	
 	const Square * getSquare(unsigned x, unsigned y) const ;
 	
 	/**
 	 * @param pos This function checks whether pos is within the bounds of the Chess board
 	 *
-	 * @return true if Position pos exists on the board, false otherwise
+	 * @return true if vec2<int> pos exists on the board, false otherwise
 	 */
-	bool isInsideBoardBounds(const Position pos) const ;
+	bool isInsideBoardBounds(const vec2<int> pos) const ;
 	
 	friend std::ostream & operator << (std::ostream & , const Board &) ;
 	
@@ -103,7 +103,7 @@ public:
 	 * @param searchDistance The distance to search in all specified directions
 	 */
 	template <typename T>
-	T runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const Position startingSquarePosition, const vector<Direction> & directions, int searchDistance) const ;
+	T runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const ;
 	
 	/**
 	 * Calls a function, searchFunction, intended to process squares in an area of the board. The function in question should take
@@ -117,7 +117,7 @@ public:
 	 * @param searchRadius Specifies the range of other squares to include
 	 */
 	template <typename T>
-	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, const Position startingSquarePosition, int searchRadius) const ;
+	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, const vec2<int> startingSquarePosition, int searchRadius) const ;
 	/**
 	 * Calculates a numeric value based on the current state of the chess board (including the existence and configuration of pieces)m
 	 * from the perspective of the player playing the ChessColor color. In other words, if e.g. the player playing white requests the current
@@ -149,7 +149,7 @@ class HypotheticalBoardState : public Board {
  * @param searchDistance The distance to search in all specified directions
  */
 template <typename T>
-T Board::runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const Position startingSquarePosition, const vector<Direction> & directions, int searchDistance) const {
+T Board::runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const {
 	
 	vector<const Square *> argSquares ;
 
@@ -157,14 +157,19 @@ T Board::runSearchFunction(function<T (vector<const Square *> & squares)> search
 		
 		vec2<int> offset { directions[i] } ; //directions convert to vectors like (0, 1)
 		
-		for (Position next = (startingSquarePosition + offset), end = (startingSquarePosition + (directions[i] * searchDistance));
-			 	generateID(next) != generateID(end) ; next = (next + offset)) {
+		for (vec2<int> next = (startingSquarePosition + offset), end = (startingSquarePosition + (directions[i] * searchDistance)); ; next = (next + offset)) {
 			
-			if (isInsideBoardBounds(next)) {
+			bool searchIsStillWithinBoardBounds = isInsideBoardBounds(next) ;
+			if (searchIsStillWithinBoardBounds) {
 				const Square * nextSquare { getSquare(next) } ;
 				argSquares.push_back(nextSquare) ;
 			}
-			
+			else if (searchIsStillWithinBoardBounds == false) { //we've gone outside the bounds of the board. we can can safely break out of this loop and avoid more pointless searching, since we know there's nothing in this direction
+				break ;
+			}
+			if (next == end) { //the other way to get out of the loop
+				break ;
+			}
 		}
 	}
 	
@@ -183,15 +188,15 @@ T Board::runSearchFunction(function<T (vector<const Square *> & squares)> search
  * @param searchRadius Specifies the range of other squares to include
  */
 template <typename T>
-T Board::runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, const Position startingSquarePosition, int searchRadius) const {
+T Board::runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, const vec2<int> startingSquarePosition, int searchRadius) const {
 	
 	vector<const Square *> argSquares ;
 	
-	for (vec2<int> currentIndex {(startingSquarePosition.x - searchRadius),(startingSquarePosition.y - searchRadius) } ;
-		 	currentIndex.x <=(startingSquarePosition.x + searchRadius) ; currentIndex.x++) {
+	for (vec2<int> currentIndex {(startingSquarePosition.value.x - searchRadius),(startingSquarePosition.value.y - searchRadius) } ;
+		 	currentIndex.value.x <=(startingSquarePosition.value.x + searchRadius) ; currentIndex.value.x++) {
 		
-		for (currentIndex.y = (startingSquarePosition.y - searchRadius) ;
-			 	currentIndex.y <= (startingSquarePosition.y + searchRadius) ; currentIndex.y++) {
+		for (currentIndex.value.y = (startingSquarePosition.value.y - searchRadius) ;
+			 	currentIndex.value.y <= (startingSquarePosition.value.y + searchRadius) ; currentIndex.value.y++) {
 			
 			if (isInsideBoardBounds(currentIndex)) {
 				const Square * sq { getSquare(currentIndex) } ;

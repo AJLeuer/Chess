@@ -25,7 +25,7 @@
 #include "../Util/Config.h"
 #include "../Util/Util.h"
 #include "../Util/Util.hpp"
-#include "../Util/Position.h"
+#include "../Util/Vect.h"
 #include "../Util/NotificationSystem.h"
 
 
@@ -62,7 +62,7 @@ protected:
 	
 	sf::Sprite sprite ;
 	
-	const Position * position = nullptr ;
+	const vec2<int> * position = nullptr ;
 	
 	const Board * const * board ;
 	
@@ -72,9 +72,9 @@ protected:
 	
 	const Board * const * getBoard() const { return board ; }
 	
-	void sendMoveNotification(const Position newPosition) ;
+	void sendMoveNotification(const vec2<int> newPosition) ;
 	
-	inline void setCurrentPosition(const Position * position) { this->position = position ; }
+	inline void setCurrentPosition(const vec2<int> * position) { this->position = position ; }
 	
 	inline void clearCurrentPosition() { setCurrentPosition(nullptr) ; }
 	
@@ -89,7 +89,7 @@ public:
 		Square * destination ;
 	} ;
 	
-	static Piece * init(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
+	static Piece * init(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	Piece (const Piece & other) ;
 	
@@ -101,7 +101,7 @@ public:
 	 * Moves the piece to it's new square, and notifies both the Square object
 	 * at its last location the and Square at its new, current location
 	 */
-	virtual void move(const Position to) ;//inheriting pieces will define
+	virtual void move(const vec2<int> to) ;//inheriting pieces will define
 	
 	const unsigned long getID() const { return iD ; }
 	
@@ -117,7 +117,7 @@ public:
 	
 	const sf::Sprite & getSprite() const { return sprite ; }
 	
-	const Position * getPosition() const { return position ; }
+	const vec2<int> * getPosition() const { return position ; }
 	
 	virtual const float getValue() const = 0 ;
 	
@@ -133,7 +133,7 @@ protected:
 	
 	ChessColor color ;
 
-	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const Position * position, const Board * const * board, const Square * square) :
+	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
 		iD(iDs++),
 		symbol(symbol),
 		spriteImageFilePath(spriteImageFilePath),
@@ -163,9 +163,9 @@ public:
 	Pawn(const Pawn & other) :
 		Piece(other) {}
 	
-	Pawn(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
+	Pawn(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Pawn(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
+	Pawn(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	~Pawn() {}
 	
@@ -184,7 +184,7 @@ public:
 	
 	Direction getLegalMovementDirectionToEmptySquares() const ;
 	
-	void move(const Position to) override ;
+	void move(const vec2<int> to) override ;
 	
 	const bool canMove() const override ;
 	
@@ -201,9 +201,9 @@ public:
 	Knight(const Knight & other) :
 		Piece(other) {}
 	
-	Knight(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
+	Knight(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Knight(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
+	Knight(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	~Knight() {}
 	
@@ -218,7 +218,7 @@ public:
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
-	void move(const Position to) override ;
+	void move(const vec2<int> to) override ;
 	
 };
 
@@ -233,9 +233,9 @@ public:
 	Bishop(const Bishop & other) :
 		Piece(other) {}
 
-	Bishop(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
+	Bishop(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Bishop(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
+	Bishop(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	~Bishop() {}
 	
@@ -250,7 +250,7 @@ public:
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
-	void move(const Position to) override ;
+	void move(const vec2<int> to) override ;
 	
 };
 
@@ -266,9 +266,9 @@ public:
 	Rook(const Rook & other) :
 		Piece(other) {}
 
-	Rook(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
+	Rook(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Rook(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
+	Rook(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	~Rook() {}
 	
@@ -283,7 +283,7 @@ public:
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
-	void move(const Position to) override ;
+	void move(const vec2<int> to) override ;
 
 };
 
@@ -298,9 +298,9 @@ public:
 	Queen(const Queen & other) :
 		Piece(other) {}
 	
-	Queen(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
+	Queen(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Queen(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
+	Queen(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	~Queen() {}
 	
@@ -315,7 +315,7 @@ public:
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
-	void move(const Position to) override ;
+	void move(const vec2<int> to) override ;
 	
 };
 
@@ -330,9 +330,9 @@ public:
 	King(const King & other) :
 		Piece(other) {}
 	
-	King(const ChessColor color, const Position * position, const Board * const * board, const Square * square) ;
+	King(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	King(const wstring & symbol, const Position * position, const Board * const * board, const Square * square) ;
+	King(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	~King() {}
 	
@@ -350,7 +350,7 @@ public:
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
-	void move(const Position to) override ;
+	void move(const vec2<int> to) override ;
 	
 };
 

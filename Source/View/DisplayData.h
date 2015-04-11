@@ -9,7 +9,7 @@
 #ifndef DisplayData_h
 #define DisplayData_h
 
-#include "Position.h"
+#include "../Util/Vect.h"
 
 /**
  * Holds information about the resolution and scaling of the current display

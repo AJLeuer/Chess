@@ -30,10 +30,10 @@ ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
 VideoMode ChessWindow::videoMode = setVideoMode() ;
 
 VideoMode & ChessWindow::setVideoMode() {
-	const vec2<unsigned> baseWindowSize {mainWindowSize.x, mainWindowSize.y} ;
+	const vec2<unsigned> baseWindowSize {mainWindowSize.value.x, mainWindowSize.value.y} ;
 	const float dpiScale (DisplayData::getDisplayScalingFactor<float>()) ;
-	vec2<unsigned> scaledWindowSize { static_cast<unsigned>(baseWindowSize.x * dpiScale), static_cast<unsigned>(baseWindowSize.y * dpiScale) } ;
-	videoMode = VideoMode(scaledWindowSize.x, scaledWindowSize.y) ;
+	vec2<unsigned> scaledWindowSize { static_cast<unsigned>(baseWindowSize.value.x * dpiScale), static_cast<unsigned>(baseWindowSize.value.y * dpiScale) } ;
+	videoMode = VideoMode(scaledWindowSize.value.x, scaledWindowSize.value.y) ;
 	return videoMode ; //self assigns
 }
 
