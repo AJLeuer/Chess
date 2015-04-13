@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Game/Board.h"
-            timestampString = "450413547.131485"
+            filePath = "Source/Game/Game.cpp"
+            timestampString = "450571748.752542"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "Board::runSearchFunction(function&lt;T (vector&lt;const Square *&gt; &amp; squares)&gt; searchFunction, const vec2&lt;int&gt; startingSquarePosition, const vector&lt;Direction&gt; &amp; directions, int searchDistance)"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "Game::testAndDebug()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Game/Piece.cpp"
-            timestampString = "450414470.730936"
+            filePath = "Source/Game/Game.cpp"
+            timestampString = "450571744.443611"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
-            landmarkName = "Pawn::canMove()"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "Game::testAndDebug()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,46 +41,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Game/Piece.cpp"
-            timestampString = "450415615.938059"
+            filePath = "Source/View/DisplayData.cpp"
+            timestampString = "450575546.545821"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
-            landmarkName = "Pawn::canMove()"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Pawn::canMove() const"
-                  moduleName = "Chess"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/OSXHDD/Users/Adam/Developer/Chess/Source/Game/Piece.cpp"
-                  timestampString = "450415615.939818"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "211"
-                  endingLineNumber = "211"
-                  offsetFromSymbolStart = "35">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Pawn::canMove() const::$_1::operator()(std::__1::vector&lt;Square const*, std::__1::allocator&lt;Square const*&gt; &gt;&amp;) const"
-                  moduleName = "Chess"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/OSXHDD/Users/Adam/Developer/Chess/Source/Game/Piece.cpp"
-                  timestampString = "450415615.939969"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "212"
-                  endingLineNumber = "212"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
+            startingLineNumber = "8"
+            endingLineNumber = "8"
+            landmarkName = "inspectDisplayConfiguration()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

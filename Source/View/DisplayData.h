@@ -9,7 +9,14 @@
 #ifndef DisplayData_h
 #define DisplayData_h
 
+#include <CoreGraphics/CoreGraphics.h>
+
 #include "../Util/Vect.h"
+
+/**
+ * Only exists for debugging
+ */
+void inspectDisplayConfiguration() ;
 
 /**
  * Holds information about the resolution and scaling of the current display
@@ -29,6 +36,9 @@ private:
 	 */
 	static float displayScalingFactor_referenceVal ;
 	
+	static CGDirectDisplayID displayID ;
+	static CGDisplayModeRef displayMode ;
+	
 	static void init() ;
 	
 	static vec2<unsigned> calculateScreenResolution() ;
@@ -43,14 +53,15 @@ private:
 	
 public:
 	
-	
-	/**
-	 * Check if we're running in Retina mode
-	 */
-	static bool hiDPI() ;
-	
 	template<typename NumericType = unsigned>
 	static vec2<NumericType> getScreenResolution() ;
+	
+	static double getScreenRefreshRate() ;
+	
+	/**
+	 * Checks if running in Retina mode
+	 */
+	static bool hiDPI() ;
 	
 	/**
 	 * The display scaling factor.

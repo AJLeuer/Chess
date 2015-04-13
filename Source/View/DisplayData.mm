@@ -1,7 +1,6 @@
 
 #ifdef __APPLE__
 
-
 #include "../Util/Util.hpp"
 
 #include "DisplayData.h"
@@ -30,5 +29,6 @@ void DisplayData::calculateDisplayScalingFactor() {
     }
     displayScalingFactor_referenceVal = displayScale ;
 }
+
 
 #endif

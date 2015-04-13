@@ -52,8 +52,7 @@ struct vec2 {
 	}
 	
 	
-	
-	inline constexpr NumericType operator [] (unsigned i) const { return value[i] ; }
+	inline constexpr NumericType operator [] (size_t i) const { return value[i] ; }
 	
 	
 	inline constexpr bool operator == (vec2 other) const { return ((this->value.x == other.value.x) && (this->value.y == other.value.y)) ; }

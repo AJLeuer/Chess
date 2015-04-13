@@ -34,15 +34,20 @@ void Game::updateGameState() {
 }
 
 void Game::testAndDebug() {
+	inspectDisplayConfiguration() ;
+	
 	//all for debugging
+	static Piece * rook ;
 	static Piece * pawn  ;
 	
 	if (gameLoops == 0) {
+		rook = this->board(0, 0)->getPieceMutable() ;
 		pawn = this->board(0, 1)->getPieceMutable() ;
 	}
-
 	
-	bool canMove = pawn->canMove() ;
+	bool rookCanMove = rook->canMove() ;
+	bool pawnCanMove = pawn->canMove() ;
+	
 	vec2<int> pos = *(pawn->getPosition()) ;
 	pos.value.y++ ;
 	pawn->move({pos.value.x, pos.value.y}) ;

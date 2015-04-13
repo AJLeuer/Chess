@@ -4,12 +4,19 @@
 
 #include "DisplayData.h"
 
+void inspectDisplayConfiguration() {
+	auto refreshRate = DisplayData::getScreenRefreshRate() ;
+}
+
 
 bool DisplayData::isInit = false ;
 
 bool DisplayData::hiDPI_referenceVal ;
 
 float DisplayData::displayScalingFactor_referenceVal ;
+
+CGDirectDisplayID DisplayData::displayID = CGMainDisplayID() ;
+CGDisplayModeRef DisplayData::displayMode = CGDisplayCopyDisplayMode(displayID) ;
 
 void DisplayData::init() {
 	
@@ -21,6 +28,10 @@ void DisplayData::init() {
 	
 	isInit = true ;
 	
+}
+
+double DisplayData::getScreenRefreshRate() {
+	return CGDisplayModeGetRefreshRate(displayMode) ;
 }
 
 bool DisplayData::hiDPI() {

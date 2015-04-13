@@ -195,6 +195,56 @@ bool Board::isInsideBoardBounds(const vec2<int> pos) const {
 	}
 }
 
+vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const {
+	
+	vector<const Square *> squares ;
+	
+	for (auto i = 0 ; i < directions.size() ; i++) {
+		
+		vec2<int> offset { directions[i] } ; //directions convert to vectors like (0, 1)
+		
+		for (vec2<int> next = (startingSquarePosition + offset), end = (startingSquarePosition + (directions[i] * searchDistance)); ; next = (next + offset)) {
+			
+			bool searchIsStillWithinBoardBounds = isInsideBoardBounds(next) ;
+			if (searchIsStillWithinBoardBounds) {
+				const Square * nextSquare { getSquare(next) } ;
+				squares.push_back(nextSquare) ;
+			}
+			else if (searchIsStillWithinBoardBounds == false) { //we've gone outside the bounds of the board. we can can safely break out of this loop and avoid more pointless searching, since we know there's nothing in this direction
+				break ;
+			}
+			if (next == end) { //the other way to get out of the loop
+				break ;
+			}
+		}
+	}
+	
+	return squares ;
+}
+
+
+vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, int searchRadius) const {
+	
+	vector<const Square *> squares ;
+	
+	for (vec2<int> currentIndex {(startingSquarePosition.value.x - searchRadius),(startingSquarePosition.value.y - searchRadius) } ;
+		 currentIndex.value.x <=(startingSquarePosition.value.x + searchRadius) ; currentIndex.value.x++) {
+		
+		for (currentIndex.value.y = (startingSquarePosition.value.y - searchRadius) ;
+			 currentIndex.value.y <= (startingSquarePosition.value.y + searchRadius) ; currentIndex.value.y++) {
+			
+			if (isInsideBoardBounds(currentIndex)) {
+				const Square * sq { getSquare(currentIndex) } ;
+				squares.push_back(sq) ;
+			}
+			
+		}
+		
+	}
+	
+	return squares ;
+}
+
 
 const short Board::evaluate(const ChessColor callingPlayersColor) const {
 	
@@ -215,7 +265,7 @@ const short Board::evaluate(const ChessColor callingPlayersColor) const {
 	}
 	
 	if (callingPlayersColor == ChessColor::black) {
-		constexpr short largestShort = numeric_limits<short>::max() ;
+		constexpr short largestShort = numeric_limits<short>::max() ; //debug variable
 		short result = black_sum - white_sum ;
 		return result ;
 	}

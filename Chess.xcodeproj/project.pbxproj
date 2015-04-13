@@ -25,6 +25,7 @@
 		66BE097C1A8E4AC200C5F1CC /* Vect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09721A8E4AC200C5F1CC /* Vect.cpp */; };
 		66BE097D1A8E4AC200C5F1CC /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09751A8E4AC200C5F1CC /* Window.cpp */; };
 		66C10DB81A0030B10074ED36 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66C10DB71A0030B10074ED36 /* main.cpp */; };
+		66E390DD1ADB1937008D4505 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66E390DC1ADB1937008D4505 /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -76,6 +77,7 @@
 		66C10DB41A0030B10074ED36 /* Chess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Chess; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C10DB71A0030B10074ED36 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		66D0AFA41AB6D026001AD733 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
+		66E390DC1ADB1937008D4505 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		66ED80F91AB1B6B3003CA2FC /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
 		66ED80FA1AB1BA60003CA2FC /* Square.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Square.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66E390DD1ADB1937008D4505 /* CoreGraphics.framework in Frameworks */,
 				6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */,
 				66BE095E1A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib in Frameworks */,
 				66BE095F1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib in Frameworks */,
@@ -148,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */,
+				66E390DC1ADB1937008D4505 /* CoreGraphics.framework */,
 				6659B8BE1AB75BB40068B607 /* AppKit.framework */,
 				66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */,
 				66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */,

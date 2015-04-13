@@ -38,7 +38,7 @@ VideoMode & ChessWindow::setVideoMode() {
 }
 
 ChessWindow::ChessWindow(const string & title) :
-	RenderWindow(videoMode, title, Style::Default, ContextSettings())
+	RenderWindow(videoMode, title, sf::Style::Default, ContextSettings())
 {
 	text.setFont(font) ;
 	text.setCharacterSize(60) ;
