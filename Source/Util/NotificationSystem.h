@@ -23,8 +23,8 @@ using namespace std ;
 
 
 enum class EventType {
-	pieceArrivingAtPositionSpecifiedByID,
-	pieceLeavingPositionSpecifiedByID,
+	pieceArrivingAtPositionSpecifiedByPositionID,
+	pieceLeavingPositionSpecifiedByPositionID,
 	pieceSpecifiedByIDWasCaptured,
 	pawnSpecifiedByIDWasPromoted
 	//add any more here

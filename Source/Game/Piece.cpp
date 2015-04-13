@@ -14,23 +14,16 @@
 using namespace std ;
 using namespace Directions ;
 
-unsigned long Piece::iDs = 0 ;
-
 
 Symbols Pawn::symbols {/* black */ L"♟", /* white */ L"♙"} ;
 
-
 Symbols Knight::symbols {/* black */ L"♞", /* white */ L"♘"} ;
-
 
 Symbols Bishop::symbols {/* black */ L"♝", /* white */ L"♗"} ;
 
-
 Symbols Rook::symbols {/* black */ L"♜", /* white */ L"♖"} ;
 
-
 Symbols Queen::symbols {/* black */ L"♛", /* white */ L"♕"} ;
-
 
 Symbols King::symbols {/* black */ L"♚", /* white */ L"♔"} ;
 
@@ -46,6 +39,14 @@ ImageFiles Rook::imageFiles {/* black */ "./Assets/Bitmaps/BlackRook.png", /* wh
 ImageFiles Queen::imageFiles {/* black */ "./Assets/Bitmaps/BlackQueen.png", /* white */ "./Assets/Bitmaps/WhiteQueen.png" } ;
 
 ImageFiles King::imageFiles {/* black */ "./Assets/Bitmaps/BlackKing.png", /* white */ "./Assets/Bitmaps/WhiteKing.png" } ;
+
+
+unsigned long Piece::iDs = 0 ;
+
+sf::Texture & Piece::initSpriteTexture(sf::Texture & spriteTexture, const string & spriteImageFilePath) {
+	spriteTexture.loadFromFile(spriteImageFilePath) ;
+	return spriteTexture ;
+}
 
 
 Piece * Piece::init(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) {
@@ -92,44 +93,54 @@ Piece * Piece::init(const wstring & symbol, const vec2<int> * position, const Bo
 	return piece ;
 }
 
-Piece::Piece (const Piece & other) :
+Piece::Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
 	iD(iDs++),
+	symbol(symbol),
+	color(color),
+	position(position),
+	/* movesMade init to 0 */
+	spriteImageFilePath(spriteImageFilePath),
+	spriteTexture(initSpriteTexture(spriteTexture, spriteImageFilePath)),
+	sprite(spriteTexture),
+	board(board),
+	square(square)
+{
+
+}
+
+Piece::Piece (const Piece & other) :
+	iD(iDs++), //Pieces resulting from copies have their own, unique IDs
 	symbol(other.symbol),
-	spriteImageFilePath(other.spriteImageFilePath),
-	spriteImage(other.spriteImage),
-	sprite(other.sprite),
+	color(other.color),
 	position(other.position),
+	/* movesMade init to 0 */
+	spriteImageFilePath(other.spriteImageFilePath),
+	spriteTexture(sf::Texture(other.spriteTexture)),
+	sprite(this->spriteTexture),
 	board(other.board),
-	square(other.square),
-	color(other.color)
-	/* add any other newer members here */
+	square(other.square)
 {
 	
 }
 
 Piece & Piece::operator = (const Piece & rhs) {
 	if (this != & rhs) {
+		/* Keeps it's own ID */
 		this->symbol = rhs.symbol ;
-		this->spriteImageFilePath = rhs.spriteImageFilePath ;
-		this->spriteImage = rhs.spriteImage ;
-		this->sprite = rhs.sprite ;
+		this->color = rhs.color ;
 		this->position = rhs.position ;
+		/* Keeps own movesMade count */
+		this->spriteImageFilePath = rhs.spriteImageFilePath ;
+		this->spriteTexture = rhs.spriteTexture ;
+		this->sprite = sf::Sprite(this->spriteTexture) ;
 		this->board = rhs.board ;
 		this->square = rhs.square ;
-		this->color = rhs.color ;
-		/* add any other newer members here */
 	}
 	return * this ;
 }
 
-void Piece::move(const vec2<int> to) {
-	sendMoveNotification(to) ;
-	movesMade++ ;
-}
-
-
 const bool Piece::canMove() const {
-
+	
 	auto checkForAvailableSquares = [this] (vector<const Square *> & squares) -> bool {
 		
 		for (auto i = 0 ; i < squares.size() ; i++) { //true if there's a square we can move to that's empty...
@@ -146,6 +157,19 @@ const bool Piece::canMove() const {
 	return (*board)->runSearchFunction<bool>(checkForAvailableSquares, *this->position, getLegalMovementDirections(), 1) ;
 }
 
+vector<const Square *> Piece::getAllPossibleLegalMoves() const {
+	
+	vector<vec2<int>> legalMoves ;
+	
+	return (*board)->getSpecifiedSquares(*this->position, this->getLegalMovementDirections(), true) ;
+}
+
+void Piece::move(const vec2<int> to) {
+	sendMoveNotification(to) ;
+	movesMade++ ;
+}
+
+
 void Piece::sendMoveNotification(const vec2<int> newPosition) {
 	
 	//debug code, remove
@@ -153,8 +177,8 @@ void Piece::sendMoveNotification(const vec2<int> newPosition) {
 		throw std::exception() ;
 	}
 
-	Notification<Piece>::notify(EventType::pieceLeavingPositionSpecifiedByID, this, generateID<int>(*(this->position))) ;
-	Notification<Piece>::notify(EventType::pieceArrivingAtPositionSpecifiedByID, this, generateID<int>(newPosition)) ;
+	Notification<Piece>::notify(EventType::pieceLeavingPositionSpecifiedByPositionID, this, generateID<int>(*(this->position))) ;
+	Notification<Piece>::notify(EventType::pieceArrivingAtPositionSpecifiedByPositionID, this, generateID<int>(newPosition)) ;
 }
 
 Pawn::Pawn(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :

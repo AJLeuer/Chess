@@ -41,7 +41,7 @@ protected:
 public:
 	
 	/* Any other constructors should call this as a delegating constructor */
-	Player(ChessColor color, const Board & board) ;
+	explicit Player(ChessColor color, const Board & board) ;
 	
 	Player(const Player & other) = delete ;
 	
@@ -63,7 +63,7 @@ public:
 	
 	void registerForNotifications() ;
 	
-	virtual Piece::Move decideNextMove() ;
+	virtual Piece::Move decideNextMove() = 0 ;
 	
 };
 

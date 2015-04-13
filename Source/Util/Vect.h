@@ -267,12 +267,11 @@ protected:
 	static constexpr unsigned short RANK_FIRST {1} ;
 	static constexpr unsigned short RANK_LAST  {8} ;
 	
-	char file ;
-	
-	unsigned rank ;
-	
 	static char convertToFile(const unsigned x) ;
 	static unsigned convertToRank(const unsigned y) ;
+	
+	char file ;
+	unsigned rank ;
 	
 	friend void runChessGameTests() ;
 	

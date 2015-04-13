@@ -66,15 +66,25 @@ public:
 	Board & operator = (const Board & other) ;
 	
 	/**
-	 * Array access
+	 * @return A pointer to the Square at the position specified by x and y
 	 *
-	 * @note see getSquare()
+	 * @seealso getSquare()
 	 */
 	const Square * operator () (unsigned arrIndexX, unsigned arrIndexY) const ;
 	
-	const Square * getSquare(const RankAndFile &) const ;
+	/**
+	 * @return A pointer to the Square at the position specified by rf
+	 *
+	 * @seealso operator () (unsigned, unsigned)
+	 */
+	const Square * getSquare(const RankAndFile & rf) const ;
 	
-	const Square * getSquare(const vec2<int>) const ;
+	/**
+	 * @param pos The position of the Square to return
+	 *
+	 * @return A pointer to the Square at the position specified by pos
+	 */
+	const Square * getSquare(const vec2<int> pos) const ;
 	
 	const Square * getSquare(unsigned x, unsigned y) const ;
 	
@@ -91,7 +101,21 @@ public:
 	friend basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Board & board) ;
 	
 	/**
-	 * @return A vector of filled with Squares that match the given criteria
+	 * @return A vector of Squares that match the given criteria
+	 *
+	 * @param startingSquarePosition The position of the first square processed
+	 * @param directions The directions in which to search
+	 * @param stopAtFirstPiece Whether, for every specified direction searched, the function should stop when it first encounters a Square holding a
+	 * piece, or continue to the edge of the board
+	 *
+	 * @note Unlike the overload getSpecifiedSquares(const vec2<int>, const vector<Direction> &, int), this version of the function
+	 * searches to the edge of the board in every specified direction (unless the parameter stopAtFirstPiece is given as true, in which
+	 * case, for every direction searched, the function will only search as far as the first Square with a piece on it).
+	 */
+	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, bool stopAtFirstPiece) const ;
+	
+	/**
+	 * @return A vector of Squares that match the given criteria
 	 *
 	 * @param startingSquarePosition The position of the first square processed
 	 * @param directions The directions in which to search
@@ -100,7 +124,7 @@ public:
 	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const ;
 	
 	/**
-	 * @return A vector of filled with Squares that match the given criteria
+	 * @return A vector of Squares that match the given criteria
 	 *
 	 * @param startingSquarePosition The position of the first square processed
 	 * @param searchRadius Specifies the range of other squares to include

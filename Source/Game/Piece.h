@@ -52,23 +52,32 @@ protected:
 	
 	static unsigned long iDs ;
 	
+	static sf::Texture & initSpriteTexture(sf::Texture & spriteTexture, const string & spriteImageFilePath) ;
+	
+	
 	unsigned long iD ;
 	
 	wstring symbol ;
 	
-	string spriteImageFilePath ;
-	
-	sf::Image spriteImage ;
-	
-	sf::Sprite sprite ;
+	ChessColor color ;
 	
 	const vec2<int> * position = nullptr ;
+	
+	unsigned movesMade = 0 ;
+	
+	string spriteImageFilePath ;
+
+	sf::Texture spriteTexture ;
+	
+	sf::Sprite sprite ;
 	
 	const Board * const * board ;
 	
 	const Square * square ;
 	
-	unsigned movesMade = 0 ;
+	
+
+	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const vec2<int> * position, const Board * const * board, const Square *square) ;
 	
 	const Board * const * getBoard() const { return board ; }
 	
@@ -96,6 +105,19 @@ public:
 	virtual ~Piece() {} ; //position isn't ours, don't delete it
 	
 	Piece & operator = (const Piece & rhs) ;
+	
+	/**
+	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * false otherwise
+	 */
+	virtual const bool canMove() const ;
+	
+	/**
+	 * @return a std::vector that is either filled with vec2 objects representing
+	 * the positions of Squares this Piece can legally move to, or, if there are
+	 * no such Squares, empty
+	 */
+	virtual vector<const Square *> getAllPossibleLegalMoves() const ;
 
 	/**
 	 * Moves the piece to it's new square, and notifies both the Square object
@@ -105,11 +127,6 @@ public:
 	
 	const unsigned long getID() const { return iD ; }
 	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
-	 * false otherwise
-	 */
-	virtual const bool canMove() const ;
 	
 	const ChessColor getColor() const { return color ; }
 	
@@ -128,26 +145,7 @@ public:
 	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Piece &) ;
 	
 	friend int main(int argc, const char * argv[]) ;
-	
-protected:
-	
-	ChessColor color ;
 
-	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
-		iD(iDs++),
-		symbol(symbol),
-		spriteImageFilePath(spriteImageFilePath),
-		color(color),
-		position(position),
-		board(board),
-		square(square)
-	{
-		bool loadedImageOK = spriteImage.loadFromFile(spriteImageFilePath) ;
-		sf::Texture texture ;
-		texture.loadFromImage(spriteImage) ;
-		sprite.setTexture(texture) ;
-	}
-	
 };
 
 

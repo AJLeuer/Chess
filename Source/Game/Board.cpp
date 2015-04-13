@@ -100,10 +100,10 @@ void Square::registerForPieceMovement() {
 	using namespace std::placeholders ;
 	
 	auto receiveMovingP = std::bind(&Square::receiveMovingPiece, this, _1) ;
-	Notification<Piece> notifyWhenPieceMovesHere (EventType::pieceArrivingAtPositionSpecifiedByID, receiveMovingP, generateID<int>(this->getPosition())) ;
+	Notification<Piece> notifyWhenPieceMovesHere (EventType::pieceArrivingAtPositionSpecifiedByPositionID, receiveMovingP, generateID<int>(this->getPosition())) ;
 	
 	auto clearCurrentP = std::bind(& Square::clearCurrentPiece, this, _1) ;
-	Notification<Piece> notifyWhenPieceLeaves (EventType::pieceLeavingPositionSpecifiedByID, clearCurrentP, generateID<int>(this->getPosition())) ;
+	Notification<Piece> notifyWhenPieceLeaves (EventType::pieceLeavingPositionSpecifiedByPositionID, clearCurrentP, generateID<int>(this->getPosition())) ;
 	
 	notifyWhenPieceMovesHere.registerForCallback() ;
 	notifyWhenPieceLeaves.registerForCallback() ;
@@ -182,8 +182,8 @@ Board & Board::operator = (const Board & other) {
 }
 
 bool Board::isInsideBoardBounds(const vec2<int> pos) const {
-	if (pos.value.x < boardRepresentation.size()) {
-		if (pos.value.y < boardRepresentation[pos.value.x].size()) {
+	if ((pos.value.x >= 0) && (pos.value.x < boardRepresentation.size())) {
+		if ((pos.value.y >= 0) && (pos.value.y < boardRepresentation[pos.value.x].size())) {
 			return true ;
 		}
 		else {
@@ -193,6 +193,34 @@ bool Board::isInsideBoardBounds(const vec2<int> pos) const {
 	else {
 		return false ;
 	}
+}
+
+vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, bool stopAtFirstPiece) const {
+	
+	vector<const Square *> squares ;
+	
+	for (auto i = 0 ; i < directions.size() ; i++) {
+		
+		vec2<int> offset { directions[i] } ; //directions convert to vectors like (0, 1)
+		
+		for (vec2<int> next = (startingSquarePosition + offset) ; ; next = (next + offset)) {
+			
+			bool searchIsStillWithinBoardBounds = isInsideBoardBounds(next) ;
+			
+			if (searchIsStillWithinBoardBounds) {
+				const Square * nextSquare { getSquare(next) } ;
+				squares.push_back(nextSquare) ;
+			}
+			else if (searchIsStillWithinBoardBounds == false) { //we've gone outside the bounds of the board. we can can safely break out of this loop and avoid more pointless searching, since we know there's nothing in this direction
+				break ;
+			}
+			if ((stopAtFirstPiece) && (getSquare(next)->isOccupied())) { //the other way to get out of the loop
+				break ;
+			}
+		}
+	}
+	
+	return squares ;
 }
 
 vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const {

@@ -121,11 +121,6 @@ void Player::registerForNotifications() {
 	}
 }
 
-Piece::Move Player::decideNextMove() {
-	return Piece::Move() ;
-}
-
-
 Piece::Move Human::decideNextMove() {
 	return Piece::Move() ; //todo: implement
 }
