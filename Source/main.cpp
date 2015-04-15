@@ -9,18 +9,27 @@
 #include <iostream>
 #include <chrono>
 #include <functional>
+#include <vector>
+#include <list>
+#include <typeinfo>
 
 #include "Config.h"
 #include "./Util/Vect.h"
 #include "./Game/Game.h"
 
 using namespace std ;
+using namespace Chess ;
 
 
 int main(int argc, const char * argv[]) {
-	currentDirectory = *argv ;
-
 	
+	currentDirectory = * argv ;
+	
+	
+
+
+
+
 	Game game ;
 	game.playDebugGame() ;
 

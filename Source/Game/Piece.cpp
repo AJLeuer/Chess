@@ -14,18 +14,19 @@
 using namespace std ;
 using namespace Directions ;
 
+namespace Chess {
 
-Symbols Pawn::symbols {/* black */ L"♟", /* white */ L"♙"} ;
+Symbols Pawn::symbols {/* black */ L'♟', /* white */ L'♙'} ;
 
-Symbols Knight::symbols {/* black */ L"♞", /* white */ L"♘"} ;
+Symbols Knight::symbols {/* black */ L'♞', /* white */ L'♘'} ;
 
-Symbols Bishop::symbols {/* black */ L"♝", /* white */ L"♗"} ;
+Symbols Bishop::symbols {/* black */ L'♝', /* white */ L'♗'} ;
 
-Symbols Rook::symbols {/* black */ L"♜", /* white */ L"♖"} ;
+Symbols Rook::symbols {/* black */ L'♜', /* white */ L'♖'} ;
 
-Symbols Queen::symbols {/* black */ L"♛", /* white */ L"♕"} ;
+Symbols Queen::symbols {/* black */ L'♛', /* white */ L'♕'} ;
 
-Symbols King::symbols {/* black */ L"♚", /* white */ L"♔"} ;
+Symbols King::symbols {/* black */ L'♚', /* white */ L'♔'} ;
 
 
 ImageFiles Pawn::imageFiles {/* black */ "./Assets/Bitmaps/BlackPawn.png", /* white */ "./Assets/Bitmaps/WhitePawn.png" } ;
@@ -49,43 +50,43 @@ sf::Texture & Piece::initSpriteTexture(sf::Texture & spriteTexture, const string
 }
 
 
-Piece * Piece::init(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) {
+Piece * Piece::init(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) {
 	Piece * piece ;
 	if (symbol == Pawn::symbols.white) {
-		piece = new Pawn(ChessColor::white, position, board, square) ;
+		piece = new Pawn(Chess::Color::white, position, board, square) ;
 	}
 	else if (symbol == Pawn::symbols.black) {
-		piece = new Pawn(ChessColor::black, position, board, square) ;
+		piece = new Pawn(Chess::Color::black, position, board, square) ;
 	}
 	else if (symbol == Knight::symbols.white) {
-		piece = new Knight(ChessColor::white, position, board, square) ;
+		piece = new Knight(Chess::Color::white, position, board, square) ;
 	}
 	else if (symbol == Knight::symbols.black) {
-		piece = new Knight(ChessColor::black, position, board, square) ;
+		piece = new Knight(Chess::Color::black, position, board, square) ;
 	}
 	else if (symbol == Bishop::symbols.white) {
-		piece = new Bishop(ChessColor::white, position, board, square) ;
+		piece = new Bishop(Chess::Color::white, position, board, square) ;
 	}
 	else if (symbol == Bishop::symbols.black) {
-		piece = new Bishop(ChessColor::black, position, board, square) ;
+		piece = new Bishop(Chess::Color::black, position, board, square) ;
 	}
 	else if (symbol == Rook::symbols.white) {
-		piece = new Rook(ChessColor::white, position, board, square) ;
+		piece = new Rook(Chess::Color::white, position, board, square) ;
 	}
 	else if (symbol == Rook::symbols.black) {
-		piece = new Rook(ChessColor::black, position, board, square) ;
+		piece = new Rook(Chess::Color::black, position, board, square) ;
 	}
 	else if (symbol == Queen::symbols.white) {
-		piece = new Queen(ChessColor::white, position, board, square) ;
+		piece = new Queen(Chess::Color::white, position, board, square) ;
 	}
 	else if (symbol == Queen::symbols.black) {
-		piece = new Queen(ChessColor::black, position, board, square) ;
+		piece = new Queen(Chess::Color::black, position, board, square) ;
 	}
 	else if (symbol == King::symbols.white) {
-		piece = new King(ChessColor::white, position, board, square) ;
+		piece = new King(Chess::Color::white, position, board, square) ;
 	}
 	else if (symbol == King::symbols.black) {
-		piece = new King(ChessColor::black, position, board, square) ;
+		piece = new King(Chess::Color::black, position, board, square) ;
 	}
 	else {
 		piece = nullptr ;
@@ -93,7 +94,8 @@ Piece * Piece::init(const wstring & symbol, const vec2<int> * position, const Bo
 	return piece ;
 }
 
-Piece::Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
+Piece::Piece(Type type, const wchar_t symbol, const string & spriteImageFilePath, const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) :
+	type(type),
 	iD(iDs++),
 	symbol(symbol),
 	color(color),
@@ -109,6 +111,7 @@ Piece::Piece(const wstring & symbol, const string & spriteImageFilePath, const C
 }
 
 Piece::Piece (const Piece & other) :
+	type(other.type),
 	iD(iDs++), //Pieces resulting from copies have their own, unique IDs
 	symbol(other.symbol),
 	color(other.color),
@@ -154,14 +157,17 @@ const bool Piece::canMove() const {
 		return false ;
 	} ;
 	
-	return (*board)->runSearchFunction<bool>(checkForAvailableSquares, *this->position, getLegalMovementDirections(), 1) ;
+	vector<const Square *> squares = (*board)->getSpecifiedSquares(* getPosition(), getLegalMovementDirections(), 1, getOpposite(this->getColor()), this->getColor()) ;
+	
+	return checkForAvailableSquares(squares) ;
 }
 
 vector<const Square *> Piece::getAllPossibleLegalMoves() const {
 	
 	vector<vec2<int>> legalMoves ;
 	
-	return (*board)->getSpecifiedSquares(*this->position, this->getLegalMovementDirections(), true) ;
+	return (*board)->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
+										 getOpposite(getColor()), getColor()) ;
 }
 
 void Piece::move(const vec2<int> to) {
@@ -177,13 +183,14 @@ void Piece::sendMoveNotification(const vec2<int> newPosition) {
 		throw std::exception() ;
 	}
 
-	Notification<Piece>::notify(EventType::pieceLeavingPositionSpecifiedByPositionID, this, generateID<int>(*(this->position))) ;
-	Notification<Piece>::notify(EventType::pieceArrivingAtPositionSpecifiedByPositionID, this, generateID<int>(newPosition)) ;
+	Notification<Piece>::notify(EventType::pieceLeavingPositionSpecifiedByPositionID, this, {(*board)->getID(), generateID<int>(*(this->position))}) ;
+	Notification<Piece>::notify(EventType::pieceArrivingAtPositionSpecifiedByPositionID, this, {(*board)->getID(), generateID<int>(newPosition)}) ;
 }
 
-Pawn::Pawn(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
-		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
+Pawn::Pawn(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Pawn,
+		  (color == Chess::Color::black) ? symbols.black : symbols.white,
+		  (color == Chess::Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -192,15 +199,26 @@ Pawn::Pawn(const ChessColor color, const vec2<int> * position, const Board * con
 	sprite.setPosition(50, 50) ;
 }
 
-Pawn::Pawn(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+Pawn::Pawn(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Pawn,
+		  (symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
+		  (symbol == symbols.black) ? Chess::Color::black : Chess::Color::white,
 		  position,
 		  board,
 		  square)
 {
 	
+}
+	
+vector<const Square *> Pawn::getAllPossibleLegalMoves() const {
+	
+	vector<const Square *> emptySquares = (*board)->getSpecifiedSquares(* getPosition(), {getLegalMovementDirectionToEmptySquares()}, (movesMade == 0) ? 2 : 1, getOpposite(getColor()), getColor()) ;
+	
+	
+	vector<const Square *> captureSquares = (*board)->getSpecifiedSquares(* getPosition(), {getLegalCaptureDirections()}, 1, getOpposite(getColor()), getColor()) ;
+	
+	return emptySquares + captureSquares ;
 }
 
 const vector<Direction> Pawn::getLegalMovementDirections() const {
@@ -208,19 +226,19 @@ const vector<Direction> Pawn::getLegalMovementDirections() const {
 }
 
 const vector<Direction> Pawn::getLegalCaptureDirections() const {
-	if (this->color == ChessColor::black) {
+	if (this->color == Chess::Color::black) {
 		return vector<Direction> { downLeft, downRight } ;
 	}
-	else /* if (this->color == ChessColor::white) */ {
+	else /* if (this->color == Chess::Color::white) */ {
 		return vector<Direction> { upLeft, upRight } ;
 	}
 }
 
 Direction Pawn::getLegalMovementDirectionToEmptySquares() const {
-	if (this->color == ChessColor::black) {
+	if (this->color == Chess::Color::black) {
 		return down ;
 	}
-	else /* if (this->color == ChessColor::white) */ {
+	else /* if (this->color == Chess::Color::white) */ {
 		return up ;
 	}
 }
@@ -251,18 +269,22 @@ const bool Pawn::canMove() const {
 		return false ;
 	} ;
 	
+	vector<const Square *> emptySquares = (*board)->getSpecifiedSquares(*getPosition(), {getLegalMovementDirectionToEmptySquares()}, (movesMade == 0) ? 2 : 1, getOpposite(getColor()), getColor()) ;
+
 	
-	bool canMoveToEmptySquare = (*board)->runSearchFunction<bool>(checkForEmptyMoveableSquares, *this->position, {getLegalMovementDirectionToEmptySquares()}, (movesMade == 0) ? 2 : 1) ; //check 2x as far at beginning of game
+	vector<const Square *> captureSquares = (*board)->getSpecifiedSquares(*getPosition(), {getLegalCaptureDirections()}, 1, getOpposite(getColor()), getColor()) ;
 	
-	bool canCapture = (*board)->runSearchFunction<bool>(checkForCapturableSquares, *this->position, getLegalCaptureDirections(), 1) ;
+	bool canMoveToEmptySquare = checkForEmptyMoveableSquares(emptySquares) ;
+	bool canCapture = checkForCapturableSquares(captureSquares) ;
 	
 	return (canMoveToEmptySquare || canCapture) ;
 }
 
 
-Knight::Knight(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
-		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
+Knight::Knight(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Knight,
+		  (color == Chess::Color::black) ? symbols.black : symbols.white,
+		  (color == Chess::Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -271,17 +293,26 @@ Knight::Knight(const ChessColor color, const vec2<int> * position, const Board *
 	
 }
 
-Knight::Knight(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+Knight::Knight(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Knight,
+		  (symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
+		  (symbol == symbols.black) ? Chess::Color::black : Chess::Color::white,
 		  position,
 		  board,
 		  square)
 {
 	
 }
-
+	
+vector<const Square *> Knight::getAllPossibleLegalMoves() const {
+	
+	vector<vec2<int>> legalMoves ;
+	
+	return (*board)->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
+										 1, getOpposite(getColor()), getColor()) ;
+}
+	
 const vector<Direction> Knight::getLegalMovementDirections() const {
 	
 	vector<Direction> directions ;
@@ -307,9 +338,10 @@ void Knight::move(const vec2<int> to) {
 	Piece::move(to) ;
 }
 
-Bishop::Bishop(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
-		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
+Bishop::Bishop(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Bishop,
+		  (color == Chess::Color::black) ? symbols.black : symbols.white,
+		  (color == Chess::Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -318,10 +350,11 @@ Bishop::Bishop(const ChessColor color, const vec2<int> * position, const Board *
 	
 }
 
-Bishop::Bishop(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+Bishop::Bishop(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Bishop,
+		  (symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
+		  (symbol == symbols.black) ? Chess::Color::black : Chess::Color::white,
 		  position,
 		  board,
 		  square)
@@ -339,9 +372,10 @@ void Bishop::move(const vec2<int> to) {
 }
 
 
-Rook::Rook(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
-		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
+Rook::Rook(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Rook,
+		  (color == Chess::Color::black) ? symbols.black : symbols.white,
+		  (color == Chess::Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -350,10 +384,11 @@ Rook::Rook(const ChessColor color, const vec2<int> * position, const Board * con
 	
 }
 
-Rook::Rook(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+Rook::Rook(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Rook,
+		  (symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
+		  (symbol == symbols.black) ? Chess::Color::black : Chess::Color::white,
 		  position,
 		  board,
 		  square)
@@ -370,9 +405,10 @@ void Rook::move(const vec2<int> to) {
 	Piece::move(to) ;
 }
 
-Queen::Queen(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
-		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
+Queen::Queen(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Queen,
+		  (color == Chess::Color::black) ? symbols.black : symbols.white,
+		  (color == Chess::Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -381,10 +417,11 @@ Queen::Queen(const ChessColor color, const vec2<int> * position, const Board * c
 	
 }
 
-Queen::Queen(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+Queen::Queen(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::Queen,
+		  (symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
+		  (symbol == symbols.black) ? Chess::Color::black : Chess::Color::white,
 		  position,
 		  board,
 		  square)
@@ -403,9 +440,10 @@ void Queen::move(const vec2<int> to) {
 }
 
 
-King::King(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((color == ChessColor::black) ? symbols.black : symbols.white,
-		  (color == ChessColor::black) ? imageFiles.black : imageFiles.white,
+King::King(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::King,
+		  (color == Chess::Color::black) ? symbols.black : symbols.white,
+		  (color == Chess::Color::black) ? imageFiles.black : imageFiles.white,
 		  color,
 		  position,
 		  board,
@@ -414,10 +452,11 @@ King::King(const ChessColor color, const vec2<int> * position, const Board * con
 	
 }
 
-King::King(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
-	Piece((symbol == symbols.black) ? symbols.black : symbols.white,
+King::King(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) :
+	Piece(Type::King,
+		  (symbol == symbols.black) ? symbols.black : symbols.white,
 		  (symbol == symbols.black) ? imageFiles.black : imageFiles.white,
-		  (symbol == symbols.black) ? ChessColor::black : ChessColor::white,
+		  (symbol == symbols.black) ? Chess::Color::black : Chess::Color::white,
 		  position,
 		  board,
 		  square)
@@ -446,8 +485,16 @@ basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Piece 
 	out << piece.getSymbol() ;
 	return out ;
 }
+	
 
 
 
 
 
+
+	
+	
+	
+	
+	
+}

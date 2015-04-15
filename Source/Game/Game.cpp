@@ -10,10 +10,12 @@
 
 using namespace std ;
 
+namespace Chess {
+
 Game::Game() :
 	board(),	/* Note: Must be initialized first */
-	player0(new AI(ChessColor::white, this->board)), //holds references to pieces at index (0, 0) through (1, 15)
-	player1(new Human(ChessColor::black, this->board)) //holds references to pieces at index (6, 0) through (7, 7)
+	player0(new AI(Chess::Color::white, & this->board)), //holds references to pieces at index (0, 0) through (1, 15)
+	player1(new Human(Chess::Color::black, & this->board)) //holds references to pieces at index (6, 0) through (7, 7)
 {
 	
 }
@@ -125,7 +127,7 @@ void Game::monitorMouse() {
 }
 
 
-
+}
 
 
 

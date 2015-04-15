@@ -273,9 +273,13 @@ protected:
 	char file ;
 	unsigned rank ;
 	
+	friend struct Square ;
+	
 	friend void runChessGameTests() ;
 	
 public:
+	
+	RankAndFile() {}
 	
 	RankAndFile(const char & file, const unsigned rank) : file(file), rank(rank) {}
 	

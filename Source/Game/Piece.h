@@ -10,6 +10,7 @@
 #define __Chess__Piece__
 
 #include <iostream>
+#include <memory>
 #include <functional>
 #include <string>
 #include <exception>
@@ -20,7 +21,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-#include "Color.h"
+#include "Chess.h"
 
 #include "../Util/Config.h"
 #include "../Util/Util.h"
@@ -28,13 +29,13 @@
 #include "../Util/Vect.h"
 #include "../Util/NotificationSystem.h"
 
-
+namespace Chess {
 
 using namespace std ;
 
 struct Symbols {
-	const wstring black ;
-	const wstring white ;
+	const wchar_t black ;
+	const wchar_t white ;
 } ;
 
 struct ImageFiles {
@@ -48,6 +49,20 @@ class Square ;
 
 class Piece {
 	
+public:
+	
+	/* Note to the standards committee - C++ needs nested enums */
+	enum class Type {
+		GenericPiece,
+		Pawn,
+		Knight,
+		Bishop,
+		Rook,
+		Queen,
+		King
+	} ;
+	
+	
 protected:
 	
 	static unsigned long iDs ;
@@ -55,11 +70,13 @@ protected:
 	static sf::Texture & initSpriteTexture(sf::Texture & spriteTexture, const string & spriteImageFilePath) ;
 	
 	
-	unsigned long iD ;
+	Type type ;
 	
-	wstring symbol ;
+	const unsigned long iD ;
 	
-	ChessColor color ;
+	wchar_t symbol ;
+	
+	Chess::Color color ;
 	
 	const vec2<int> * position = nullptr ;
 	
@@ -74,10 +91,8 @@ protected:
 	const Board * const * board ;
 	
 	const Square * square ;
-	
-	
 
-	Piece(const wstring & symbol, const string & spriteImageFilePath, const ChessColor color, const vec2<int> * position, const Board * const * board, const Square *square) ;
+	Piece(Type type, const wchar_t symbol, const string & spriteImageFilePath, const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square *square) ;
 	
 	const Board * const * getBoard() const { return board ; }
 	
@@ -87,34 +102,34 @@ protected:
 	
 	inline void clearCurrentPosition() { setCurrentPosition(nullptr) ; }
 	
+	
+	friend class TemporaryPiece ;
+	
 	friend class Square ;
 	
 	friend void runTests() ;
 	
+	friend int main(int, const char **) ; //for debug and devel only, remove
+	
 public:
 	
-	struct Move {
-		Piece * piece ;
-		Square * destination ;
-	} ;
-	
-	static Piece * init(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+
+	static Piece * init(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
 	Piece (const Piece & other) ;
 	
 	virtual ~Piece() {} ; //position isn't ours, don't delete it
 	
-	Piece & operator = (const Piece & rhs) ;
+	virtual Piece & operator = (const Piece & rhs) ;
 	
 	/**
-	 * Returns true if there exists at least one Square that this Piece can move to,
+	 * Returns true if there exists at least one Square that this Piece can legally move to,
 	 * false otherwise
 	 */
 	virtual const bool canMove() const ;
 	
 	/**
-	 * @return a std::vector that is either filled with vec2 objects representing
-	 * the positions of Squares this Piece can legally move to, or, if there are
+	 * @return a std::vector that is either filled with the Squares this Piece can legally move to, or, if there are
 	 * no such Squares, empty
 	 */
 	virtual vector<const Square *> getAllPossibleLegalMoves() const ;
@@ -125,18 +140,18 @@ public:
 	 */
 	virtual void move(const vec2<int> to) ;//inheriting pieces will define
 	
+	
 	const unsigned long getID() const { return iD ; }
 	
+	inline const Chess::Color getColor() const { return color ; }
 	
-	const ChessColor getColor() const { return color ; }
-	
-	const wstring & getSymbol() const { return symbol ; }
+	const wchar_t & getSymbol() const { return symbol ; }
 	
 	const sf::Sprite & getSprite() const { return sprite ; }
 	
-	const vec2<int> * getPosition() const { return position ; }
+	virtual const vec2<int> * getPosition() const { return position ; }
 	
-	virtual const float getValue() const = 0 ;
+	virtual const unsigned int getValue() const = 0 ;
 	
 	virtual const vector<Direction> getLegalMovementDirections() const = 0 ;
 	
@@ -150,31 +165,38 @@ public:
 
 
 
-class Pawn : public Piece {
+class Pawn : virtual public Piece {
 	
 public:
 	
 	static Symbols symbols ;
 	
 	static ImageFiles imageFiles ;
-	
-	Pawn(const Pawn & other) :
+
+	Pawn(const Piece & other) :
 		Piece(other) {}
 	
-	Pawn(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Pawn(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Pawn(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Pawn(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	~Pawn() {}
+	virtual ~Pawn() {}
 	
-	Pawn & operator = (const Pawn & other) {
+	virtual Pawn & operator = (const Pawn & other) {
 		if (this != & other) {
 			this->Piece::operator=(other) ;
 		}
 		return * this ;
 	}
 	
-	const float getValue() const override { return 1 ; }
+
+	const unsigned int getValue() const override { return 1 ; }
+	
+	/**
+	 * @return a std::vector that is either filled with the Squares this Pawn can legally move to, or, if there are
+	 * no such Squares, empty
+	 */
+	virtual vector<const Square *> getAllPossibleLegalMoves() const ;
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -188,7 +210,8 @@ public:
 	
 } ;
 
-class Knight : public Piece {
+class Knight : virtual public Piece {
+
 	
 public:
 	
@@ -196,23 +219,30 @@ public:
 	
 	static ImageFiles imageFiles ;
 	
-	Knight(const Knight & other) :
+	Knight(const Piece & other) :
 		Piece(other) {}
 	
-	Knight(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Knight(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Knight(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Knight(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	~Knight() {}
+	virtual ~Knight() {}
 	
-	Knight & operator = (const Knight & other) {
+	virtual Knight & operator = (const Knight & other) {
 		if (this != & other) {
 			this->Piece::operator=(other) ;
 		}
 		return * this ;
 	}
 	
-	const float getValue() const override { return 3 ; }
+	
+	const unsigned int getValue() const override { return 3 ; }
+	
+	/**
+	 * @return a std::vector that is either filled with the Squares this Knight can legally move to, or, if there are
+	 * no such Squares, empty
+	 */
+	virtual vector<const Square *> getAllPossibleLegalMoves() const ;
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -220,7 +250,7 @@ public:
 	
 };
 
-class Bishop : public Piece {
+class Bishop : virtual public Piece {
 	
 public:
 	
@@ -228,23 +258,23 @@ public:
 	
 	static ImageFiles imageFiles ;
 	
-	Bishop(const Bishop & other) :
+	Bishop(const Piece & other) :
 		Piece(other) {}
 
-	Bishop(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Bishop(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Bishop(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Bishop(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	~Bishop() {}
+	virtual ~Bishop() {}
 	
-	Bishop & operator = (const Bishop & other) {
+	virtual Bishop & operator = (const Bishop & other) {
 		if (this != & other) {
 			this->Piece::operator=(other) ;
 		}
 		return * this ;
 	}
 	
-	virtual const float getValue() const override { return 3 ; }
+	const unsigned int getValue() const override { return 3 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -253,7 +283,7 @@ public:
 };
 
 
-class Rook : public Piece {
+class Rook : virtual public Piece {
 
 public:
 	
@@ -261,23 +291,23 @@ public:
 	
 	static ImageFiles imageFiles ;
 	
-	Rook(const Rook & other) :
+	Rook(const Piece & other) :
 		Piece(other) {}
 
-	Rook(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Rook(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Rook(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Rook(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	~Rook() {}
+	virtual ~Rook() {}
 	
-	Rook & operator = (const Rook & other) {
+	virtual Rook & operator = (const Rook & other) {
 		if (this != & other) {
 			this->Piece::operator=(other) ;
 		}
 		return * this ;
 	}
 	
-	virtual const float getValue() const override { return 5 ; }
+	const unsigned int getValue() const override { return 5 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -285,7 +315,7 @@ public:
 
 };
 
-class Queen : public Piece {
+class Queen : virtual public Piece {
 	
 public:
 	
@@ -293,23 +323,23 @@ public:
 	
 	static ImageFiles imageFiles ;
 	
-	Queen(const Queen & other) :
+	Queen(const Piece & other) :
 		Piece(other) {}
 	
-	Queen(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Queen(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	Queen(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Queen(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	~Queen() {}
+	virtual ~Queen() {}
 	
-	Queen & operator = (const Queen & other) {
+	virtual Queen & operator = (const Queen & other) {
 		if (this != & other) {
 			this->Piece::operator=(other) ;
 		}
 		return * this ;
 	}
 	
-	virtual const float getValue() const override { return 9 ; }
+	const unsigned int getValue() const override { return 9 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -317,7 +347,7 @@ public:
 	
 };
 
-class King : public Piece {
+class King : virtual public Piece {
 
 public:
 	
@@ -325,16 +355,16 @@ public:
 	
 	static ImageFiles imageFiles ;
 	
-	King(const King & other) :
+	King(const Piece & other) :
 		Piece(other) {}
 	
-	King(const ChessColor color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	King(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	King(const wstring & symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	King(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
 	
-	~King() {}
+	virtual ~King() {}
 	
-	King & operator = (const King & other) {
+	virtual King & operator = (const King & other) {
 		if (this != & other) {
 			this->Piece::operator=(other) ;
 		}
@@ -344,7 +374,7 @@ public:
 	/**
 	 * Equal to the combined values of all other Pieces, plus 1
 	 */
-	virtual const float getValue() const override { return 40 ; }
+	const unsigned int getValue() const override { return 40 ; }
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -354,5 +384,8 @@ public:
 
 
 
+
+
+}
 
 #endif /* defined(__Chess__Piece__) */

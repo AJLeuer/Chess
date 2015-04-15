@@ -27,6 +27,8 @@
 
 using namespace std ;
 
+namespace Chess {
+
 class Game {
 	
 protected:
@@ -70,6 +72,8 @@ public:
 	void playDebugGame() ;
 	
 };
+	
+}
 
 
 #endif /* defined(__Chess__Game__) */

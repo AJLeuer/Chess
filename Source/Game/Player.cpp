@@ -10,14 +10,16 @@
 
 using namespace std ;
 
+namespace Chess {
+
 unsigned long Player::uniqueIDs = 1 ;
 
 
-list <Piece *> Player::initPieces(ChessColor playerColor, const Board & board) {
+list <Piece *> Player::initPieces(Chess::Color playerColor, const Board & board) {
 	
 	list<Piece *> pieces ;
 	
-	if (playerColor == ChessColor::black) { //grab black's squares at their starting positions
+	if (playerColor == Chess::Color::black) { //grab black's squares at their starting positions
 		
 		for (auto x = 0 ; x < board.boardRepresentation.size() ; x++) {
 			
@@ -33,7 +35,7 @@ list <Piece *> Player::initPieces(ChessColor playerColor, const Board & board) {
 		}
 	}
 	
-	else /* if (playerColor == ChessColor::white) */ { //grab white's squares at their starting positions
+	else /* if (playerColor == Chess::Color::white) */ { //grab white's squares at their starting positions
 		
 		for (auto x = 0 ; x < board.boardRepresentation.size() ; x++) {
 			
@@ -53,11 +55,12 @@ list <Piece *> Player::initPieces(ChessColor playerColor, const Board & board) {
 }
 
 
-Player::Player(ChessColor color, const Board & board) :
+Player::Player(Chess::Color color, Board * board) :
 	ID(uniqueIDs++),
 	name("Player " + to_string(ID)),
 	color(color),
-	startingPieces(initPieces(color, board)),
+	board(board),
+	startingPieces(initPieces(color, * board)),
 	remainingPieces()
 {
 	remainingPieces = startingPieces ;
@@ -87,6 +90,19 @@ Player & Player::operator = (Player && other) {
 	
 	return * this ;
 }
+	
+vector<const Piece *> Player::copyCurrentPieces(const Board & workingBoard) {
+	
+	vector<const Piece *> workingPieces ;
+	
+	for (auto out = this->remainingPieces.begin() ; out != remainingPieces.end() ; out++) {
+		Piece * p = * out ;
+		const Piece * workingPiece = workingBoard.getSquare(* p->getPosition())->getPiece() ;
+		workingPieces.push_back(workingPiece) ;
+	}
+	
+	return workingPieces ;
+}
 
 void Player::removePiece(Piece * piece) {
 	bool pieceNotFound = true ; //debug var, remove
@@ -114,27 +130,59 @@ void Player::registerForNotifications() {
 		
 		Piece * piece = *(pieceIterator) ;
 		auto removeP = std::bind(& Player::removePiece, this, _1) ;
-		Notification<Piece> pieceCapturedNotification(EventType::pieceSpecifiedByIDWasCaptured, removeP, piece->getID()) ;
+		Notification<Piece> pieceCapturedNotification(EventType::pieceSpecifiedByIDWasCaptured, removeP, {board->getID(), piece->getID()}) ;
 		pieceCapturedNotification.registerForCallback() ;
 	
 		//.. we may need to be notified of other events as well, add them here:
 	}
 }
 
-Piece::Move Human::decideNextMove() {
-	return Piece::Move() ; //todo: implement
+void Human::decideNextMove() {
+	//todo: implement
 }
 
 
-Piece::Move AI::decideNextMove() {
+void AI::decideNextMove() {
 	
-	for (auto piece = startingPieces.begin() ; piece != startingPieces.end() ; piece++) {
-		bool canMv = (*piece)->canMove() ;
+	Board testingBoard(* board) ; //copy current gamestate, testingBoard will serve as a scratchpad to compute the optimal next move
+	
+	vector<const Piece *> workingPieces = copyCurrentPieces(testingBoard) ;
+	
+
+	
+	
+
+}
+
+void AI::findBestMoveForPiece(const Piece * piece, const Board & board) {
+	auto possibleMoves = piece->getAllPossibleLegalMoves() ;
+	
+	unsigned highestMoveValue = 0 ; 
+	for (auto i = 0 ; i < possibleMoves.size() ; i++) {
+		
 	}
-	return Piece::Move() ; //todo: implement
 }
-
-void AI::runSearchAlgorithm() {
 	
-}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
+}

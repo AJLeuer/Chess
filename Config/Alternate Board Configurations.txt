@@ -1,3 +1,15 @@
+/**
+ * Note: The current version of the project is now using wchar_t instead of strings to hold the chess piece symbols. If you later decide to reintegrate
+ * one of these alternate board configurations into the project, use can use the following regex Find-and-Replace in Xcode to fix the array initializers and
+ * bring them up to date with the rest of the project:
+ *
+ * Find:    "(.)"
+ * Replace: L'$1'
+ *
+ * This will fix the existing Chess piece string literals by converting them to wide character literals
+ *
+ */
+
 
 /* Holds alternate versions of the initializer list for boardRepresentation (see Board.cpp), just in case we need them */
 /* vertical cols, horizontal rows */

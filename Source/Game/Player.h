@@ -13,13 +13,21 @@
 #include <string>
 #include <list>
 #include <array>
+#include <tuple>
 #include <iterator>
 
-#include "Color.h"
+#include "Chess.h"
 #include "Board.h"
 
 using namespace std ;
 
+namespace Chess {
+	
+	
+	
+typedef tuple<const Piece *, const Square *, unsigned> MoveIntent ;
+	
+	
 
 class Player {
 	
@@ -27,21 +35,25 @@ protected:
 	
 	static unsigned long uniqueIDs ;
 	
-	static list <Piece *> initPieces(ChessColor playerColor, const Board & board) ;
+	static list <Piece *> initPieces(Chess::Color playerColor, const Board & board) ;
 	
 	unsigned long ID ;
 	
 	string name ;
 	
-	ChessColor color ;
+	Chess::Color color ;
+	
+	Board * board ;
 	
 	list <Piece *> startingPieces ;
 	list <Piece *> remainingPieces ;
 	
+	vector<const Piece *> copyCurrentPieces(const Board & workingBoard) ;
+	
 public:
 	
 	/* Any other constructors should call this as a delegating constructor */
-	explicit Player(ChessColor color, const Board & board) ;
+	explicit Player(Chess::Color color, Board * board) ;
 	
 	Player(const Player & other) = delete ;
 	
@@ -63,7 +75,7 @@ public:
 	
 	void registerForNotifications() ;
 	
-	virtual Piece::Move decideNextMove() = 0 ;
+	virtual void decideNextMove() = 0 ;
 	
 };
 
@@ -72,25 +84,30 @@ class Human : public Player {
 
 public:
 
-	Human(ChessColor color, const Board & board) :
+	Human(Chess::Color color, Board * board) :
 		Player(color, board) {}
 	
-	Piece::Move decideNextMove() override ;
+	void decideNextMove() override ;
 	
 };
 
 class AI : public Player {
 	
+	void findBestMoveForPiece(const Piece * piece, const Board & board) ;
+	
 public:
 	
-	AI(ChessColor color, const Board & board) :
+	AI(Chess::Color color, Board * board) :
 		Player(color, board) {}
 	
-	Piece::Move decideNextMove() override ;
+	void decideNextMove() override ;
 	
-	void runSearchAlgorithm() ;
+	
 	
 } ;
+
+	
+}
 
 #endif /* defined(__Chess__Player__) */
 

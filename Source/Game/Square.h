@@ -15,7 +15,7 @@
 
 using namespace std ;
 
-//namespace Chess {
+namespace Chess {
 
 /* Forward declaring */
 class Board ;
@@ -26,7 +26,7 @@ protected:
 	
 	RankAndFile rankAndFile ;
 	
-	vec2<int> position ;
+	vec2<int> position {0, 0} ;
 	
 	const Board * board ;
 	
@@ -37,6 +37,12 @@ protected:
 	friend class Player ;
 	
 	friend class Board ;
+	
+	friend class TemporarySquare ;
+	
+	friend class TemporaryBoard ;
+	
+	Square() {}
 	
 	void setCurrentPiece(Piece * pieceMovingTo) ;
 	
@@ -56,21 +62,21 @@ public:
 	
 	Square(Piece * piece, const char file, const unsigned rank, const Board * board) ;
 	
-	Square(const string & pieceSymbol, const char file, const unsigned rank, const Board * board) ;
+	Square(const wchar_t pieceSymbol, const char file, const unsigned rank, const Board * board) ;
 	
-	~Square() { if (piece != nullptr) { delete piece ; } ; }
+	virtual ~Square() { if (piece != nullptr) { delete piece ; } ; }
 	
-	Square & operator = (const Square & rhs) ;
+	virtual Square & operator = (const Square & rhs) ;
 	
 	void receiveMovingPiece(Piece * pieceMovingTo) ;
 	
-	bool isEmpty() const { return piece == nullptr ; }
+	inline bool isEmpty() const { return piece == nullptr ; }
 	
-	bool isOccupied() const { return isEmpty() == false ; }
+	inline bool isOccupied() const { return (!(isEmpty())) ; }
 	
 	const vec2<int> & getPosition() const { return this->position ; }
 	
-	const Piece * getPiece() const { return piece ; }
+	inline const Piece * getPiece() const { return piece ; }
 	
 	/**
 	 * Registers this Square to be notified when a Piece moves to it
@@ -78,12 +84,26 @@ public:
 	 */
 	void registerForPieceMovement() ;
 	
-	friend std::ostream & operator<< (std::ostream & , const Square &) ;
+	friend std::ostream & operator << (std::ostream & , const Square &) ;
 	
 	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Square &) ;
 	
 } ;
 	
-//}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
 
 #endif

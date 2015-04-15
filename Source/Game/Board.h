@@ -19,7 +19,7 @@
 #include <initializer_list>
 #include <limits>
 
-#include "Color.h"
+#include "Chess.h"
 #include "Piece.h"
 #include "Square.h"
 
@@ -31,9 +31,15 @@
 
 using namespace std ;
 
+namespace Chess {
+	
+	
+
 class Board {
 	
-private:
+protected:
+	
+	static unsigned long IDs ;
 	
 	/**
 	 * The number of rows on the chessboard
@@ -45,55 +51,61 @@ private:
 	 */
 	static constexpr unsigned files = 8 ;
 	
+	const unsigned long ID ;
+	
 	array<array<Square, files>, ranks> boardRepresentation ;
 	
 	friend class Player ;
 	
 	friend class Game ;
+	
+	friend class TemporaryBoard ;
 
 	friend void runChessGameTests() ;
 	
 public:
 	
-	inline const vec2<int> getMaxPosition() { return vec2<int>{(int)boardRepresentation.size(), (int)boardRepresentation[0].size()} ; }
+	inline virtual const vec2<int> getMaxPosition() { return vec2<int>{(int)boardRepresentation.size(), (int)boardRepresentation[0].size()} ; }
 	
 	Board() ;
 	
 	Board(const Board & other) ;
 	
-	~Board() {}
+	virtual ~Board() {}
 	
-	Board & operator = (const Board & other) ;
+	virtual Board & operator = (const Board & other) ;
+	
+	inline unsigned long getID() const { return ID ; }
 	
 	/**
 	 * @return A pointer to the Square at the position specified by x and y
 	 *
 	 * @seealso getSquare()
 	 */
-	const Square * operator () (unsigned arrIndexX, unsigned arrIndexY) const ;
+	virtual const Square * operator () (unsigned arrIndexX, unsigned arrIndexY) const ;
 	
 	/**
 	 * @return A pointer to the Square at the position specified by rf
 	 *
 	 * @seealso operator () (unsigned, unsigned)
 	 */
-	const Square * getSquare(const RankAndFile & rf) const ;
+	virtual const Square * getSquare(const RankAndFile & rf) const ;
 	
 	/**
 	 * @param pos The position of the Square to return
 	 *
 	 * @return A pointer to the Square at the position specified by pos
 	 */
-	const Square * getSquare(const vec2<int> pos) const ;
+	virtual const Square * getSquare(const vec2<int> pos) const ;
 	
-	const Square * getSquare(unsigned x, unsigned y) const ;
+	virtual const Square * getSquare(unsigned x, unsigned y) const ;
 	
 	/**
 	 * @param pos This function checks whether pos is within the bounds of the Chess board
 	 *
 	 * @return true if vec2<int> pos exists on the board, false otherwise
 	 */
-	bool isInsideBoardBounds(const vec2<int> pos) const ;
+	virtual bool isInsideBoardBounds(const vec2<int> pos) const ;
 	
 	friend std::ostream & operator << (std::ostream & , const Board &) ;
 	
@@ -111,8 +123,15 @@ public:
 	 * @note Unlike the overload getSpecifiedSquares(const vec2<int>, const vector<Direction> &, int), this version of the function
 	 * searches to the edge of the board in every specified direction (unless the parameter stopAtFirstPiece is given as true, in which
 	 * case, for every direction searched, the function will only search as far as the first Square with a piece on it).
-	 */
-	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, bool stopAtFirstPiece) const ;
+	 */ /*
+	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, bool stopAtFirstPiece) const ; */
+	
+
+	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions,
+											   Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const ;
+	
+	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int maxSearchDistance,
+											   Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const ;
 	
 	/**
 	 * @return A vector of Squares that match the given criteria
@@ -120,8 +139,8 @@ public:
 	 * @param startingSquarePosition The position of the first square processed
 	 * @param directions The directions in which to search
 	 * @param searchDistance The distance to search in all specified directions
-	 */
-	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const ;
+	 */ /*
+	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const ; */
 	
 	/**
 	 * @return A vector of Squares that match the given criteria
@@ -131,69 +150,17 @@ public:
 	 */
 	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, int searchRadius) const ;
 	
-	/**
-	 * Calls a function, searchFunction, intended to process specific squares on the board, starting at startingSquare and including all
-	 * other squares within a distance less than or equal to searchRadius that lie in directions specified by directions. The function in
-	 * question should take a vector of squares as an argument, and will return a result of the specified type T.
-	 *
-	 * @param T The type returned by searchFunction
-	 * @param searchFunction The function to run over the specified squares
-	 * @param startingSquarePosition The position of the first square processed
-	 * @param directions The directions in which to search
-	 * @param searchDistance The distance to search in all specified directions
-	 */
-	template <typename T>
-	T runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const ;
-	
-	/**
-	 * Calls a function, searchFunction, intended to process squares in an area of the board. The function in question should take
-	 * a square as an argument, and will return a result of the specified type T. The function will be applied to a vector
-	 * of all squares specified withing searchRadius, starting at startingSquare
-	 *
-	 * @param T The type returned by searchFunction
-	 * @param searchFunction The function to run over the specified squares
-	 * @param startingSquarePosition The position of the first square processed
-	 * @param searchRadius Specifies the range of other squares to include
-	 */
-	template <typename T>
-	T runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, const vec2<int> startingSquarePosition, int searchRadius) const ;
-	
 	
 	/**
 	 * Calculates a numeric value based on the current state of the chess board (including the existence and configuration of pieces)m
-	 * from the perspective of the player playing the ChessColor color. In other words, if e.g. the player playing white requests the current
+	 * from the perspective of the player playing the Chess::Color color. In other words, if e.g. the player playing white requests the current
 	 * value of the board, it will be calculated by subtracting the sum of the extant black pieces from the sum of the remaining white ones.
 	 *
 	 * @param callingPlayersColor The color of the player from whose perspective the value of the game state is calculated
 	 */
-	const short evaluate(const ChessColor callingPlayersColor) const ;
+	virtual const short evaluate(const Chess::Color callingPlayersColor) const ;
 	
 } ;
-
-/*
-class HypotheticalBoardState : public Board {
-
-	
-}; */
-
-
-
-template <typename T>
-T Board::runSearchFunction(function<T (vector<const Square *> & squares)> searchFunction, const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const {
-	
-	vector<const Square *> argSquares = getSpecifiedSquares(startingSquarePosition, directions, searchDistance) ;
-	
-	return searchFunction(argSquares) ;
-}
-
-
-template <typename T>
-T Board::runSearchFunction(function<T(vector<const Square *> & squares)> & searchFunction, const vec2<int> startingSquarePosition, int searchRadius) const {
-	
-	vector<const Square *> argSquares = getSpecifiedSquares(startingSquarePosition, searchRadius) ;
-	
-	return searchFunction(argSquares) ;
-}
 
 
 /**
@@ -220,18 +187,23 @@ basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Bo
 	return out ;
 }
 
+	
+	
+	
 
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
 
 #endif /* defined(__Chess__Board__) */

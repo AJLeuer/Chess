@@ -48,15 +48,15 @@ protected:
 	 */
 	function<void (Data *)> callBackFunction ;
 	
-	const UniqueNumericIdentifier uniqueID ;
+	vector<UniqueNumericIdentifier> uniqueID ;
 	
 	void notify(Data * data) ;
 
 public:
 	
-	static void notify(EventType eventType, Data * data, const UniqueNumericIdentifier uniqueID) ;
+	static void notify(EventType eventType, Data * data, vector<UniqueNumericIdentifier> uniqueID) ;
 	
-	Notification(EventType eventType, function<void (Data *)> callBackFunction, const UniqueNumericIdentifier uniqueID) : //
+	Notification(EventType eventType, function<void (Data *)> callBackFunction, vector<UniqueNumericIdentifier> uniqueID) : //
 		eventType(eventType), callBackFunction(callBackFunction), uniqueID(uniqueID) {}
 	
 
@@ -74,6 +74,9 @@ public:
 	
 	~Notification() {}
 	
+	/**
+	 * @return The index of the registered notification
+	 */
 	void registerForCallback() ;
 
 	
@@ -83,7 +86,7 @@ template<typename Data>
 vector< vector<Notification<Data>> > Notification<Data>::registeredMessageRecipients ;
 
 template<typename Data>
-void Notification<Data>::notify(EventType eventType, Data * data, const UniqueNumericIdentifier uniqueID) {
+void Notification<Data>::notify(EventType eventType, Data * data, vector<UniqueNumericIdentifier> uniqueID) {
 	
 	for (auto i = 0 ; i < registeredMessageRecipients.size() ; i++) {
 		

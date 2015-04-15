@@ -78,7 +78,7 @@
 		66C10DB71A0030B10074ED36 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		66D0AFA41AB6D026001AD733 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		66E390DC1ADB1937008D4505 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		66ED80F91AB1B6B3003CA2FC /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		66ED80F91AB1B6B3003CA2FC /* Chess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chess.h; sourceTree = "<group>"; };
 		66ED80FA1AB1BA60003CA2FC /* Square.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Square.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,7 +103,7 @@
 		66BE09661A8E4AC200C5F1CC /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				66ED80F91AB1B6B3003CA2FC /* Color.h */,
+				66ED80F91AB1B6B3003CA2FC /* Chess.h */,
 				66ED80FA1AB1BA60003CA2FC /* Square.h */,
 				66BE096C1A8E4AC200C5F1CC /* Piece.h */,
 				66BE096E1A8E4AC200C5F1CC /* Player.h */,

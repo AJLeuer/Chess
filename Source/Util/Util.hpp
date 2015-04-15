@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <typeinfo>
 
 using namespace std ;
 
@@ -345,7 +346,7 @@ vector<T> operator + (const vector<T> & leftSide, const vector<T> & rightSide) {
 	vector<T> combined(leftSide) ; //copy leftSide
 	
 	for (typename vector<T>::size_type i = 0 ; i < rightSide.size() ; i++) {
-		combined += rightSide->at(i) ;
+		combined += rightSide.at(i) ;
 	}
 	
 	return combined ;
