@@ -36,7 +36,6 @@ Square::Square(Piece * piece, const char file, const unsigned rank, Board * boar
 	Square(file, rank, board)
 {
 	this->piece = piece ;
-	/* Delegating constructor already registered this for piece moves */
 }
 
 Square::Square(const wchar_t pieceSymbol, const char file, const unsigned rank, Board * board) :
@@ -61,7 +60,6 @@ Square & Square::operator = (const Square & other) {
 			piece = Piece::initCopy(* other.piece) ;
 			piece->square = this ;
 		}
-		/* Don't register for piece movement until prompted by Board */
 		
 	}
 	return * this ;
