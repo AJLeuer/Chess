@@ -36,6 +36,7 @@ struct vec2 {
 	
 	simd_vector_2<NumericType> value ;
 	
+	inline constexpr vec2() : value(simd_vector_2<NumericType>{0, 0}) {}
 	
 	inline constexpr vec2(const simd_vector_2<NumericType> val) : value(val) {}
 	

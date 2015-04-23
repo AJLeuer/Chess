@@ -13,21 +13,14 @@ using namespace sf ;
 
 Font & ChessWindow::font = ChessWindow::initFont() ;
 
+VideoMode ChessWindow::videoMode = setVideoMode() ;
+
 Font & ChessWindow::initFont() {
 	static Font storedFont ;
 	string mainFontFilePathCopy(mainFontFilePath) ; //debug code
 	storedFont.loadFromFile(mainFontFilePath) ;
-	return storedFont ; //self assigns
+	return storedFont ;
 }
-
-ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
-	if (this != & other) {
-		this->text = other.text ;
-	}
-	return * this ;
-}
-
-VideoMode ChessWindow::videoMode = setVideoMode() ;
 
 VideoMode & ChessWindow::setVideoMode() {
 	const vec2<unsigned> baseWindowSize {mainWindowSize.value.x, mainWindowSize.value.y} ;
@@ -37,6 +30,9 @@ VideoMode & ChessWindow::setVideoMode() {
 	return videoMode ; //self assigns
 }
 
+
+
+
 ChessWindow::ChessWindow(const string & title) :
 	RenderWindow(videoMode, title, sf::Style::Default, ContextSettings())
 {
@@ -45,4 +41,10 @@ ChessWindow::ChessWindow(const string & title) :
 }
 
 
+ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
+	if (this != & other) {
+		this->text = other.text ;
+	}
+	return * this ;
+}
 

@@ -1,0 +1,1 @@
+* May need to remove copy assignment operator for Square. Not sure it makes any semantic sense.

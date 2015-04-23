@@ -11,7 +11,10 @@
 
 #include <iostream>
 #include <limits>
+#include <vector>
+#include <list>
 #include <random>
+#include <memory>
 #include <cmath>
 
 
@@ -33,7 +36,7 @@ protected:
 public:
 
 	static FastRand defaultRandom ;
-
+	
 	FastRand(N _min, N _max) ;
 
 	FastRand(const FastRand<N> & other) ;
@@ -185,20 +188,15 @@ R FastRand<N>::nextValue(R _min, R _max) {
 	return dif_dist(rndm) ;
 }
 
-/*
-template<typename N>
-FastRand<N> * FastRand<N>::randPositionSetter = initRandPosSetter() ;
 
-template<typename N>
-FastRand<N> * FastRand<N>::initRandPosSetter() {
-    return new FastRand<N>(0, findLargest<N>({static_cast<N>(globalMaxX()), static_cast<N>(globalMaxY())})) ;
-} */
 
 template<typename N>
 FastRand<N> FastRand<N>::defaultRandom(std::numeric_limits<N>::min(), std::numeric_limits<N>::max()) ;
 
 
 /* more useful random functions: */
+
+//template <typename N>
 
 template<typename N>
 N randSignFlip(N n) {
@@ -224,6 +222,18 @@ T chooseAtRand(T t1, T t2) {
 	else {
 		return t2 ;
 	}
+}
+
+template <typename T, template <typename, typename> class Container>
+T chooseRandomElement(const Container<T, allocator<T>> container)  {
+	
+	typedef decltype(container) Container_Type ;
+	
+	typedef size_t size_type ;
+	
+	FastRand<size_type> randomIndex((size_type)0, container.size() - (size_type)1) ;
+	
+	return container[randomIndex()] ;
 }
 
 /**

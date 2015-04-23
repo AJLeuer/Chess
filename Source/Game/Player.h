@@ -11,13 +11,20 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <list>
 #include <array>
 #include <tuple>
 #include <iterator>
 
+
+
 #include "Chess.h"
+#include "Piece.h"
 #include "Board.h"
+
+#include "../Util/tree.hh"
+#include "../Util/Random.hpp"
 
 using namespace std ;
 
@@ -25,7 +32,7 @@ namespace Chess {
 	
 	
 	
-typedef tuple<const Piece *, const Square *, unsigned> MoveIntent ;
+//typedef tuple<const Piece *, const Square *, unsigned>  ;
 	
 	
 
@@ -35,25 +42,20 @@ protected:
 	
 	static unsigned long uniqueIDs ;
 	
-	static list <Piece *> initPieces(Chess::Color playerColor, const Board & board) ;
-	
 	unsigned long ID ;
 	
 	string name ;
 	
 	Chess::Color color ;
 	
-	Board * board ;
+	Board & board ;
 	
-	list <Piece *> startingPieces ;
-	list <Piece *> remainingPieces ;
-	
-	vector<const Piece *> copyCurrentPieces(const Board & workingBoard) ;
+	vector<Piece *> findPiecesOnBoard(Board & workingBoard) const ;
 	
 public:
 	
 	/* Any other constructors should call this as a delegating constructor */
-	explicit Player(Chess::Color color, Board * board) ;
+	explicit Player(Chess::Color color, Board & board) ;
 	
 	Player(const Player & other) = delete ;
 	
@@ -62,7 +64,7 @@ public:
 	 */
 	Player(Player && other) ;
 	
-	virtual ~Player() {}
+	virtual ~Player() ;
 	
 	Player & operator = (const Player & other) = delete ;
 	
@@ -75,7 +77,7 @@ public:
 	
 	void registerForNotifications() ;
 	
-	virtual void decideNextMove() = 0 ;
+	virtual const MoveIntent decideNextMove() const = 0 ;
 	
 };
 
@@ -84,27 +86,52 @@ class Human : public Player {
 
 public:
 
-	Human(Chess::Color color, Board * board) :
+	Human(Chess::Color color, Board & board) :
 		Player(color, board) {}
 	
-	void decideNextMove() override ;
+	const MoveIntent decideNextMove() const override ;
 	
 };
+	
+	
 
 class AI : public Player {
 	
-	void findBestMoveForPiece(const Piece * piece, const Board & board) ;
+	
+protected:
+	
+	const MoveIntent findBestMoveForPiece(Piece * piece) const ;
+	
+	//static
+	
+	friend class Game ; //debug only
 	
 public:
 	
-	AI(Chess::Color color, Board * board) :
+	AI(Chess::Color color, Board & board) :
 		Player(color, board) {}
 	
-	void decideNextMove() override ;
-	
-	
+	const MoveIntent decideNextMove() const override ;
 	
 } ;
+	
+	
+	
+void extractHighestValueMoves(vector <MoveIntent> & moves) ;
+	
+MoveIntent selectMoveAtRandom(const vector <MoveIntent> & moves) ;
+	
+	
+	
+	
+	
+struct StoredMoveIntent {
+	
+	const Board * board ;
+	
+	MoveIntent moveIntent ;
+	
+};
 
 	
 }

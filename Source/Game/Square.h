@@ -28,13 +28,17 @@ protected:
 	
 	vec2<int> position {0, 0} ;
 	
-	const Board * board ;
+	Board * board ;
 	
 	Piece * piece = nullptr ;
 	
 	friend class Game ;
 	
+	friend class Piece ;
+	
 	friend class Player ;
+	
+	friend class AI ;
 	
 	friend class Board ;
 	
@@ -50,21 +54,19 @@ protected:
 	
 	void destroyCurrentPiece() ;
 	
-	void handlePieceCapture(Piece * pieceCapturing) ;
-	
-	Piece * getPieceMutable() const { return piece ; } //for debug only, remove later
+	inline Piece * getPieceMutable() { return piece ; } //for debug only, remove later
 	
 public:
 	
 	Square(const Square & other) ;
 	
-	Square(const char file, const unsigned rank, const Board * board) ;
+	Square(const char file, const unsigned rank, Board * board) ;
 	
-	Square(Piece * piece, const char file, const unsigned rank, const Board * board) ;
+	Square(Piece * piece, const char file, const unsigned rank, Board * board) ;
 	
-	Square(const wchar_t pieceSymbol, const char file, const unsigned rank, const Board * board) ;
+	Square(const wchar_t pieceSymbol, const char file, const unsigned rank, Board * board) ;
 	
-	virtual ~Square() { if (piece != nullptr) { delete piece ; } ; }
+	virtual ~Square() ;
 	
 	virtual Square & operator = (const Square & rhs) ;
 	
@@ -76,13 +78,13 @@ public:
 	
 	const vec2<int> & getPosition() const { return this->position ; }
 	
-	inline const Piece * getPiece() const { return piece ; }
+	vec2<int> copyPosition() const { return this->position ; }
 	
-	/**
-	 * Registers this Square to be notified when a Piece moves to it
-	 * or leaves it.
-	 */
-	void registerForPieceMovement() ;
+	const vec2<int> * getPositionPointer() const { return & this->position ; }
+	
+	inline const Board * getBoard() const { return board ; }
+	
+	inline const Piece * getPiece() const { return piece ; }
 	
 	friend std::ostream & operator << (std::ostream & , const Square &) ;
 	

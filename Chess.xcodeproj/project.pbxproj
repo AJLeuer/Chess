@@ -53,6 +53,8 @@
 		6659B8BE1AB75BB40068B607 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		6659B8C01AB779A20068B607 /* Random.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Random.hpp; sourceTree = "<group>"; };
 		6663DC9A1AB7414200F10B4F /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
+		667FF3061AE0A9FB008CF182 /* License */ = {isa = PBXFileReference; lastKnownFileType = folder; path = License; sourceTree = "<group>"; };
+		667FF30C1AE0B23D008CF182 /* tree.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tree.hh; sourceTree = "<group>"; };
 		66AD6CF41A93D3080008F0ED /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		66AD6CF51A93D3080008F0ED /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		66AF8EC31AB40F0000FECDA7 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -69,7 +71,6 @@
 		66BE096C1A8E4AC200C5F1CC /* Piece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piece.h; sourceTree = "<group>"; };
 		66BE096D1A8E4AC200C5F1CC /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		66BE096E1A8E4AC200C5F1CC /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSystem.h; sourceTree = "<group>"; };
 		66BE09721A8E4AC200C5F1CC /* Vect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vect.cpp; sourceTree = "<group>"; };
 		66BE09731A8E4AC200C5F1CC /* Vect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vect.h; sourceTree = "<group>"; };
 		66BE09751A8E4AC200C5F1CC /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
@@ -80,6 +81,7 @@
 		66E390DC1ADB1937008D4505 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		66ED80F91AB1B6B3003CA2FC /* Chess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chess.h; sourceTree = "<group>"; };
 		66ED80FA1AB1BA60003CA2FC /* Square.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Square.h; sourceTree = "<group>"; };
+		66FDF2231ADF219B0098E9A2 /* ToDo.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ToDo.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,12 +123,12 @@
 			isa = PBXGroup;
 			children = (
 				66AF8EC31AB40F0000FECDA7 /* Config.h */,
-				6603F9571AD73BAB00B3A5DD /* UniqueNumericID.h */,
 				66AD6CF51A93D3080008F0ED /* Util.h */,
+				66BE09731A8E4AC200C5F1CC /* Vect.h */,
+				6603F9571AD73BAB00B3A5DD /* UniqueNumericID.h */,
+				667FF30C1AE0B23D008CF182 /* tree.hh */,
 				6659B8B41AB75A210068B607 /* Util.hpp */,
 				6659B8C01AB779A20068B607 /* Random.hpp */,
-				66BE09731A8E4AC200C5F1CC /* Vect.h */,
-				66BE09711A8E4AC200C5F1CC /* NotificationSystem.h */,
 				6663DC9A1AB7414200F10B4F /* Config.cpp */,
 				66AD6CF41A93D3080008F0ED /* Util.cpp */,
 				66BE09721A8E4AC200C5F1CC /* Vect.cpp */,
@@ -158,6 +160,8 @@
 				66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */,
 				66BE095C1A8E382300C5F1CC /* libsfml-system.2.2.0.dylib */,
 				66BE095D1A8E382300C5F1CC /* libsfml-window.2.2.0.dylib */,
+				66FDF2231ADF219B0098E9A2 /* ToDo.txt */,
+				667FF3061AE0A9FB008CF182 /* License */,
 				66243F691ABF84F70002560B /* Config */,
 				66D0AFA41AB6D026001AD733 /* Assets */,
 				66C10DB61A0030B10074ED36 /* Source */,

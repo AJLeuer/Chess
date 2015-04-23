@@ -24,7 +24,6 @@
 #include "Square.h"
 
 #include "../Util/Util.h"
-#include "../Util/NotificationSystem.h"
 #include "../Util/Vect.h"
 
 
@@ -55,12 +54,25 @@ protected:
 	
 	array<array<Square, files>, ranks> boardRepresentation ;
 	
+	/**
+	 * @return A pointer to the Square at the position specified by pos
+	 *
+	 * @seealso getSquare()
+	 */
+	virtual Square * getSquareMutable(vec2<int> pos) ;
+	
+	void updateSquaresAfterCopy() ;
+	
+	friend class Piece ;
+	
 	friend class Player ;
+	
+	friend class AI ;
 	
 	friend class Game ;
 	
 	friend class TemporaryBoard ;
-
+	
 	friend void runChessGameTests() ;
 	
 public:
@@ -112,20 +124,6 @@ public:
 	template <typename Character>
 	friend basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Board & board) ;
 	
-	/**
-	 * @return A vector of Squares that match the given criteria
-	 *
-	 * @param startingSquarePosition The position of the first square processed
-	 * @param directions The directions in which to search
-	 * @param stopAtFirstPiece Whether, for every specified direction searched, the function should stop when it first encounters a Square holding a
-	 * piece, or continue to the edge of the board
-	 *
-	 * @note Unlike the overload getSpecifiedSquares(const vec2<int>, const vector<Direction> &, int), this version of the function
-	 * searches to the edge of the board in every specified direction (unless the parameter stopAtFirstPiece is given as true, in which
-	 * case, for every direction searched, the function will only search as far as the first Square with a piece on it).
-	 */ /*
-	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, bool stopAtFirstPiece) const ; */
-	
 
 	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions,
 											   Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const ;
@@ -133,14 +131,6 @@ public:
 	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int maxSearchDistance,
 											   Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const ;
 	
-	/**
-	 * @return A vector of Squares that match the given criteria
-	 *
-	 * @param startingSquarePosition The position of the first square processed
-	 * @param directions The directions in which to search
-	 * @param searchDistance The distance to search in all specified directions
-	 */ /*
-	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int searchDistance) const ; */
 	
 	/**
 	 * @return A vector of Squares that match the given criteria

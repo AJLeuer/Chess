@@ -27,7 +27,6 @@
 #include "../Util/Util.h"
 #include "../Util/Util.hpp"
 #include "../Util/Vect.h"
-#include "../Util/NotificationSystem.h"
 
 namespace Chess {
 
@@ -42,11 +41,13 @@ struct ImageFiles {
 	const string black ;
 	const string white ;
 };
-
+	
+	
 class Board ;
 
 class Square ;
-
+	
+	
 class Piece {
 	
 public:
@@ -67,9 +68,7 @@ protected:
 	
 	static unsigned long iDs ;
 	
-	static sf::Texture & initSpriteTexture(sf::Texture & spriteTexture, const string & spriteImageFilePath) ;
-	
-	
+
 	Type type ;
 	
 	const unsigned long iD ;
@@ -77,8 +76,6 @@ protected:
 	wchar_t symbol ;
 	
 	Chess::Color color ;
-	
-	const vec2<int> * position = nullptr ;
 	
 	unsigned movesMade = 0 ;
 	
@@ -88,37 +85,46 @@ protected:
 	
 	sf::Sprite sprite ;
 	
-	const Board * const * board ;
+	Square * square ;
 	
-	const Square * square ;
+	bool deleted = false ; //debug variable only
 
-	Piece(Type type, const wchar_t symbol, const string & spriteImageFilePath, const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square *square) ;
+	Piece(Type type, const wchar_t symbol, const string & spriteImageFilePath,
+		  const Chess::Color color, Square *square) ;
 	
-	const Board * const * getBoard() const { return board ; }
 	
-	void sendMoveNotification(const vec2<int> newPosition) ;
-	
-	inline void setCurrentPosition(const vec2<int> * position) { this->position = position ; }
-	
-	inline void clearCurrentPosition() { setCurrentPosition(nullptr) ; }
-	
+	//Square * & getSquareMutable() { return square ; }
 	
 	friend class TemporaryPiece ;
 	
 	friend class Square ;
 	
+	friend class Player ;
+	
+	friend class AI ;
+	
 	friend void runTests() ;
 	
 	friend int main(int, const char **) ; //for debug and devel only, remove
 	
+	
 public:
 	
 
-	static Piece * init(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	static Piece * init(const wchar_t symbol, Square * square) ;
+	
+	static Piece * initCopy(const Piece & piece) ;
 	
 	Piece (const Piece & other) ;
 	
-	virtual ~Piece() {} ; //position isn't ours, don't delete it
+	
+	virtual ~Piece() {
+		square = nullptr ;
+		if (deleted) { //debug code
+		
+		}
+		deleted = true ;
+	} ; 
 	
 	virtual Piece & operator = (const Piece & rhs) ;
 	
@@ -132,7 +138,7 @@ public:
 	 * @return a std::vector that is either filled with the Squares this Piece can legally move to, or, if there are
 	 * no such Squares, empty
 	 */
-	virtual vector<const Square *> getAllPossibleLegalMoves() const ;
+	virtual vector<vec2<int>> getAllPossibleLegalMoves() const ;
 
 	/**
 	 * Moves the piece to it's new square, and notifies both the Square object
@@ -149,11 +155,18 @@ public:
 	
 	const sf::Sprite & getSprite() const { return sprite ; }
 	
-	virtual const vec2<int> * getPosition() const { return position ; }
+	const vec2<int> * getPosition() const ;
 	
 	virtual const unsigned int getValue() const = 0 ;
 	
 	virtual const vector<Direction> getLegalMovementDirections() const = 0 ;
+	
+	Square * const & getSquare() const { return square ; }
+	
+	/**
+	 * Called before any drawing is done. Initializes texture object
+	 */
+	void initSpriteTexture() ;
 	
 	friend ostream & operator<< (ostream & , const Piece &) ;
 	
@@ -176,27 +189,19 @@ public:
 	Pawn(const Piece & other) :
 		Piece(other) {}
 	
-	Pawn(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Pawn(const Chess::Color color, Square * square) ;
 	
-	Pawn(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Pawn(const wchar_t symbol, Square * square) ;
 	
 	virtual ~Pawn() {}
 	
-	virtual Pawn & operator = (const Pawn & other) {
-		if (this != & other) {
-			this->Piece::operator=(other) ;
-		}
-		return * this ;
-	}
-	
-
 	const unsigned int getValue() const override { return 1 ; }
 	
 	/**
 	 * @return a std::vector that is either filled with the Squares this Pawn can legally move to, or, if there are
 	 * no such Squares, empty
 	 */
-	virtual vector<const Square *> getAllPossibleLegalMoves() const ;
+	virtual vector<vec2<int>> getAllPossibleLegalMoves() const override ;
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -222,19 +227,11 @@ public:
 	Knight(const Piece & other) :
 		Piece(other) {}
 	
-	Knight(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Knight(const Chess::Color color, Square * square) ;
 	
-	Knight(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Knight(const wchar_t symbol, Square * square) ;
 	
 	virtual ~Knight() {}
-	
-	virtual Knight & operator = (const Knight & other) {
-		if (this != & other) {
-			this->Piece::operator=(other) ;
-		}
-		return * this ;
-	}
-	
 	
 	const unsigned int getValue() const override { return 3 ; }
 	
@@ -242,7 +239,7 @@ public:
 	 * @return a std::vector that is either filled with the Squares this Knight can legally move to, or, if there are
 	 * no such Squares, empty
 	 */
-	virtual vector<const Square *> getAllPossibleLegalMoves() const ;
+	virtual vector<vec2<int>> getAllPossibleLegalMoves() const override ;
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -261,18 +258,11 @@ public:
 	Bishop(const Piece & other) :
 		Piece(other) {}
 
-	Bishop(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Bishop(const Chess::Color color, Square * square) ;
 	
-	Bishop(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Bishop(const wchar_t symbol, Square * square) ;
 	
 	virtual ~Bishop() {}
-	
-	virtual Bishop & operator = (const Bishop & other) {
-		if (this != & other) {
-			this->Piece::operator=(other) ;
-		}
-		return * this ;
-	}
 	
 	const unsigned int getValue() const override { return 3 ; }
 	
@@ -294,18 +284,11 @@ public:
 	Rook(const Piece & other) :
 		Piece(other) {}
 
-	Rook(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Rook(const Chess::Color color, Square * square) ;
 	
-	Rook(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Rook(const wchar_t symbol, Square * square) ;
 	
 	virtual ~Rook() {}
-	
-	virtual Rook & operator = (const Rook & other) {
-		if (this != & other) {
-			this->Piece::operator=(other) ;
-		}
-		return * this ;
-	}
 	
 	const unsigned int getValue() const override { return 5 ; }
 	
@@ -326,18 +309,11 @@ public:
 	Queen(const Piece & other) :
 		Piece(other) {}
 	
-	Queen(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Queen(const Chess::Color color, Square * square) ;
 	
-	Queen(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	Queen(const wchar_t symbol, Square * square) ;
 	
 	virtual ~Queen() {}
-	
-	virtual Queen & operator = (const Queen & other) {
-		if (this != & other) {
-			this->Piece::operator=(other) ;
-		}
-		return * this ;
-	}
 	
 	const unsigned int getValue() const override { return 9 ; }
 	
@@ -358,18 +334,11 @@ public:
 	King(const Piece & other) :
 		Piece(other) {}
 	
-	King(const Chess::Color color, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	King(const Chess::Color color, Square * square) ;
 	
-	King(const wchar_t symbol, const vec2<int> * position, const Board * const * board, const Square * square) ;
+	King(const wchar_t symbol, Square * square) ;
 	
 	virtual ~King() {}
-	
-	virtual King & operator = (const King & other) {
-		if (this != & other) {
-			this->Piece::operator=(other) ;
-		}
-		return * this ;
-	}
 	
 	/**
 	 * Equal to the combined values of all other Pieces, plus 1
@@ -381,6 +350,27 @@ public:
 	void move(const vec2<int> to) override ;
 	
 };
+	
+	
+	
+	
+	
+	
+	
+struct MoveIntent {
+	
+	/**
+	 * Whether is possible for piece to move
+	 */
+	bool canMove ;
+	
+	Piece * piece ;
+	
+	vec2<int> moveDestination ;
+	
+	int moveValue ;
+	
+} ;
 
 
 

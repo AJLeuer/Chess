@@ -14,8 +14,8 @@ namespace Chess {
 
 Game::Game() :
 	board(),	/* Note: Must be initialized first */
-	player0(new AI(Chess::Color::white, & this->board)), //holds references to pieces at index (0, 0) through (1, 15)
-	player1(new Human(Chess::Color::black, & this->board)) //holds references to pieces at index (6, 0) through (7, 7)
+	player0(new AI(Chess::Color::white, this->board)), //holds references to pieces at index (0, 0) through (1, 15)
+	player1(new AI(Chess::Color::black, this->board)) //holds references to pieces at index (6, 0) through (7, 7)
 {
 	
 }
@@ -36,31 +36,20 @@ void Game::updateGameState() {
 }
 
 void Game::testAndDebug() {
-	inspectDisplayConfiguration() ;
+	Player * currentPlayer ;
 	
-	//all for debugging
-	static Piece * rook ;
-	static Piece * pawn  ;
-	
-	if (gameLoops == 0) {
-		rook = this->board(0, 0)->getPieceMutable() ;
-		pawn = this->board(0, 1)->getPieceMutable() ;
+	if ((gameLoops % 2) == 0) {
+		currentPlayer = this->player0 ;
+	}
+	else {
+		currentPlayer = this->player1 ;
 	}
 	
-	bool rookCanMove = rook->canMove() ;
-	bool pawnCanMove = pawn->canMove() ;
+	MoveIntent nextMove = currentPlayer->decideNextMove() ;
 	
-	vec2<int> pos = *(pawn->getPosition()) ;
-	pos.value.y++ ;
-	pawn->move({pos.value.x, pos.value.y}) ;
+	nextMove.piece->move(nextMove.moveDestination) ;
 	
-	
-	this_thread::sleep_for(chrono::milliseconds(2000)) ;
-	
-	
-	short val = board.evaluate(pawn->getColor()) ;
-	
-	auto i = 1 ;
+	this_thread::sleep_for(chrono::milliseconds(1200)) ;
 }
 
 void Game::display() {
@@ -72,7 +61,7 @@ void Game::display() {
 	vec2<int> windowSize = convertToNativeVectorType<int>(window.getSize()) ;
 	auto middle = windowSize / 2 ;
 	
-	window.clear(sf::Color(0, 202, 255, 128)) ;
+	window.clear(sf::Color(0, 0, 0, 64)) ;
 	window.displayText(*str, middle) ;
 	
 	window.display() ;
@@ -99,8 +88,8 @@ void Game::playDebugGame() {
 	monitorMouse() ;
 	
 	while (true) {
-		testAndDebug() ;
 		display() ;
+		testAndDebug() ;
 		gameLoops++ ;
 		this_thread::sleep_for(chrono::milliseconds(4)) ;
 	}

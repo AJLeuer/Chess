@@ -15,43 +15,53 @@ namespace Chess {
 Square::Square(const Square & other) :
 	rankAndFile(other.rankAndFile),
 	position(other.position),
-	board(other.board),
-	piece((other.piece != nullptr) ? Piece::init(other.piece->getSymbol(), & other.position, & other.board, & other) : nullptr)
+	/* Don't copy other's board pointer */
+	piece((other.piece == nullptr) ? nullptr : Piece::initCopy(*other.piece))
 {
-	registerForPieceMovement() ;
+	if (piece != nullptr) {
+		piece->square = this ;
+	}
 }
 
-Square::Square(const char file, const unsigned rank, const Board * board) :
+Square::Square(const char file, const unsigned rank, Board * board) :
 	rankAndFile(file, rank),
 	position(rankAndFile),
 	board(board),
 	piece(nullptr)
 {
-	registerForPieceMovement() ;
+
 }
 
-Square::Square(Piece * piece, const char file, const unsigned rank, const Board * board) :
+Square::Square(Piece * piece, const char file, const unsigned rank, Board * board) :
 	Square(file, rank, board)
 {
 	this->piece = piece ;
+	/* Delegating constructor already registered this for piece moves */
 }
 
-Square::Square(const wchar_t pieceSymbol, const char file, const unsigned rank, const Board * board) :
-	Square(Piece::init(pieceSymbol, & position, & this->board, this), file, rank, board) {}
+Square::Square(const wchar_t pieceSymbol, const char file, const unsigned rank, Board * board) :
+	Square(Piece::init(pieceSymbol, this), file, rank, board) {}
+	
+Square::~Square() {
+	destroyCurrentPiece() ; //only deletes if non-null
+}
 
 Square & Square::operator = (const Square & other) {
+	if (this == & other) { //debug code
+		
+	}
 	if (this != & other) {
 		this->rankAndFile = other.rankAndFile ;
 		this->position = other.position ;
-		board = other.board ;
+		/* Don't copy other's board pointer */
 		
-		if (this->piece != nullptr) {
-			delete this->piece ;
-		}
+		destroyCurrentPiece() ; //only deletes if non-null
 		
 		if (other.piece != nullptr) {
-			piece = Piece::init(other.piece->getSymbol(), other.piece->getPosition(), & other.board, this) ;
+			piece = Piece::initCopy(* other.piece) ;
+			piece->square = this ;
 		}
+		/* Don't register for piece movement until prompted by Board */
 		
 	}
 	return * this ;
@@ -59,60 +69,56 @@ Square & Square::operator = (const Square & other) {
 
 void Square::receiveMovingPiece(Piece * pieceMovingTo) {
 	if (this->isOccupied()) {
-		//then a piece was captured
-		handlePieceCapture(pieceMovingTo) ;
+		destroyCurrentPiece() ;
 	}
-	
 	clearCurrentPiece(this->piece) ;
 	setCurrentPiece(pieceMovingTo) ;
 }
 
 void Square::setCurrentPiece(Piece * pieceMovingTo) {
 	this->piece = pieceMovingTo ;
-	this->piece->setCurrentPosition(& this->position) ;
+	this->piece->square = this ;
 }
 
 void Square::clearCurrentPiece(Piece * toClear) {
-	
-	//debug code only, remove this
-	assert(this->piece == toClear) ;
-	
-	if (piece != nullptr) {
-		this->piece->clearCurrentPosition() ;
+	if (this->piece != toClear) { //debug code
+		;
+	}
+	if (this->piece == toClear) {
+		if (this->piece != nullptr) {
+			this->piece->square = nullptr ;
+		}
+		
 		this->piece = nullptr ;
 	}
 }
 
 void Square::destroyCurrentPiece() {
-	if (piece != nullptr) {
-		delete this->piece ;
+	
+	if ((piece != nullptr) && (piece->deleted)) { /* debug code, remove */
+		; //set breakpoint
 	}
+	
+	
+	if (piece != nullptr) { /* checking if deleted previously is debug code, remove it */
+		if (piece->square != nullptr) { //debug code
+			assert(this->piece->square == this) ;
+		}
+		this->piece->square = nullptr ;
+		if (piece->deleted == false) { //debug code
+			delete this->piece ;
+		}
+	}
+	
 	piece = nullptr ;
-}
-
-void Square::handlePieceCapture(Piece * pieceCapturing) {
-	//notify everything that was registered for a capture event for our piece
-	Notification<Piece>::notify(EventType::pieceSpecifiedByIDWasCaptured, this->piece, {board->getID(), pieceCapturing->getID()}) ;
-	
-	destroyCurrentPiece() ;
-}
-
-void Square::registerForPieceMovement() {
-	
-	using namespace std::placeholders ;
-	
-	auto receiveMovingP = std::bind(&Square::receiveMovingPiece, this, _1) ;
-	Notification<Piece> notifyWhenPieceMovesHere (EventType::pieceArrivingAtPositionSpecifiedByPositionID, receiveMovingP, {board->getID(),generateID<int>(this->getPosition())}) ;
-	
-	auto clearCurrentP = std::bind(& Square::clearCurrentPiece, this, _1) ;
-	Notification<Piece> notifyWhenPieceLeaves (EventType::pieceLeavingPositionSpecifiedByPositionID, clearCurrentP, {board->getID(), generateID<int>(this->getPosition())}) ;
-	
-	notifyWhenPieceMovesHere.registerForCallback() ;
-	notifyWhenPieceLeaves.registerForCallback() ;
 }
 
 const Square * Board::operator () (unsigned arrIndexX, unsigned arrIndexY) const {
 	return & boardRepresentation[arrIndexX][arrIndexY] ;
+}
+	
+Square * Board::getSquareMutable(vec2<int> pos) {
+	return & boardRepresentation[pos.value.x][pos.value.y] ;
 }
 
 const Square * Board::getSquare(const RankAndFile & rf) const {
@@ -177,14 +183,30 @@ Board::Board(const Board & other) :
 	ID(IDs++),
 	boardRepresentation(other.boardRepresentation)
 {
-
+	/* Sets squares references to board to this */
+	updateSquaresAfterCopy() ;
 }
 
 Board & Board::operator = (const Board & other) {
+	
 	if (this != & other) {
+		
 		this->boardRepresentation = other.boardRepresentation ;
+		
+		/* Sets squares references to board to this */
+		updateSquaresAfterCopy() ;
 	}
 	return * this ;
+}
+	
+void Board::updateSquaresAfterCopy() {
+	for (size_t i = 0 ; i < boardRepresentation.size() ; i++) {
+		for (size_t j = 0 ; j < boardRepresentation[i].size() ; j++) {
+			
+			boardRepresentation[i][j].board = this ;
+			/* this should update the Square's piece's board pointer as well */
+		}
+	}
 }
 
 bool Board::isInsideBoardBounds(const vec2<int> pos) const {
