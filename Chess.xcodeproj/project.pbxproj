@@ -12,6 +12,10 @@
 		6659B8BC1AB75B540068B607 /* DisplayData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6659B8BB1AB75B540068B607 /* DisplayData.mm */; };
 		6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6659B8BE1AB75BB40068B607 /* AppKit.framework */; };
 		6663DC9B1AB7414200F10B4F /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6663DC9A1AB7414200F10B4F /* Config.cpp */; };
+		66A5443F1AED1930000E35C3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A5443E1AED1930000E35C3 /* OpenGL.framework */; };
+		66A544411AED2C04000E35C3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A544401AED2C04000E35C3 /* CoreFoundation.framework */; };
+		66A544431AED2C0A000E35C3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A544421AED2C0A000E35C3 /* Foundation.framework */; };
+		66A9B0631AE918BC0075AB17 /* Window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66A9B0621AE918BC0075AB17 /* Window.mm */; };
 		66AD6CF61A93D3080008F0ED /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AD6CF41A93D3080008F0ED /* Util.cpp */; };
 		66BE095E1A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */; };
 		66BE095F1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */; };
@@ -55,6 +59,11 @@
 		6663DC9A1AB7414200F10B4F /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		667FF3061AE0A9FB008CF182 /* License */ = {isa = PBXFileReference; lastKnownFileType = folder; path = License; sourceTree = "<group>"; };
 		667FF30C1AE0B23D008CF182 /* tree.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tree.hh; sourceTree = "<group>"; };
+		66A5443E1AED1930000E35C3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		66A544401AED2C04000E35C3 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		66A544421AED2C0A000E35C3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		66A9B0611AE911BB0075AB17 /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		66A9B0621AE918BC0075AB17 /* Window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Window.mm; sourceTree = "<group>"; };
 		66AD6CF41A93D3080008F0ED /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		66AD6CF51A93D3080008F0ED /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		66AF8EC31AB40F0000FECDA7 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -89,8 +98,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66A544411AED2C04000E35C3 /* CoreFoundation.framework in Frameworks */,
 				66E390DD1ADB1937008D4505 /* CoreGraphics.framework in Frameworks */,
+				66A544431AED2C0A000E35C3 /* Foundation.framework in Frameworks */,
 				6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */,
+				66A5443F1AED1930000E35C3 /* OpenGL.framework in Frameworks */,
 				66BE095E1A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib in Frameworks */,
 				66BE095F1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib in Frameworks */,
 				66BE09601A8E382300C5F1CC /* libsfml-network.2.2.0.dylib in Frameworks */,
@@ -125,6 +137,7 @@
 				66AF8EC31AB40F0000FECDA7 /* Config.h */,
 				66AD6CF51A93D3080008F0ED /* Util.h */,
 				66BE09731A8E4AC200C5F1CC /* Vect.h */,
+				66A9B0611AE911BB0075AB17 /* Color.h */,
 				6603F9571AD73BAB00B3A5DD /* UniqueNumericID.h */,
 				667FF30C1AE0B23D008CF182 /* tree.hh */,
 				6659B8B41AB75A210068B607 /* Util.hpp */,
@@ -145,6 +158,7 @@
 				6659B8B91AB75ADD0068B607 /* DisplayData.cpp */,
 				6659B8BB1AB75B540068B607 /* DisplayData.mm */,
 				66BE09751A8E4AC200C5F1CC /* Window.cpp */,
+				66A9B0621AE918BC0075AB17 /* Window.mm */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -153,8 +167,11 @@
 			isa = PBXGroup;
 			children = (
 				661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */,
+				66A544401AED2C04000E35C3 /* CoreFoundation.framework */,
 				66E390DC1ADB1937008D4505 /* CoreGraphics.framework */,
+				66A544421AED2C0A000E35C3 /* Foundation.framework */,
 				6659B8BE1AB75BB40068B607 /* AppKit.framework */,
+				66A5443E1AED1930000E35C3 /* OpenGL.framework */,
 				66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */,
 				66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */,
 				66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */,
@@ -247,6 +264,7 @@
 				66AD6CF61A93D3080008F0ED /* Util.cpp in Sources */,
 				6659B8BA1AB75ADD0068B607 /* DisplayData.cpp in Sources */,
 				66BE09791A8E4AC200C5F1CC /* Piece.cpp in Sources */,
+				66A9B0631AE918BC0075AB17 /* Window.mm in Sources */,
 				66BE09781A8E4AC200C5F1CC /* Game.cpp in Sources */,
 				6663DC9B1AB7414200F10B4F /* Config.cpp in Sources */,
 				66BE09771A8E4AC200C5F1CC /* Board.cpp in Sources */,

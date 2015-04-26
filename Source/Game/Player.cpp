@@ -104,15 +104,15 @@ const MoveIntent AI::decideNextMove() const {
 		}
 	}
 	
-	extractHighestValueMoves(moveOptions) ;
+	vector<MoveIntent> highValueMoveOptions = extractHighestValueMoves(moveOptions) ;
 	
-	MoveIntent mv = selectMoveAtRandom(moveOptions) ;
+	MoveIntent move = selectMoveAtRandom(highValueMoveOptions) ;
 	
 	//get the actual live piece matching the one in mv, and swap it out for its stand-in
-	Piece * original = board.getSquareMutable(*mv.piece->getPosition())->getPieceMutable() ;
-	mv.piece = original ;
+	Piece * original = board.getSquareMutable(*move.piece->getPosition())->getPieceMutable() ;
+	move.piece = original ;
 	
-	return mv ;
+	return move ;
 }
 	
 	
@@ -194,13 +194,13 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 	
 	
 	
-void extractHighestValueMoves(vector <MoveIntent> & moves) {
+vector <MoveIntent> extractHighestValueMoves(const vector <MoveIntent> & moves) {
 	
 	vector<MoveIntent> optimalMoves ;
 	
 	int highestValue = moves[0].moveValue ;
 	
-	for (auto i = 0 ; i < moves.size() ; i++) {
+	for (auto i = 1 ; i < moves.size() ; i++) {
 		if (moves[i].moveValue > highestValue) {
 			highestValue = moves[i].moveValue ;
 		}
@@ -211,6 +211,8 @@ void extractHighestValueMoves(vector <MoveIntent> & moves) {
 			optimalMoves.push_back(moves[i]) ;
 		}
 	}
+	
+	return optimalMoves ;
 }
 	
 	

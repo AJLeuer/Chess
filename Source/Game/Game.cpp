@@ -17,7 +17,7 @@ Game::Game() :
 	player0(new AI(Chess::Color::white, this->board)), //holds references to pieces at index (0, 0) through (1, 15)
 	player1(new AI(Chess::Color::black, this->board)) //holds references to pieces at index (6, 0) through (7, 7)
 {
-	
+	window.setBackgroundColor(Chess::backgroundColor) ;
 }
 
 Game::~Game() {
@@ -61,7 +61,8 @@ void Game::display() {
 	vec2<int> windowSize = convertToNativeVectorType<int>(window.getSize()) ;
 	auto middle = windowSize / 2 ;
 	
-	window.clear(sf::Color(0, 0, 0, 64)) ;
+	window.clear(sf::Color(backgroundColor.R(), backgroundColor.G(), backgroundColor.B(), backgroundColor.A())) ;
+	window.refresh() ;
 	window.displayText(*str, middle) ;
 	
 	window.display() ;

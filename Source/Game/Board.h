@@ -40,16 +40,6 @@ protected:
 	
 	static unsigned long IDs ;
 	
-	/**
-	 * The number of rows on the chessboard
-	 */
-	static constexpr unsigned ranks = 8 ;
-	
-	/**
-	 * The number of columns on the chessboard
-	 */
-	static constexpr unsigned files = 8 ;
-	
 	const unsigned long ID ;
 	
 	array<array<Square, files>, ranks> boardRepresentation ;
@@ -162,7 +152,7 @@ template <typename Character>
 basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Board & board) {
 	out << L"┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl ;
 	
-	for (unsigned i = 0; i < Board::ranks ; i++) {
+	for (unsigned i = 0; i < ranks ; i++) {
 		
 		out << L"│ " << *(board.getSquare((unsigned)0, i)) << L" │ " << *(board.getSquare((unsigned)1, i)) << L" │ " << *(board.getSquare((unsigned)2, i)) << L" │ " << *(board.getSquare((unsigned)3, i)) << L" │ " << *(board.getSquare((unsigned)4, i)) << L" │ " << *(board.getSquare((unsigned)5, i)) << L" │ " << *(board.getSquare((unsigned)6, i)) << L" │ " << *(board.getSquare((unsigned)7, i)) << L" │" << endl ;
 		

@@ -12,11 +12,16 @@
 #include <iostream>
 #include <string>
 
+#include <OpenGL/gl.h>
+
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "../Game/Chess.h"
+
 #include "../Util/Vect.h"
+#include "../Util/Color.h"
 
 #include "Config.h"
 #include "DisplayData.h"
@@ -52,17 +57,17 @@ protected:
 	
 public:
 	
-	ChessWindow(const ChessWindow & other) :
-		text(other.text)
-	{
-		
-	}
+	ChessWindow(const ChessWindow & other) = delete ;
 	
 	ChessWindow(const string & title = "Chess") ;
 	
 	~ChessWindow() {}
 	
-	ChessWindow & operator = (const ChessWindow & other) ;
+	ChessWindow & operator = (const ChessWindow & other) = delete ;
+	
+	void refresh() ;
+	
+	void setBackgroundColor(const TrueColor color) ;
 	
 	template<class StringType>
 	void displayText(const StringType & chars, const vec2<int> where) ;
@@ -73,7 +78,7 @@ template<class StringType>
 void ChessWindow::displayText(const StringType & chars, const vec2<int> where) {
 	
 	text.setString(chars) ;
-	text.setColor(sf::Color(173, 255, 0)) ;
+	text.setColor(sf::Color(255, 0, 104)) ;
 	
 	auto textSize = text.getLocalBounds() ;
 	

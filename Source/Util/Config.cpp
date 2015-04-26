@@ -9,6 +9,7 @@
 #include "Config.h"
 
 string currentDirectory("") ;
+string commandLineArgument("") ;
 
 const string & mainFontFilePath {"./Assets/Fonts/Menlo-Regular.ttf"} ; //apparently works even though it seems like referencing a rvalue. const-qualifying makes it legal
 

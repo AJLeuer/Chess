@@ -117,22 +117,11 @@ public:
 	
 	
 	
-void extractHighestValueMoves(vector <MoveIntent> & moves) ;
+vector <MoveIntent> extractHighestValueMoves(const vector <MoveIntent> & moves) ;
 	
 MoveIntent selectMoveAtRandom(const vector <MoveIntent> & moves) ;
 	
 	
-	
-	
-	
-struct StoredMoveIntent {
-	
-	const Board * board ;
-	
-	MoveIntent moveIntent ;
-	
-};
-
 	
 }
 

@@ -13,8 +13,10 @@
 #include <list>
 #include <typeinfo>
 
-#include "Config.h"
+#include "./Util/Config.h"
 #include "./Util/Vect.h"
+#include "./Util/Color.h"
+
 #include "./Game/Game.h"
 
 using namespace std ;
@@ -23,11 +25,9 @@ using namespace Chess ;
 
 int main(int argc, const char * argv[]) {
 	
-	currentDirectory = * argv ;
-	
-	
-
-
+	currentDirectory = argv[0] ;
+	commandLineArgument = argv[1] ;
+	cout << "This application was run from the directory: " << currentDirectory << endl ;
 
 
 	Game game ;

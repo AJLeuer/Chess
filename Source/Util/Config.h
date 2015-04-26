@@ -26,6 +26,7 @@ extern vec2<unsigned> mainWindowSize ;
 extern vec2<unsigned> setMainWindowSize() ;
 
 extern string currentDirectory ;
+extern string commandLineArgument ;
 
 extern const string & mainFontFilePath ; 
 

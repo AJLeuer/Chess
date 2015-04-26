@@ -33,18 +33,4 @@ VideoMode & ChessWindow::setVideoMode() {
 
 
 
-ChessWindow::ChessWindow(const string & title) :
-	RenderWindow(videoMode, title, sf::Style::Default, ContextSettings())
-{
-	text.setFont(font) ;
-	text.setCharacterSize(60) ;
-}
-
-
-ChessWindow & ChessWindow::operator = (const ChessWindow & other) {
-	if (this != & other) {
-		this->text = other.text ;
-	}
-	return * this ;
-}
 
