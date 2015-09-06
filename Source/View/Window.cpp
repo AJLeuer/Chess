@@ -31,6 +31,27 @@ VideoMode & ChessWindow::setVideoMode() {
 }
 
 
+#ifndef __APPLE__
+
+/* Below are the (unfinished) implementations for non-Apple platforms */
+
+ChessWindow::ChessWindow(const string & title, const TrueColor backgroundColor) :
+	RenderWindow(videoMode, title, sf::Style::Default, ContextSettings())
+{
+	text.setFont(font) ;
+	text.setCharacterSize(60) ;
+	this->setBackgroundColor(backgroundColor) ;
+}
 
 
+
+void ChessWindow::setBackgroundColor(const TrueColor color) {
+	//todo implement for non-Apple unix, win
+}
+
+
+
+
+
+#endif
 

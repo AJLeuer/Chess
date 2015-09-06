@@ -87,18 +87,16 @@ protected:
 	
 	Square * square ;
 	
+	const vec2<int> startingPosition ;
+	
 	bool deleted = false ; //debug variable only
 
 	Piece(Type type, const wchar_t symbol, const string & spriteImageFilePath,
 		  const Chess::Color color, Square *square) ;
 	
 	
-	//Square * & getSquareMutable() { return square ; }
-	
 	friend class TemporaryPiece ;
-	
-	friend class Square ;
-	
+
 	friend class Player ;
 	
 	friend class AI ;
@@ -126,13 +124,14 @@ public:
 		deleted = true ;
 	} ; 
 	
-	virtual Piece & operator = (const Piece & rhs) ;
+	/* Commenting out assignment operator overload for now, may decide we need it later */
+	//virtual Piece & operator = (const Piece & rhs) ;
 	
 	/**
 	 * Returns true if there exists at least one Square that this Piece can legally move to,
 	 * false otherwise
 	 */
-	virtual const bool canMove() const ;
+	const bool canMove() const ;
 	
 	/**
 	 * @return a std::vector that is either filled with the Squares this Piece can legally move to, or, if there are
@@ -146,6 +145,7 @@ public:
 	 */
 	virtual void move(const vec2<int> to) ;//inheriting pieces will define
 	
+	const inline bool isDeleted() const { return deleted ; }
 	
 	const unsigned long getID() const { return iD ; }
 	
@@ -161,12 +161,18 @@ public:
 	
 	virtual const vector<Direction> getLegalMovementDirections() const = 0 ;
 	
+	void setSquare(Square * square) { this->square = square ; if (square != nullptr) updateSpritePosition() ; }
+	
 	Square * const & getSquare() const { return square ; }
+	
+	Square * getSquareMutable() { return square ; }
 	
 	/**
 	 * Called before any drawing is done. Initializes texture object
 	 */
 	void initSpriteTexture() ;
+	
+	inline void updateSpritePosition() { sprite.setPosition(static_cast<float>(getPosition()->value.x), static_cast<float>(getPosition()->value.y)) ; }
 	
 	friend ostream & operator<< (ostream & , const Piece &) ;
 	
@@ -210,8 +216,6 @@ public:
 	Direction getLegalMovementDirectionToEmptySquares() const ;
 	
 	void move(const vec2<int> to) override ;
-	
-	const bool canMove() const override ;
 	
 } ;
 
@@ -357,10 +361,13 @@ public:
 	
 	
 	
-struct MoveIntent {
+class MoveIntent {
+
+	
+public:
 	
 	/**
-	 * Whether is possible for piece to move
+	 * Whether it's possible for piece to move
 	 */
 	bool canMove ;
 	
@@ -369,6 +376,36 @@ struct MoveIntent {
 	vec2<int> moveDestination ;
 	
 	int moveValue ;
+	
+	MoveIntent(bool canMv, Piece * pc, vec2<int> mvDest, int mvVal) : canMove(canMv), piece(pc), moveDestination(mvDest), moveValue(mvVal) {}
+	
+	MoveIntent(const MoveIntent & other) ;
+	
+	MoveIntent(MoveIntent && other) noexcept ;
+	
+	
+	~MoveIntent() {}
+	
+	MoveIntent & operator = (const MoveIntent & other) ;
+	
+	MoveIntent & operator = (MoveIntent && other) ;
+	
+	
+	
+} ;
+	
+	
+class MoveSequence{
+
+protected:
+	
+	vector<MoveIntent> moves ;
+	
+	unsigned totalValue = 0 ;
+	
+public:
+	
+	void addMove(const MoveIntent & mv) { moves.push_back(std::move(mv)) ; totalValue += mv.moveValue ; }
 	
 } ;
 

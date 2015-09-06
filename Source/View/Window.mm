@@ -105,51 +105,39 @@ namespace sf {
 
 
 
-ChessWindow::ChessWindow(const string & title) :
+ChessWindow::ChessWindow(const string & title, const TrueColor backgroundColor) :
 	RenderWindow(videoMode, title, sf::Style::Default, ContextSettings())
 {
 	
 	text.setFont(font) ;
 	text.setCharacterSize(60) ;
 	
+	/* the remaining lines implement window background transparency on OS X */
 	NSWindow * this_window = (__bridge NSWindow *)(this->getSystemHandle()) ;
-	
-	//this->setBackgroundColor(Chess::backgroundColor) ;
-	
-	NSColor * backgroundNSColor = [NSColor colorWithDeviceRed:Chess::backgroundColor.R_float()
-							green:Chess::backgroundColor.G_float() blue:Chess::backgroundColor.B_float() alpha:Chess::backgroundColor.A_float()];
-	
-	[this_window setOpaque:NO];
-	[this_window setBackgroundColor:backgroundNSColor] ;
-
 	SFOpenGLView * view = [this_window contentView] ;
-	
 	CustomOpenGLView * replacementView = [[CustomOpenGLView alloc] initByCopy:view] ;
-	
 	this_window.contentView = replacementView ;
-	
-
+	this->setBackgroundColor(backgroundColor) ;
 }
 
-
-void ChessWindow::refresh() {
+void ChessWindow::display() {
+	/* for some reason we need to call the native update method as well as SFML's */
 	NSWindow * this_window = (__bridge NSWindow *)(this->getSystemHandle()) ;
-	
 	[this_window displayIfNeeded] ;
+	
+	this->RenderWindow::display() ;
 }
+
+
 
 void ChessWindow::setBackgroundColor(const TrueColor color) {
 	
 	NSWindow * this_window = (__bridge NSWindow *)(this->getSystemHandle()) ;
 	
-	float c = color.R_float()	;
-	
-	NSColor * nativeColor = [NSColor colorWithDeviceRed:color.R_float() green:color.G_float() blue:color.B_float() alpha:color.A_float()];
+	NSColor * backgroundColor = [NSColor colorWithDeviceRed:color.R_float() green:color.G_float() blue:color.B_float() alpha:color.A_float()];
 	
 	[this_window setOpaque:NO];
-	[this_window setBackgroundColor:nativeColor] ;
-	//[this_window setAlphaValue:0.5];
-	
+	[this_window setBackgroundColor:backgroundColor] ;
 }
 
 

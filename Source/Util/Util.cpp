@@ -9,3 +9,7 @@
 #include "Util.h"
 
 wstring_convert<std::codecvt_utf8<wchar_t>> stringConverter ;
+
+string convertToString(const wstring & wide_string) {
+	return stringConverter.to_bytes(wide_string) ;
+}

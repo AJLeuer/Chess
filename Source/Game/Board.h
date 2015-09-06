@@ -32,7 +32,7 @@ using namespace std ;
 
 namespace Chess {
 	
-	
+class Game ;
 
 class Board {
 	
@@ -43,6 +43,8 @@ protected:
 	const unsigned long ID ;
 	
 	array<array<Square, files>, ranks> boardRepresentation ;
+	
+	const Game * game = nullptr ;
 	
 	/**
 	 * @return A pointer to the Square at the position specified by pos
@@ -75,7 +77,7 @@ public:
 	
 	virtual ~Board() {}
 	
-	virtual Board & operator = (const Board & other) ;
+	Board & operator = (const Board & other) = delete ;
 	
 	inline unsigned long getID() const { return ID ; }
 	
@@ -114,12 +116,15 @@ public:
 	template <typename Character>
 	friend basic_ostream<Character> & operator << (basic_ostream<Character> & out, const Board & board) ;
 	
-
+	
 	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions,
-											   Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const ;
+											   SafeBoolean includeFirstPieceOfColorEncountered, Color toInclude) const ;
+	
+												//need to use a SafeBoolean here instead of a bool, otherwise danger of mixing up calls between these
+												//two overloads
 	
 	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, int maxSearchDistance,
-											   Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const ;
+											   SafeBoolean includeFirstPieceOfColorEncountered, Color toInclude) const ;
 	
 	
 	/**

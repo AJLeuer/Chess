@@ -59,26 +59,26 @@ public:
 	
 	ChessWindow(const ChessWindow & other) = delete ;
 	
-	ChessWindow(const string & title = "Chess") ;
+	ChessWindow(const string & title = "Chess", const TrueColor backgroundColor = Chess::windowBackgroundColor) ;
 	
 	~ChessWindow() {}
 	
 	ChessWindow & operator = (const ChessWindow & other) = delete ;
-	
-	void refresh() ;
+
+	void display() ;
 	
 	void setBackgroundColor(const TrueColor color) ;
 	
 	template<class StringType>
-	void displayText(const StringType & chars, const vec2<int> where) ;
+	void displayText(const StringType & chars, const TrueColor color, const vec2<int> where) ;
 	
 };
 
 template<class StringType>
-void ChessWindow::displayText(const StringType & chars, const vec2<int> where) {
+void ChessWindow::displayText(const StringType & chars, const TrueColor color, const vec2<int> where) {
 	
 	text.setString(chars) ;
-	text.setColor(sf::Color(255, 0, 104)) ;
+	text.setColor(color) ;
 	
 	auto textSize = text.getLocalBounds() ;
 	

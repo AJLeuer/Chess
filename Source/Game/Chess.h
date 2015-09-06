@@ -22,7 +22,8 @@ static constexpr unsigned ranks = 8 ;
  */
 static constexpr unsigned files = 8 ;
 	
-static constexpr TrueColor backgroundColor {0x00, 0x6F, 0x98, 96} ;
+static constexpr TrueColor windowBackgroundColor {0x00, 0x00, 0x00, 160} ;
+static constexpr TrueColor windowForegroundColor {0x9D, 0xFF, 0x00, 254} ;
 	
 enum class Color {
 	black,

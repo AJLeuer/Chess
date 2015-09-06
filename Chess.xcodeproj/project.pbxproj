@@ -7,26 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6603EFA61B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA11B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib */; };
+		6603EFA71B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib */; };
+		6603EFA81B91332300F9A1D1 /* libsfml-network.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA31B91332300F9A1D1 /* libsfml-network.2.3.0.dylib */; };
+		6603EFA91B91332300F9A1D1 /* libsfml-system.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA41B91332300F9A1D1 /* libsfml-system.2.3.0.dylib */; };
+		6603EFAA1B91332300F9A1D1 /* libsfml-window.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA51B91332300F9A1D1 /* libsfml-window.2.3.0.dylib */; };
+		6603EFAC1B917E7800F9A1D1 /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6603EFAB1B917E7800F9A1D1 /* Square.cpp */; };
 		660A3FCC1ACF7BFA00E68035 /* Assets in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66D0AFA41AB6D026001AD733 /* Assets */; };
 		6659B8BA1AB75ADD0068B607 /* DisplayData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6659B8B91AB75ADD0068B607 /* DisplayData.cpp */; };
 		6659B8BC1AB75B540068B607 /* DisplayData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6659B8BB1AB75B540068B607 /* DisplayData.mm */; };
 		6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6659B8BE1AB75BB40068B607 /* AppKit.framework */; };
 		6663DC9B1AB7414200F10B4F /* Config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6663DC9A1AB7414200F10B4F /* Config.cpp */; };
+		669B90D01B9186FB0005E3ED /* Support.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 669B90CE1B9186FB0005E3ED /* Support.cpp */; };
 		66A5443F1AED1930000E35C3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A5443E1AED1930000E35C3 /* OpenGL.framework */; };
 		66A544411AED2C04000E35C3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A544401AED2C04000E35C3 /* CoreFoundation.framework */; };
 		66A544431AED2C0A000E35C3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A544421AED2C0A000E35C3 /* Foundation.framework */; };
 		66A9B0631AE918BC0075AB17 /* Window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 66A9B0621AE918BC0075AB17 /* Window.mm */; };
 		66AD6CF61A93D3080008F0ED /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AD6CF41A93D3080008F0ED /* Util.cpp */; };
-		66BE095E1A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */; };
-		66BE095F1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */; };
-		66BE09601A8E382300C5F1CC /* libsfml-network.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */; };
-		66BE09611A8E382300C5F1CC /* libsfml-system.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE095C1A8E382300C5F1CC /* libsfml-system.2.2.0.dylib */; };
-		66BE09621A8E382300C5F1CC /* libsfml-window.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 66BE095D1A8E382300C5F1CC /* libsfml-window.2.2.0.dylib */; };
 		66BE09771A8E4AC200C5F1CC /* Board.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09671A8E4AC200C5F1CC /* Board.cpp */; };
 		66BE09781A8E4AC200C5F1CC /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09691A8E4AC200C5F1CC /* Game.cpp */; };
 		66BE09791A8E4AC200C5F1CC /* Piece.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE096B1A8E4AC200C5F1CC /* Piece.cpp */; };
 		66BE097A1A8E4AC200C5F1CC /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE096D1A8E4AC200C5F1CC /* Player.cpp */; };
-		66BE097C1A8E4AC200C5F1CC /* Vect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09721A8E4AC200C5F1CC /* Vect.cpp */; };
 		66BE097D1A8E4AC200C5F1CC /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66BE09751A8E4AC200C5F1CC /* Window.cpp */; };
 		66C10DB81A0030B10074ED36 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66C10DB71A0030B10074ED36 /* main.cpp */; };
 		66E390DD1ADB1937008D4505 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66E390DC1ADB1937008D4505 /* CoreGraphics.framework */; };
@@ -46,6 +47,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6603EFA11B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-audio.2.3.0.dylib"; sourceTree = "<group>"; };
+		6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-graphics.2.3.0.dylib"; sourceTree = "<group>"; };
+		6603EFA31B91332300F9A1D1 /* libsfml-network.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-network.2.3.0.dylib"; sourceTree = "<group>"; };
+		6603EFA41B91332300F9A1D1 /* libsfml-system.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-system.2.3.0.dylib"; sourceTree = "<group>"; };
+		6603EFA51B91332300F9A1D1 /* libsfml-window.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-window.2.3.0.dylib"; sourceTree = "<group>"; };
+		6603EFAB1B917E7800F9A1D1 /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Square.cpp; sourceTree = "<group>"; };
 		6603F9571AD73BAB00B3A5DD /* UniqueNumericID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UniqueNumericID.h; path = Source/Util/UniqueNumericID.h; sourceTree = SOURCE_ROOT; };
 		661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = BuildConfig.xcconfig; path = Config/BuildConfig.xcconfig; sourceTree = "<group>"; };
 		66243F691ABF84F70002560B /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Config; sourceTree = "<group>"; };
@@ -59,6 +66,8 @@
 		6663DC9A1AB7414200F10B4F /* Config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Config.cpp; sourceTree = "<group>"; };
 		667FF3061AE0A9FB008CF182 /* License */ = {isa = PBXFileReference; lastKnownFileType = folder; path = License; sourceTree = "<group>"; };
 		667FF30C1AE0B23D008CF182 /* tree.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tree.hh; sourceTree = "<group>"; };
+		669B90CE1B9186FB0005E3ED /* Support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Support.cpp; sourceTree = "<group>"; };
+		669B90CF1B9186FB0005E3ED /* Support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Support.h; sourceTree = "<group>"; };
 		66A5443E1AED1930000E35C3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		66A544401AED2C04000E35C3 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		66A544421AED2C0A000E35C3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -67,11 +76,6 @@
 		66AD6CF41A93D3080008F0ED /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		66AD6CF51A93D3080008F0ED /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		66AF8EC31AB40F0000FECDA7 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
-		66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-audio.2.2.0.dylib"; sourceTree = "<group>"; };
-		66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-graphics.2.2.0.dylib"; sourceTree = "<group>"; };
-		66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-network.2.2.0.dylib"; sourceTree = "<group>"; };
-		66BE095C1A8E382300C5F1CC /* libsfml-system.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-system.2.2.0.dylib"; sourceTree = "<group>"; };
-		66BE095D1A8E382300C5F1CC /* libsfml-window.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.2.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.2/lib/libsfml-window.2.2.0.dylib"; sourceTree = "<group>"; };
 		66BE09671A8E4AC200C5F1CC /* Board.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Board.cpp; sourceTree = "<group>"; };
 		66BE09681A8E4AC200C5F1CC /* Board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Board.h; sourceTree = "<group>"; };
 		66BE09691A8E4AC200C5F1CC /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
@@ -80,7 +84,6 @@
 		66BE096C1A8E4AC200C5F1CC /* Piece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Piece.h; sourceTree = "<group>"; };
 		66BE096D1A8E4AC200C5F1CC /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		66BE096E1A8E4AC200C5F1CC /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		66BE09721A8E4AC200C5F1CC /* Vect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vect.cpp; sourceTree = "<group>"; };
 		66BE09731A8E4AC200C5F1CC /* Vect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vect.h; sourceTree = "<group>"; };
 		66BE09751A8E4AC200C5F1CC /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		66BE09761A8E4AC200C5F1CC /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
@@ -103,11 +106,11 @@
 				66A544431AED2C0A000E35C3 /* Foundation.framework in Frameworks */,
 				6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */,
 				66A5443F1AED1930000E35C3 /* OpenGL.framework in Frameworks */,
-				66BE095E1A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib in Frameworks */,
-				66BE095F1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib in Frameworks */,
-				66BE09601A8E382300C5F1CC /* libsfml-network.2.2.0.dylib in Frameworks */,
-				66BE09611A8E382300C5F1CC /* libsfml-system.2.2.0.dylib in Frameworks */,
-				66BE09621A8E382300C5F1CC /* libsfml-window.2.2.0.dylib in Frameworks */,
+				6603EFA61B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib in Frameworks */,
+				6603EFA71B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib in Frameworks */,
+				6603EFA81B91332300F9A1D1 /* libsfml-network.2.3.0.dylib in Frameworks */,
+				6603EFA91B91332300F9A1D1 /* libsfml-system.2.3.0.dylib in Frameworks */,
+				6603EFAA1B91332300F9A1D1 /* libsfml-window.2.3.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,14 +121,17 @@
 			isa = PBXGroup;
 			children = (
 				66ED80F91AB1B6B3003CA2FC /* Chess.h */,
-				66ED80FA1AB1BA60003CA2FC /* Square.h */,
+				669B90CF1B9186FB0005E3ED /* Support.h */,
 				66BE096C1A8E4AC200C5F1CC /* Piece.h */,
-				66BE096E1A8E4AC200C5F1CC /* Player.h */,
+				66ED80FA1AB1BA60003CA2FC /* Square.h */,
 				66BE09681A8E4AC200C5F1CC /* Board.h */,
+				66BE096E1A8E4AC200C5F1CC /* Player.h */,
 				66BE096A1A8E4AC200C5F1CC /* Game.h */,
+				669B90CE1B9186FB0005E3ED /* Support.cpp */,
 				66BE096B1A8E4AC200C5F1CC /* Piece.cpp */,
-				66BE096D1A8E4AC200C5F1CC /* Player.cpp */,
+				6603EFAB1B917E7800F9A1D1 /* Square.cpp */,
 				66BE09671A8E4AC200C5F1CC /* Board.cpp */,
+				66BE096D1A8E4AC200C5F1CC /* Player.cpp */,
 				66BE09691A8E4AC200C5F1CC /* Game.cpp */,
 			);
 			path = Game;
@@ -144,7 +150,6 @@
 				6659B8C01AB779A20068B607 /* Random.hpp */,
 				6663DC9A1AB7414200F10B4F /* Config.cpp */,
 				66AD6CF41A93D3080008F0ED /* Util.cpp */,
-				66BE09721A8E4AC200C5F1CC /* Vect.cpp */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -166,17 +171,17 @@
 		66C10DAB1A0030B10074ED36 = {
 			isa = PBXGroup;
 			children = (
+				6603EFA11B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib */,
+				6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib */,
+				6603EFA31B91332300F9A1D1 /* libsfml-network.2.3.0.dylib */,
+				6603EFA41B91332300F9A1D1 /* libsfml-system.2.3.0.dylib */,
+				6603EFA51B91332300F9A1D1 /* libsfml-window.2.3.0.dylib */,
 				661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */,
 				66A544401AED2C04000E35C3 /* CoreFoundation.framework */,
 				66E390DC1ADB1937008D4505 /* CoreGraphics.framework */,
 				66A544421AED2C0A000E35C3 /* Foundation.framework */,
 				6659B8BE1AB75BB40068B607 /* AppKit.framework */,
 				66A5443E1AED1930000E35C3 /* OpenGL.framework */,
-				66BE09591A8E382300C5F1CC /* libsfml-audio.2.2.0.dylib */,
-				66BE095A1A8E382300C5F1CC /* libsfml-graphics.2.2.0.dylib */,
-				66BE095B1A8E382300C5F1CC /* libsfml-network.2.2.0.dylib */,
-				66BE095C1A8E382300C5F1CC /* libsfml-system.2.2.0.dylib */,
-				66BE095D1A8E382300C5F1CC /* libsfml-window.2.2.0.dylib */,
 				66FDF2231ADF219B0098E9A2 /* ToDo.txt */,
 				667FF3061AE0A9FB008CF182 /* License */,
 				66243F691ABF84F70002560B /* Config */,
@@ -231,7 +236,7 @@
 		66C10DAC1A0030B10074ED36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Adam James Leuer";
 				TargetAttributes = {
 					66C10DB31A0030B10074ED36 = {
@@ -263,15 +268,16 @@
 			files = (
 				66AD6CF61A93D3080008F0ED /* Util.cpp in Sources */,
 				6659B8BA1AB75ADD0068B607 /* DisplayData.cpp in Sources */,
+				6603EFAC1B917E7800F9A1D1 /* Square.cpp in Sources */,
 				66BE09791A8E4AC200C5F1CC /* Piece.cpp in Sources */,
 				66A9B0631AE918BC0075AB17 /* Window.mm in Sources */,
 				66BE09781A8E4AC200C5F1CC /* Game.cpp in Sources */,
 				6663DC9B1AB7414200F10B4F /* Config.cpp in Sources */,
+				669B90D01B9186FB0005E3ED /* Support.cpp in Sources */,
 				66BE09771A8E4AC200C5F1CC /* Board.cpp in Sources */,
 				66BE097D1A8E4AC200C5F1CC /* Window.cpp in Sources */,
 				66C10DB81A0030B10074ED36 /* main.cpp in Sources */,
 				66BE097A1A8E4AC200C5F1CC /* Player.cpp in Sources */,
-				66BE097C1A8E4AC200C5F1CC /* Vect.cpp in Sources */,
 				6659B8BC1AB75B540068B607 /* DisplayData.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +307,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -391,6 +398,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/sfml/2.2/lib,
+					/usr/local/Cellar/sfml/2.3/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -404,6 +412,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/sfml/2.2/lib,
+					/usr/local/Cellar/sfml/2.3/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

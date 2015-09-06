@@ -48,16 +48,18 @@ protected:
 	
 	Chess::Color color ;
 	
-	Board & board ;
+	Board * board ;
 	
-	vector<Piece *> findPiecesOnBoard(Board & workingBoard) const ;
+	vector<Piece *> findOwnPiecesOnBoard(const Board & workingBoard) const ;
+	
+	friend class Game ;
 	
 public:
 	
 	/* Any other constructors should call this as a delegating constructor */
-	explicit Player(Chess::Color color, Board & board) ;
+	explicit Player(Chess::Color color, Board * board) ;
 	
-	Player(const Player & other) = delete ;
+	Player(const Player & other) ;
 	
 	/**
 	 * Move constructor
@@ -71,7 +73,7 @@ public:
 	/**
 	 * Move assignment operator
 	 */
-	Player & operator = (Player && other) ;
+	Player & operator = (Player && other) = delete ;
 	
 	void removePiece(Piece * piece) ;
 	
@@ -86,8 +88,10 @@ class Human : public Player {
 
 public:
 
-	Human(Chess::Color color, Board & board) :
+	Human(Chess::Color color, Board * board) :
 		Player(color, board) {}
+	
+	Human(const Player & other) : Player(other) {}
 	
 	const MoveIntent decideNextMove() const override ;
 	
@@ -100,22 +104,41 @@ class AI : public Player {
 	
 protected:
 	
+	vector<MoveSequence> computeMoveSequence(vector<MoveSequence> & moveSequences, vector<Piece *> & ownPieces,
+												 vector<Piece *>::iterator currentPiece,
+												 Board & board, unsigned maxSearchDepth, unsigned currentDepth) ;
+	
 	const MoveIntent findBestMoveForPiece(Piece * piece) const ;
 	
-	//static
 	
 	friend class Game ; //debug only
 	
 public:
 	
-	AI(Chess::Color color, Board & board) :
+	AI(Chess::Color color, Board * board) :
 		Player(color, board) {}
 	
-	const MoveIntent decideNextMove() const override ;
+	AI(const Player & other) : Player(other) {}
 	
+	virtual const MoveIntent decideNextMove() const override ;
+	
+	void findMoveSequence(unsigned maxSearchDepth, unsigned currentDepth) ;
+	
+	const MoveIntent chooseBestMove(Board & board) const ;
+	
+	vector<MoveIntent> computeBestMoves(Board & board) const ;
 } ;
 	
 	
+	
+class SimHuman : public AI {
+	
+public:
+	
+	using AI::AI ;
+	
+};
+
 	
 vector <MoveIntent> extractHighestValueMoves(const vector <MoveIntent> & moves) ;
 	

@@ -26,9 +26,9 @@ static constexpr auto & pi = 𝜋 ; //easier to type
  * Used to avoid ambiguity when calling various constructors
  * with integral values that might be confused for boolean
  */
-enum class SafeBoolean {
-	t,
-	f
+enum class SafeBoolean : bool {
+	t = true,
+	f = false
 };
 
 template<typename N>
@@ -305,28 +305,7 @@ double convertToRadians(const Degrees angle_deg) {
 	double angle_in_radians = angle_in_degrees / (180.0 / static_cast<double>(pi)) ;
 	return angle_in_radians ;
 }
-
-/**
- * Overloads operator + for std::string to allow
- * appending any type T
- *
- * @param rhs The text to append
- */
-template<class T>
-inline string operator+(const string & str, const T & rhs) {
-	string app = to_string(rhs) ;
-	string ret = str ;
-	ret += app ;
-	return ret ;
-}
-
-inline string operator +(const string & str, const char * rhs) {
-	string app(rhs) ;
-	string ret = str ;
-	ret += app ;
-	return ret ;
-}
-
+	
 template <typename T>
 vector<T> & operator += (vector<T> & vect, const T & t) {
 	vect.push_back(t) ;
@@ -346,7 +325,7 @@ vector<T> operator + (const vector<T> & leftSide, const vector<T> & rightSide) {
 	vector<T> combined(leftSide) ; //copy leftSide
 	
 	for (typename vector<T>::size_type i = 0 ; i < rightSide.size() ; i++) {
-		combined += rightSide.at(i) ;
+		combined += rightSide.at(i) ; //then copy everything from rightSide
 	}
 	
 	return combined ;

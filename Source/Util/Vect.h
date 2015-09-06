@@ -31,12 +31,16 @@ using simd_vector_2 = NumericType __attribute__((ext_vector_type(2))) ;
  * @note A good example of a C++ literal type
  */
 template <typename NumericType>
+
 struct vec2 {
 	
 	
 	simd_vector_2<NumericType> value ;
 	
-	inline constexpr vec2() : value(simd_vector_2<NumericType>{0, 0}) {}
+	
+	//inline constexpr vec2() : value(simd_vector_2<NumericType>{0, 0}) {}
+	
+	inline constexpr vec2(const vec2 & other) : value(other.value) {}
 	
 	inline constexpr vec2(const simd_vector_2<NumericType> val) : value(val) {}
 	
@@ -252,59 +256,6 @@ NumericType calculateDistance(const simd_vector_2<int> startingPosition) {
 	return NumericType() ;
 }
 
-/**
- * Used to represents a position on the chess board in algebraic notation, where the first square
- * is a1, etc. Can be explicitely and implicitely converted to a simd_vector_2<int> (where a1 would equal the 2-vector (0, 0)), and vice versa.
- *
- * @see Wikipedia's article on <a href="http://en.wikipedia.org/wiki/Algebraic_notation_(chess)">Algebraic notation (chess)</a>
- */
-struct RankAndFile {
-	
-protected:
-	
-	static constexpr char FILE_FIRST {'a'} ;
-	static constexpr char FILE_LAST  {'h'} ;
-	
-	static constexpr unsigned short RANK_FIRST {1} ;
-	static constexpr unsigned short RANK_LAST  {8} ;
-	
-	static char convertToFile(const unsigned x) ;
-	static unsigned convertToRank(const unsigned y) ;
-	
-	char file ;
-	unsigned rank ;
-	
-	friend struct Square ;
-	
-	friend void runChessGameTests() ;
-	
-public:
-	
-	RankAndFile() {}
-	
-	RankAndFile(const char & file, const unsigned rank) : file(file), rank(rank) {}
-	
-	RankAndFile(const vec2<int> & pos) ;
-	
-	RankAndFile(const RankAndFile & other) : RankAndFile(other.file, other.rank) {}
-	
-	~RankAndFile() {}
-	
-	RankAndFile & operator = (const RankAndFile & rhs) ;
-	
-	RankAndFile & operator = (const vec2<int> & pos) ;
-	
-	operator vec2<int>() const ;
-	
-	string toString() const ;
-	
-	vec2<int> convertToPosition() const ;
 
-	const char getFile() const { return file ; }
-	const unsigned & getRank() const { return rank ; }
-	
-	friend std::ostream & operator<< (ostream & , const RankAndFile &) ;
-	
-} ;
 
 #endif

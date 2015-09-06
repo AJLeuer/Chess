@@ -3,10 +3,24 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "bool equal&lt;unsigned int&gt;(unsigned int vector[2], unsigned int vector[2]):Position.h">
+         contextName = "runChessGameTests():main.cpp">
       </ContextState>
       <ContextState
-         contextName = "Piece::sendMoveNotification(unsigned int vector[2]):Piece.cpp">
+         contextName = "Chess::Game::testAndDebug():Game.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "vec2&lt;int&gt;::operator==(vec2&lt;int&gt;) const:Vect.h">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::Board::getSpecifiedSquares(vec2&lt;int&gt;, std::__1::vector&lt;Direction, std::__1::allocator&lt;Direction&gt; &gt; const&amp;, int, Chess::Color, Chess::Color) const:Board.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "bool equal&lt;unsigned int&gt;(unsigned int vector[2], unsigned int vector[2]):Position.h">
       </ContextState>
       <ContextState
          contextName = "ChessWindow::ChessWindow(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):Window.cpp">
@@ -17,7 +31,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "runChessGameTests():main.cpp">
+         contextName = "Chess::Pawn::getLegalMovementDirectionToEmptySquares() const:Piece.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::Pawn::getAllPossibleLegalMoves() const:Piece.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::Board::getSpecifiedSquares(vec2&lt;int&gt;, std::__1::vector&lt;Direction, std::__1::allocator&lt;Direction&gt; &gt; const&amp;, int, SafeBoolean, Chess::Color) const:Board.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Piece::sendMoveNotification(unsigned int vector[2]):Piece.cpp">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

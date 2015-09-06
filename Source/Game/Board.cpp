@@ -11,105 +11,7 @@
 using namespace std ;
 
 namespace Chess {
-
-Square::Square(const Square & other) :
-	rankAndFile(other.rankAndFile),
-	position(other.position),
-	/* Don't copy other's board pointer */
-	piece((other.piece == nullptr) ? nullptr : Piece::initCopy(*other.piece))
-{
-	if (piece != nullptr) {
-		piece->square = this ;
-	}
-}
-
-Square::Square(const char file, const unsigned rank, Board * board) :
-	rankAndFile(file, rank),
-	position(rankAndFile),
-	board(board),
-	piece(nullptr)
-{
-
-}
-
-Square::Square(Piece * piece, const char file, const unsigned rank, Board * board) :
-	Square(file, rank, board)
-{
-	this->piece = piece ;
-}
-
-Square::Square(const wchar_t pieceSymbol, const char file, const unsigned rank, Board * board) :
-	Square(Piece::init(pieceSymbol, this), file, rank, board) {}
 	
-Square::~Square() {
-	destroyCurrentPiece() ; //only deletes if non-null
-}
-
-Square & Square::operator = (const Square & other) {
-	if (this == & other) { //debug code
-		
-	}
-	if (this != & other) {
-		this->rankAndFile = other.rankAndFile ;
-		this->position = other.position ;
-		/* Don't copy other's board pointer */
-		
-		destroyCurrentPiece() ; //only deletes if non-null
-		
-		if (other.piece != nullptr) {
-			piece = Piece::initCopy(* other.piece) ;
-			piece->square = this ;
-		}
-		
-	}
-	return * this ;
-}
-
-void Square::receiveMovingPiece(Piece * pieceMovingTo) {
-	if (this->isOccupied()) {
-		destroyCurrentPiece() ;
-	}
-	clearCurrentPiece(this->piece) ;
-	setCurrentPiece(pieceMovingTo) ;
-}
-
-void Square::setCurrentPiece(Piece * pieceMovingTo) {
-	this->piece = pieceMovingTo ;
-	this->piece->square = this ;
-}
-
-void Square::clearCurrentPiece(Piece * toClear) {
-	if (this->piece != toClear) { //debug code
-		;
-	}
-	if (this->piece == toClear) {
-		if (this->piece != nullptr) {
-			this->piece->square = nullptr ;
-		}
-		
-		this->piece = nullptr ;
-	}
-}
-
-void Square::destroyCurrentPiece() {
-	
-	if ((piece != nullptr) && (piece->deleted)) { /* debug code, remove */
-		; //set breakpoint
-	}
-	
-	
-	if (piece != nullptr) { /* checking if deleted previously is debug code, remove it */
-		if (piece->square != nullptr) { //debug code
-			assert(this->piece->square == this) ;
-		}
-		this->piece->square = nullptr ;
-		if (piece->deleted == false) { //debug code
-			delete this->piece ;
-		}
-	}
-	
-	piece = nullptr ;
-}
 
 const Square * Board::operator () (unsigned arrIndexX, unsigned arrIndexY) const {
 	return & boardRepresentation[arrIndexX][arrIndexY] ;
@@ -159,11 +61,11 @@ Board::Board() :
 	boardRepresentation{{
 		{{{L'♜', 'a', 8, this}, {L'♟', 'a', 7, this}, {L' ', 'a', 6, this}, {L' ', 'a', 5, this}, {L' ', 'a', 4, this}, {L' ', 'a', 3, this}, {L'♙', 'a', 2, this}, {L'♖', 'a', 1, this}}},
 	
-		{{{L'♞', 'b', 8, this}, {L'♟', 'b', 7, this}, {L' ', 'b', 6, this}, {L' ', 'b', 5, this}, {L' ', 'b', 4, this}, {L' ', 'c', 3, this}, {L'♙', 'b', 2, this}, {L'♘', 'b', 1, this}}},
+		{{{L'♞', 'b', 8, this}, {L'♟', 'b', 7, this}, {L' ', 'b', 6, this}, {L' ', 'b', 5, this}, {L' ', 'b', 4, this}, {L' ', 'b', 3, this}, {L'♙', 'b', 2, this}, {L'♘', 'b', 1, this}}},
 	
 		{{{L'♝', 'c', 8, this}, {L'♟', 'c', 7, this}, {L' ', 'c', 6, this}, {L' ', 'c', 5, this}, {L' ', 'c', 4, this}, {L' ', 'c', 3, this}, {L'♙', 'c', 2, this}, {L'♗', 'c', 1, this}}},
 	
-		{{{L'♛', 'd', 8, this}, {L'♟', 'd', 7, this}, {L' ', 'd', 6, this}, {L' ', 'd', 5, this}, {L' ', 'd', 4, this}, {L' ', 'e', 3, this}, {L'♙', 'd', 2, this}, {L'♕', 'd', 1, this}}},
+		{{{L'♛', 'd', 8, this}, {L'♟', 'd', 7, this}, {L' ', 'd', 6, this}, {L' ', 'd', 5, this}, {L' ', 'd', 4, this}, {L' ', 'd', 3, this}, {L'♙', 'd', 2, this}, {L'♕', 'd', 1, this}}},
 	
 		{{{L'♚', 'e', 8, this}, {L'♟', 'e', 7, this}, {L' ', 'e', 6, this}, {L' ', 'e', 5, this}, {L' ', 'e', 4, this}, {L' ', 'e', 3, this}, {L'♙', 'e', 2, this}, {L'♔', 'e', 1, this}}},
 	
@@ -185,18 +87,6 @@ Board::Board(const Board & other) :
 	updateSquaresAfterCopy() ;
 }
 
-Board & Board::operator = (const Board & other) {
-	
-	if (this != & other) {
-		
-		this->boardRepresentation = other.boardRepresentation ;
-		
-		/* Sets squares references to board to this */
-		updateSquaresAfterCopy() ;
-	}
-	return * this ;
-}
-	
 void Board::updateSquaresAfterCopy() {
 	for (size_t i = 0 ; i < boardRepresentation.size() ; i++) {
 		for (size_t j = 0 ; j < boardRepresentation[i].size() ; j++) {
@@ -222,7 +112,8 @@ bool Board::isInsideBoardBounds(const vec2<int> pos) const {
 }
 
 
-vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions, Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const
+vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions,
+												  SafeBoolean includeFirstPieceOfColorEncountered, Color toInclude) const
 {
 	vector<const Square *> squares ;
 	
@@ -239,10 +130,10 @@ vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquare
 				
 				if (nextSquare->isOccupied()) { //the other way to get out of the loop
 					
-					if (nextSquare->getPiece()->getColor() == includeFirstPieceOfColorEncountered) {
+					if ((includeFirstPieceOfColorEncountered == SafeBoolean::t) && (nextSquare->getPiece()->getColor() == toInclude)) {
 						squares.push_back(nextSquare) ;
 					}
-					/* else (nextSquare->getPiece()->getColor() == stopBeforeFirstEncountered), so don't include this Square */
+					/* Else this is our stopping point */
 					break ;
 				}
 				else {
@@ -260,9 +151,10 @@ vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquare
 	return squares ;
 }
 	
-vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions,
-												  int maxSearchDistance, Color includeFirstPieceOfColorEncountered, Color stopBeforeFirstEnountered) const
+	vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquarePosition, const vector<Direction> & directions,
+													  int maxSearchDistance, SafeBoolean includeFirstPieceOfColorEncountered, Color toInclude) const
 {
+	
 	vector<const Square *> squares ;
 	
 	for (auto i = 0 ; i < directions.size() ; i++) {
@@ -270,7 +162,7 @@ vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquare
 		vec2<int> offset { directions[i] } ; //directions convert to vectors like (0, 1)
 		
 		vec2<int> next = (startingSquarePosition + offset) ;
-		vec2<int> endpoint = next + (offset * maxSearchDistance) ;
+		vec2<int> endpoint = startingSquarePosition + (offset * maxSearchDistance) ;
 		
 		for (; ; next = (next + offset)) {
 			
@@ -280,10 +172,10 @@ vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquare
 				
 				if (nextSquare->isOccupied()) { //the other way to get out of the loop
 					
-					if (nextSquare->getPiece()->getColor() == includeFirstPieceOfColorEncountered) {
+					if ((includeFirstPieceOfColorEncountered == SafeBoolean::t) && (nextSquare->getPiece()->getColor() == toInclude)) {
 						squares.push_back(nextSquare) ;
 					}
-					/* else (nextSquare->getPiece()->getColor() == stopBeforeFirstEncountered), so don't include this Square */
+					/* Else this is our stopping point */
 					break ;
 				}
 				else {

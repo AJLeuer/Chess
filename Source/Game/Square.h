@@ -11,6 +11,7 @@
 
 #include <cassert>
 
+#include "Support.h"
 #include "Piece.h"
 
 using namespace std ;
@@ -23,10 +24,8 @@ class Board ;
 struct Square {
 	
 protected:
-	
-	RankAndFile rankAndFile ;
-	
-	vec2<int> position {0, 0} ;
+
+	const vec2<int> position ;
 	
 	Board * board ;
 	
@@ -46,7 +45,7 @@ protected:
 	
 	friend class TemporaryBoard ;
 	
-	Square() {}
+	//Square() {}
 	
 	void setCurrentPiece(Piece * pieceMovingTo) ;
 	
@@ -62,13 +61,15 @@ public:
 	
 	Square(const char file, const unsigned rank, Board * board) ;
 	
-	Square(Piece * piece, const char file, const unsigned rank, Board * board) ;
+	Square(const char file, const unsigned rank, Board * board, Piece * piece) ;
 	
-	Square(const wchar_t pieceSymbol, const char file, const unsigned rank, Board * board) ;
+	Square(const char file, const unsigned rank, Board * board, const wchar_t pieceSymbol) ;
+	
+	Square(const wchar_t pieceSymbol, const char file, const unsigned rank, Board * board) : Square(file, rank, board, pieceSymbol) {}
 	
 	virtual ~Square() ;
 	
-	virtual Square & operator = (const Square & rhs) ;
+	Square & operator = (const Square & rhs) = delete ;
 	
 	void receiveMovingPiece(Piece * pieceMovingTo) ;
 	
@@ -76,9 +77,9 @@ public:
 	
 	inline bool isOccupied() const { return (!(isEmpty())) ; }
 	
-	const vec2<int> & getPosition() const { return this->position ; }
+	const RankAndFile getRankAndFile() const { return RankAndFile(position) ; }
 	
-	vec2<int> copyPosition() const { return this->position ; }
+	const vec2<int> copyPosition() const { return this->position ; }
 	
 	const vec2<int> * getPositionPointer() const { return & this->position ; }
 	

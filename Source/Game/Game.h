@@ -18,8 +18,10 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include "../Util/Config.h"
+#include "../Util/Util.h"
 #include "../Util/Random.hpp"
 
+#include "Support.h"
 #include "Board.h"
 #include "Player.h"
 
@@ -27,11 +29,14 @@
 
 using namespace std ;
 
+int main(int, char **) ;
+
 namespace Chess {
 
 class Game {
 	
 protected:
+	
 	
 	unsigned long gameLoops = 0 ;
 	
@@ -45,20 +50,28 @@ protected:
 	
 	void display() ;
 	
-	void updateGameState() ;
+	void advanceGame() ;
 	
-	/**
-	 * Purely for development and debugging
-	 */
-	void testAndDebug() ;
+	void advanceGameState(MoveIntent & move) ;
+	
+	void commitMove(MoveIntent & move) ;
 	
 	void monitorMouse() ;
+	
+	vector<GameRecordEntry> gameRecord ;
+	
+	
+	friend int ::main(int, char **) ; //for debug only
+	
 		
 public:
 	
 	Game() ;
 	
-	Game(const Game & other) = delete ;
+	/**
+	 * Copy constructor. Right now, the only use is createing temporary games to run simulations
+	 */
+	Game(const Game & other) ;
 	
 	~Game() ;
 	

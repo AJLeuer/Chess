@@ -7,6 +7,7 @@
 //
 
 #include "Player.h"
+#include "Game.h"
 
 using namespace std ;
 
@@ -15,7 +16,7 @@ namespace Chess {
 unsigned long Player::uniqueIDs = 1 ;
 
 
-Player::Player(Chess::Color color, Board & board) :
+Player::Player(Chess::Color color, Board * board) :
 	ID(uniqueIDs++),
 	name("Player " + to_string(ID)),
 	color(color),
@@ -23,6 +24,16 @@ Player::Player(Chess::Color color, Board & board) :
 {
 	registerForNotifications() ;
 }
+	
+Player::Player(const Player & other) :
+	ID(uniqueIDs++),
+	name("Player " + to_string(ID)),
+	color(other.color),
+	board(nullptr)
+{
+		
+}
+	
 
 
 Player::Player(Player && other) :
@@ -36,19 +47,9 @@ Player::Player(Player && other) :
 	
 Player::~Player() {}
 
-Player & Player::operator = (Player && other) {
 
-	this->ID = other.ID ;
-	this->name = std::move(other.name) ;
-	this->color = std::move(other.color) ;
-	this->board = other.board ;
-		
-	other.ID = 0 ;
 	
-	return * this ;
-}
-	
-vector<Piece *> Player::findPiecesOnBoard(Board & workingBoard) const {
+vector<Piece *> Player::findOwnPiecesOnBoard(const Board & workingBoard) const {
 	
 	vector<Piece *> workingPieces ;
 	
@@ -83,15 +84,56 @@ void Player::registerForNotifications() {
 }
 
 const MoveIntent Human::decideNextMove() const {
-	return MoveIntent() ; //todo implement
+	throw exception() ; //todo implement
 }
 
 
 const MoveIntent AI::decideNextMove() const {
 	
-	Board workingBoard(board) ; /* copy current gamestate, testingBoard will serve as a scratchpad to compute the optimal next move */
+	Board temporaryBoard(* this->board) ;
 	
-	vector<Piece *> workingPieces = findPiecesOnBoard(workingBoard) ;
+	AI simulatedOpponent(getOpposite(this->color), & temporaryBoard) ;
+	
+	const MoveIntent move = chooseBestMove(temporaryBoard) ;
+	
+	//todo finish
+	return move ;
+}
+	
+void AI::findMoveSequence(unsigned int maxSearchDepth, unsigned int currentDepth) {
+	Game simulation(* this->board->game) ;
+	
+	vector<Piece *> workingPieces = findOwnPiecesOnBoard(* board) ;
+}
+	
+	
+vector<MoveSequence>  AI::computeMoveSequence(vector<MoveSequence> & moveSequences, vector<Piece *> & ownPieces,
+											  vector<Piece *>::iterator currentPiece,
+											  Board & board, unsigned maxSearchDepth, unsigned currentDepth)
+{
+
+	if (currentDepth == maxSearchDepth) {
+	}
+	
+	auto allMoves = (*currentPiece)->getAllPossibleLegalMoves() ;
+
+	throw exception() ;
+}
+	
+const MoveIntent AI::chooseBestMove(Board & board) const {
+	vector<MoveIntent> highValueMoveOptions = computeBestMoves(board) ;
+	
+	MoveIntent move = selectMoveAtRandom(highValueMoveOptions) ;
+	
+	//get the actual live piece matching the one in mv, and swap it out for its stand-in
+	Piece * original = this->board->getSquareMutable(*move.piece->getPosition())->getPieceMutable() ;
+	move.piece = original ;
+	
+	return move ;
+}
+	
+vector<MoveIntent> AI::computeBestMoves(Board & board) const {
+	vector<Piece *> workingPieces = findOwnPiecesOnBoard(board) ;
 	
 	vector<MoveIntent> moveOptions ;
 	
@@ -103,19 +145,10 @@ const MoveIntent AI::decideNextMove() const {
 			moveOptions.push_back(moveOption) ;
 		}
 	}
-	
 	vector<MoveIntent> highValueMoveOptions = extractHighestValueMoves(moveOptions) ;
 	
-	MoveIntent move = selectMoveAtRandom(highValueMoveOptions) ;
-	
-	//get the actual live piece matching the one in mv, and swap it out for its stand-in
-	Piece * original = board.getSquareMutable(*move.piece->getPosition())->getPieceMutable() ;
-	move.piece = original ;
-	
-	return move ;
+	return highValueMoveOptions ;
 }
-	
-	
 
 const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 	
@@ -128,7 +161,7 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 	if (possibleMoves.size() > 0) {
 		
 		/* instead copy it each time the piece moves, and compare the board values after each move */
-		Board testBoard = *originalBoard ;
+		Board testBoard(*originalBoard) ;
 		
 		Piece * testPiece = testBoard.getSquareMutable(*piece->getPosition())->getPieceMutable() ;
 		
@@ -147,7 +180,7 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 		 	game state */
 		for (auto i = 1 ; i < possibleMoves.size() ; i++) {
 			
-			Board testBoard = *originalBoard ;
+			Board testBoard(*originalBoard) ;
 			
 			testPiece = testBoard.getSquareMutable(*piece->getPosition())->getPieceMutable() ;
 			
@@ -181,11 +214,7 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 	}
 	else { /* then it's impossible for this Piece to move */
 		
-		MoveIntent noMove ;
-		
-		noMove.canMove = false ;
-		
-		noMove.piece = piece ;
+		MoveIntent noMove { false, piece, vec2<int>{0, 0}, 0 } ;
 		
 		return noMove ;
 	}
@@ -197,6 +226,10 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 vector <MoveIntent> extractHighestValueMoves(const vector <MoveIntent> & moves) {
 	
 	vector<MoveIntent> optimalMoves ;
+	
+	if (moves.size() == 0) {
+		std::exit(0) ;
+	}
 	
 	int highestValue = moves[0].moveValue ;
 	

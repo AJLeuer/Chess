@@ -23,14 +23,14 @@ using namespace std ;
 using namespace Chess ;
 
 
-int main(int argc, const char * argv[]) {
+int main(int argc, char ** argv) {
 	
 	currentDirectory = argv[0] ;
-	commandLineArgument = argv[1] ;
-	cout << "This application was run from the directory: " << currentDirectory << endl ;
-
+	//cout << "The directory is: " << currentDirectory << endl ;
+	
 
 	Game game ;
+
 	game.playDebugGame() ;
 
     return 0 ;

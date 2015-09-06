@@ -135,18 +135,20 @@ Piece::Piece(Type type, const wchar_t symbol, const string & spriteImageFilePath
 	spriteImageFilePath(spriteImageFilePath),
 	/* Don't initialize the actual texture/sprite data. Too
 	 expensive - we only init it when we need it */
-	square(square)
+	square(square),
+	startingPosition(square->copyPosition())
 {
 
 }
 
 Piece::Piece (const Piece & other) :
-	type(other.type),
+	type(other.type), //commented for debug, uncomment later
 	iD(iDs++), //Pieces resulting from copies have their own, unique IDs
 	symbol(other.symbol),
 	color(other.color),
-	/* movesMade init to 0 */
-	spriteImageFilePath(other.spriteImageFilePath)
+	/* movesMade is already init to 0 */
+	spriteImageFilePath(other.spriteImageFilePath),
+	startingPosition(other.startingPosition) 
 	
 	/* Don't initialize the actual texture/sprite data. Too
 	 expensive - we only init it when we need it */
@@ -158,43 +160,36 @@ Piece::Piece (const Piece & other) :
 	
 }
 
+/*
 Piece & Piece::operator = (const Piece & rhs) {
 	if (this != & rhs) {
-		/* Keeps it's own ID */
 		assert(this->type == rhs.type) ; //debug code only
+		// Keeps it's own ID
 		this->symbol = rhs.symbol ;
 		this->color = rhs.color ;
-		/* Keeps own movesMade count */
+		// Keeps own movesMade count
 		this->spriteImageFilePath = rhs.spriteImageFilePath ;
-		/* Don't copy the actual texture/sprite data. Too
-		 expensive - we only init it when we need it */
-		/* Don't copy other's square references: we don't know if we're owned
-		 by a new board or still held by the same, and if we are on the new square or board,
-		 they'll have to update our references */
+		this->startingPosition = rhs.startingPosition ; // *must* copy startingPosition from other
+		// Don't copy the actual texture/sprite data. Too
+		 expensive - we only init it when we need it
+	
+		// Don't copy other's square references: we don't know if we're owned
+		// by a new board or still held by the same, and if we are on the new square or board,
+		// they'll have to update our references
 	}
 	return * this ;
-}
+} */
 	
 const vec2<int> * Piece::getPosition() const { return square->getPositionPointer() ; }
 
+	
 const bool Piece::canMove() const {
 	
-	auto checkForAvailableSquares = [this] (vector<const Square *> & squares) -> bool {
-		
-		for (auto i = 0 ; i < squares.size() ; i++) { //true if there's a square we can move to that's empty...
-			if (squares.at(i)->isEmpty()) {
-				return true ;
-			}
-			else if ((squares.at(i)->getPiece() != nullptr) && (squares.at(i)->getPiece()->color != this->color)) { //... or that has an opponent piece
-				return true ;
-			}
-		}
-		return false ;
-	} ;
+	auto moves = this->getAllPossibleLegalMoves() ;
 	
-	vector<const Square *> squares = square->getBoard()->getSpecifiedSquares(* getPosition(), getLegalMovementDirections(), 1, getOpposite(this->getColor()), this->getColor()) ;
+	const bool canMove = (moves.size() > 0) ;
 	
-	return checkForAvailableSquares(squares) ;
+	return canMove ;
 }
 
 vector<vec2<int>> Piece::getAllPossibleLegalMoves() const {
@@ -202,7 +197,7 @@ vector<vec2<int>> Piece::getAllPossibleLegalMoves() const {
 	vector<vec2<int>> legalMoves ;
 	
 	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
-										 getOpposite(getColor()), getColor()) ;
+														   SafeBoolean::t, getOpposite(getColor())) ;
 	
 	for (auto i = 0 ; i < squares.size() ; i++) {
 		legalMoves.push_back(squares.at(i)->copyPosition()) ;
@@ -226,6 +221,7 @@ void Piece::move(const vec2<int> to){
 void Piece::initSpriteTexture() {
 	spriteTexture.loadFromFile(spriteImageFilePath) ;
 	this->sprite = sf::Sprite(this->spriteTexture) ;
+	updateSpritePosition() ;
 }
 
 Pawn::Pawn(const Chess::Color color, Square * square) :
@@ -235,7 +231,7 @@ Pawn::Pawn(const Chess::Color color, Square * square) :
 		  color,
 		  square)
 {
-	sprite.setPosition(50, 50) ;
+	
 }
 
 Pawn::Pawn(const wchar_t symbol, Square * square) :
@@ -251,11 +247,22 @@ Pawn::Pawn(const wchar_t symbol, Square * square) :
 vector<vec2<int>> Pawn::getAllPossibleLegalMoves() const {
 	
 	vector<const Square *> emptySquares = square->getBoard()->getSpecifiedSquares(* getPosition(),
-		{getLegalMovementDirectionToEmptySquares()}, (movesMade == 0) ? 2 : 1, getOpposite(getColor()), getColor()) ;
+										  {getLegalMovementDirectionToEmptySquares()},
+										  (square->copyPosition() == startingPosition) ? 2 : 1, //if this is the pawn's first move, it can move 2 squares
+										  SafeBoolean::f, Color::black) ; //last argument should be ignored
 	
+	vector<const Square *> captureSquares ;
+	vector<const Square *> captureSquares_temporary = square->getBoard()->getSpecifiedSquares(* getPosition(),
+													 {getLegalCaptureDirections()}, 1, SafeBoolean::t, getOpposite(getColor())) ;
 	
-	vector<const Square *> captureSquares = square->getBoard()->getSpecifiedSquares(* getPosition(),
-		{getLegalCaptureDirections()}, 1, getOpposite(getColor()), getColor()) ;
+	/* Only take the squares in capture directions if they hold pieces */
+	for (auto i = 0 ; i < captureSquares_temporary.size() ; i++) {
+		if (captureSquares_temporary[i]->isOccupied()) {
+			if (captureSquares_temporary[i]->getPiece()->getColor() != this->getColor()) {
+    			captureSquares.push_back(captureSquares_temporary[i]) ;
+			}
+		}
+	}
 	
 	auto squares = emptySquares + captureSquares ;
 	
@@ -295,39 +302,6 @@ void Pawn::move(const vec2<int> to) {
 	Piece::move(to) ;
 }
 
-const bool Pawn::canMove() const {
-	
-	auto checkForEmptyMoveableSquares = [this] (vector<const Square *> & squares) -> bool {
-		for (auto i = 0 ; i < squares.size() ; i++) { //true if there's a square we can move to that's empty...
-			if (squares.at(i)->isEmpty()) {
-				return true ;
-			}
-		}
-		return false ;
-	} ;
-	
-	auto checkForCapturableSquares = [this] (vector<const Square *> & squares) -> bool {
-		
-		for (auto i = 0 ; i < squares.size() ; i++) { //true if there's a square we can move to that's empty...
-			if ((squares.at(i)->getPiece() != nullptr) && (squares.at(i)->getPiece()->getColor() != this->color)) { //... or that has an opponent piece
-				return true ;
-			}
-		}
-		return false ;
-	} ;
-	
-	vector<const Square *> emptySquares = square->getBoard()->getSpecifiedSquares(*getPosition(), {getLegalMovementDirectionToEmptySquares()}, (movesMade == 0) ? 2 : 1, getOpposite(getColor()), getColor()) ;
-
-	
-	vector<const Square *> captureSquares = square->getBoard()->getSpecifiedSquares(*getPosition(), {getLegalCaptureDirections()}, 1, getOpposite(getColor()), getColor()) ;
-	
-	bool canMoveToEmptySquare = checkForEmptyMoveableSquares(emptySquares) ;
-	bool canCapture = checkForCapturableSquares(captureSquares) ;
-	
-	return (canMoveToEmptySquare || canCapture) ;
-}
-
-
 Knight::Knight(const Chess::Color color, Square * square) :
 	Piece(Type::Knight,
 		  (color == Chess::Color::black) ? symbols.black : symbols.white,
@@ -353,7 +327,7 @@ vector<vec2<int>> Knight::getAllPossibleLegalMoves() const {
 	vector<vec2<int>> legalMoves ;
 	
 	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(),
-				   this->getLegalMovementDirections(), 1, getOpposite(getColor()), getColor()) ;
+				   this->getLegalMovementDirections(), 1, SafeBoolean::t, getOpposite(getColor())) ;
 	
 	for (auto i = 0 ; i < squares.size() ; i++) {
 		legalMoves.push_back(squares.at(i)->copyPosition()) ;
@@ -366,14 +340,14 @@ const vector<Direction> Knight::getLegalMovementDirections() const {
 	
 	vector<Direction> directions ;
 	
-	for (int v = -2 ; v <= 2 ; v++) { //primarily vertical movement
-		for (int h = -1 ; h <= 1 ; h++) {
+	for (int h = -1 ; h <= 1 ; h += 2) {
+		for (int v = -2 ; v <= 2 ; v += 4) {
 			directions.push_back(Direction(h, v)) ;
 		}
 	}
 	
-	for (int h = -2 ; h <= 2 ; h++) { //primarily horizontal movement
-		for (int v = -1 ; v <= 1 ; v++) {
+	for (int h = -2 ; h <= 2 ; h += 4) { 
+		for (int v = -1 ; v <= 1 ; v += 2) {
 			directions.push_back(Direction(h, v)) ;
 		}
 	}
@@ -519,14 +493,40 @@ basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Piece 
 	return out ;
 }
 	
-
-
-
-
-
-
+MoveIntent::MoveIntent(const MoveIntent & other) : canMove(other.canMove), piece(other.piece), moveDestination(other.moveDestination),
+	moveValue(other.moveValue)
+{
 	
+}
+
+
+MoveIntent::MoveIntent(MoveIntent && other) noexcept : canMove(other.canMove), piece(other.piece), moveDestination(std::move(other.moveDestination)), moveValue(other.moveValue)
+{
+	other.piece = nullptr ;
+}
+
+MoveIntent & MoveIntent::operator = (const MoveIntent & other) {
+	if (this != & other) {
+		canMove = other.canMove ;
+		piece = other.piece ;
+		moveDestination = other.moveDestination ;
+		moveValue = other.moveValue ;
+	}
+	return * this ;
+}
 	
+MoveIntent & MoveIntent::operator = (MoveIntent && other) {
+	if (this != & other) {
+		canMove = other.canMove ;
+		piece = other.piece ;
+		moveDestination = std::move(other.moveDestination) ;
+		moveValue = other.moveValue ;
+		
+		other.piece = nullptr ;
+	}
+	
+	return * this ;
+}
 	
 	
 	
