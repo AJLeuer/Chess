@@ -64,32 +64,44 @@ void Game::advanceGame() {
 		currentPlayer = this->player1 ;
 	}
 	
-	MoveIntent nextMove = std::move(currentPlayer->decideNextMove()) ;
+	MoveIntent nextMove = currentPlayer->decideNextMove() ;
 	
-	advanceGameState(nextMove) ;
+	commitMove(nextMove) ;
 
 	this_thread::sleep_for(chrono::milliseconds(2000)) ;
 
 }
+
+void Game::advanceGame_Simulated(Player * currentPlayer, bool overrideMoveDecision, MoveIntent * overridingMove) {
 	
-void Game::advanceGameState(Chess::MoveIntent &move) {
-	commitMove(move) ;
-	
-	wstring lastMoveNotation_wide = gameRecord.back().algrebraicNotation ;
-	string lastMoveNotation(convertToString(lastMoveNotation_wide)) ;
-	
-	cout << lastMoveNotation << endl ; //debug code only
+	if (overrideMoveDecision) {
+		
+		commitMove(* overridingMove, false) ; //don't waste time recording these simulated moves, there's way too many
+		
+	}
+	else {
+		
+		MoveIntent nextMove = currentPlayer->decideNextMove() ;
+		
+		commitMove(nextMove, false) ;
+	}
+	//and definitely don't sleep
 }
 	
-void Game::commitMove(MoveIntent & move) {
+void Game::commitMove(MoveIntent & move, bool recordMove) {
 	
 	Piece * movingPiece = move.piece ;
 	
-	GameRecordEntry record(* movingPiece, move.moveDestination) ;
-	
 	movingPiece->move(move.moveDestination) ;
 	
-	gameRecord.push_back(record) ;
+	
+	if (recordMove) {
+		
+		GameRecordEntry record(* movingPiece, move.moveDestination) ;
+		
+		gameRecord.push_back(record) ;
+		
+	}
 }
 
 

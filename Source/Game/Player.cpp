@@ -107,15 +107,42 @@ void AI::findMoveSequence(unsigned int maxSearchDepth, unsigned int currentDepth
 }
 	
 	
-vector<MoveSequence>  AI::computeMoveSequence(vector<MoveSequence> & moveSequences, vector<Piece *> & ownPieces,
-											  vector<Piece *>::iterator currentPiece,
-											  Board & board, unsigned maxSearchDepth, unsigned currentDepth)
+tree<MoveIntent>  AI::computeAllMoves(Game & game, vector<Piece *> & piecesToSearchForMoves, vector<MoveIntent> & movesToCheck,
+										unsigned piecesSearchedThisDepth, unsigned currentDepth, unsigned maxSearchDepth)
 {
+	
+	tree<MoveIntent> searchTree ;
+	
 
 	if (currentDepth == maxSearchDepth) {
+		
+		if (piecesToSearchForMoves.empty()) {
+			
+			return searchTree ;
+		}
+		
+		Piece * piece = piecesToSearchForMoves.back() ;
+		
+		searchTree = piece->getPossibleLegalMovesTree() ;
+		
+		piecesToSearchForMoves.pop_back() ;
+		
+		return searchTree ;
+		
 	}
 	
-	auto allMoves = (*currentPiece)->getAllPossibleLegalMoves() ;
+	else {
+		
+		MoveIntent & move = movesToCheck.back() ;
+		
+		game.advanceGame_Simulated(game.getMatchingPlayer(* this), true, & move) ;
+		
+		game.advanceGame_Simulated(game.getOpponentPlayer(* this), false, nullptr) ;
+	}
+
+
+	
+	//auto allMoves = (*currentPiece)->getAllPossibleLegalMovePositions() ;
 
 	throw exception() ;
 }
@@ -155,7 +182,7 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 	/* don't change the state of Piece's original board */
 	const Board * originalBoard = piece->getSquare()->getBoard() ;
 	
-	auto possibleMoves = piece->getAllPossibleLegalMoves() ;
+	auto possibleMoves = piece->getAllPossibleLegalMovePositions() ;
 	
 	
 	if (possibleMoves.size() > 0) {

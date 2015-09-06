@@ -27,6 +27,7 @@
 #include "../Util/Util.h"
 #include "../Util/Util.hpp"
 #include "../Util/Vect.h"
+#include "../Util/tree.hh"
 
 namespace Chess {
 
@@ -42,6 +43,10 @@ struct ImageFiles {
 	const string white ;
 };
 	
+	
+/* Forward declaring */
+	
+class MoveIntent ;
 	
 class Board ;
 
@@ -137,7 +142,20 @@ public:
 	 * @return a std::vector that is either filled with the Squares this Piece can legally move to, or, if there are
 	 * no such Squares, empty
 	 */
-	virtual vector<vec2<int>> getAllPossibleLegalMoves() const ;
+	virtual vector<vec2<int>> getAllPossibleLegalMovePositions() const ;
+	
+	/**
+	 * @return a std::vector of MoveIntent objects, representing all the possible legal moves this Piece can
+	 * make at the time the function was called
+	 * 
+	 * @seealso getAllPossibleLegalMovePositions()
+	 */
+	vector<MoveIntent> getAllPossibleLegalMoves() ;
+	
+	/**
+	 * Same as getAllPossibleLegalMoves(), only uses tree<> as a container instead of vector
+	 */
+	tree<MoveIntent> getPossibleLegalMovesTree() ;
 
 	/**
 	 * Moves the piece to it's new square, and notifies both the Square object
@@ -146,6 +164,8 @@ public:
 	virtual void move(const vec2<int> to) ;//inheriting pieces will define
 	
 	const inline bool isDeleted() const { return deleted ; }
+	
+	const Piece::Type getType() const { return type ; }
 	
 	const unsigned long getID() const { return iD ; }
 	
@@ -207,7 +227,7 @@ public:
 	 * @return a std::vector that is either filled with the Squares this Pawn can legally move to, or, if there are
 	 * no such Squares, empty
 	 */
-	virtual vector<vec2<int>> getAllPossibleLegalMoves() const override ;
+	virtual vector<vec2<int>> getAllPossibleLegalMovePositions() const override ;
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -243,7 +263,7 @@ public:
 	 * @return a std::vector that is either filled with the Squares this Knight can legally move to, or, if there are
 	 * no such Squares, empty
 	 */
-	virtual vector<vec2<int>> getAllPossibleLegalMoves() const override ;
+	virtual vector<vec2<int>> getAllPossibleLegalMovePositions() const override ;
 	
 	const vector<Direction> getLegalMovementDirections() const override ;
 	
@@ -371,11 +391,13 @@ public:
 	 */
 	bool canMove ;
 	
-	Piece * piece ;
+	Piece * piece = nullptr ;
 	
-	vec2<int> moveDestination ;
+	vec2<int> moveDestination {0, 0} ;
 	
 	int moveValue ;
+	
+	MoveIntent() {}
 	
 	MoveIntent(bool canMv, Piece * pc, vec2<int> mvDest, int mvVal) : canMove(canMv), piece(pc), moveDestination(mvDest), moveValue(mvVal) {}
 	
@@ -395,6 +417,7 @@ public:
 } ;
 	
 	
+/*
 class MoveSequence{
 
 protected:
@@ -407,7 +430,7 @@ public:
 	
 	void addMove(const MoveIntent & mv) { moves.push_back(std::move(mv)) ; totalValue += mv.moveValue ; }
 	
-} ;
+ } ; */ //probably won't use
 
 
 

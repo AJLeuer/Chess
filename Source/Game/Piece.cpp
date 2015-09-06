@@ -185,14 +185,14 @@ const vec2<int> * Piece::getPosition() const { return square->getPositionPointer
 	
 const bool Piece::canMove() const {
 	
-	auto moves = this->getAllPossibleLegalMoves() ;
+	auto moves = this->getAllPossibleLegalMovePositions() ;
 	
 	const bool canMove = (moves.size() > 0) ;
 	
 	return canMove ;
 }
 
-vector<vec2<int>> Piece::getAllPossibleLegalMoves() const {
+vector<vec2<int>> Piece::getAllPossibleLegalMovePositions() const {
 	
 	vector<vec2<int>> legalMoves ;
 	
@@ -201,6 +201,44 @@ vector<vec2<int>> Piece::getAllPossibleLegalMoves() const {
 	
 	for (auto i = 0 ; i < squares.size() ; i++) {
 		legalMoves.push_back(squares.at(i)->copyPosition()) ;
+	}
+	
+	return legalMoves ;
+}
+
+vector<MoveIntent> Piece::getAllPossibleLegalMoves() {
+	
+	vector<MoveIntent> legalMoves ;
+	
+	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
+														   SafeBoolean::t, getOpposite(getColor())) ;
+	
+	for (auto i = 0 ; i < squares.size() ; i++) {
+		
+		vec2<int> moveDestination = squares.at(i)->copyPosition() ;
+		
+		legalMoves.push_back(MoveIntent(true, this, moveDestination, this->square->getBoard()->evaluateAfterHypotheticalMove(this, moveDestination))) ;
+	}
+	
+	return legalMoves ;
+}
+	
+tree<MoveIntent> Piece::getPossibleLegalMovesTree() {
+	
+	tree<MoveIntent> legalMoves ;
+	
+	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
+														   SafeBoolean::t, getOpposite(getColor())) ;
+	
+	tree<MoveIntent>::iterator currentTreePos = legalMoves.begin() ;
+	
+	for (auto i = 0 ; i < squares.size() ; i++) {
+		
+		vec2<int> moveDestination = squares.at(i)->copyPosition() ;
+		
+		currentTreePos = legalMoves.insert(currentTreePos, MoveIntent(true, this, moveDestination,
+																	  this->square->getBoard()->evaluateAfterHypotheticalMove(this, moveDestination))) ;
+		
 	}
 	
 	return legalMoves ;
@@ -244,7 +282,7 @@ Pawn::Pawn(const wchar_t symbol, Square * square) :
 	
 }
 	
-vector<vec2<int>> Pawn::getAllPossibleLegalMoves() const {
+vector<vec2<int>> Pawn::getAllPossibleLegalMovePositions() const {
 	
 	vector<const Square *> emptySquares = square->getBoard()->getSpecifiedSquares(* getPosition(),
 										  {getLegalMovementDirectionToEmptySquares()},
@@ -322,7 +360,7 @@ Knight::Knight(const wchar_t symbol, Square * square) :
 	
 }
 	
-vector<vec2<int>> Knight::getAllPossibleLegalMoves() const {
+vector<vec2<int>> Knight::getAllPossibleLegalMovePositions() const {
 	
 	vector<vec2<int>> legalMoves ;
 	

@@ -52,14 +52,15 @@ protected:
 	
 	void advanceGame() ;
 	
-	void advanceGameState(MoveIntent & move) ;
+	void advanceGame_Simulated(Player * currentPlayer, bool overrideMoveDecision, MoveIntent * overridingMove) ;
 	
-	void commitMove(MoveIntent & move) ;
+	void commitMove(MoveIntent & move, bool recordMove = true) ;
 	
 	void monitorMouse() ;
 	
 	vector<GameRecordEntry> gameRecord ;
 	
+	friend class AI ;
 	
 	friend int ::main(int, char **) ; //for debug only
 	
@@ -83,6 +84,16 @@ public:
 	 * For development and debugging
 	 */
 	void playDebugGame() ;
+	
+	/**
+	 * @return The Player with the same color as the Player * passed in as an argument
+	 */
+	Player * getMatchingPlayer(const Player & player) { return (player.getColor() == player0->getColor()) ? player0 : player1 ;  }
+	
+	/**
+	 * @return The Player with the color opposite the Player * passed in as an argument
+	 */
+	Player * getOpponentPlayer(const Player & player) { return (player.getColor() != player0->getColor()) ? player0 : player1 ;  }
 	
 };
 	

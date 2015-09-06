@@ -218,6 +218,21 @@ vector<const Square *> Board::getSpecifiedSquares(const vec2<int> startingSquare
 	
 	return squares ;
 }
+	
+Piece * Board::findMatch(const Piece * piece) {
+	
+	Square * sq = getSquareMutable(* piece->getPosition()) ;
+	
+	if (sq->piece != nullptr) {
+
+		if (sq->piece->getType() == piece->getType()) {
+			
+			return sq->piece ;
+		}
+	}
+	
+	return nullptr ;
+}
 
 
 
@@ -248,6 +263,17 @@ const short Board::evaluate(const Chess::Color callingPlayersColor) const {
 		short result = white_sum - black_sum ;
 		return result ;
 	}
+}
+	
+const short Board::evaluateAfterHypotheticalMove(const Piece * piece, const vec2<int> moveTo) const {
+	
+	Board testBoard(* this) ;
+	
+	Piece * testPiece = testBoard.findMatch(piece) ;
+	
+	testPiece->move(moveTo) ;
+	
+	return testBoard.evaluate(piece->getColor()) ;
 }
 
 

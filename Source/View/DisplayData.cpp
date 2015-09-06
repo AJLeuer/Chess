@@ -30,6 +30,20 @@ void DisplayData::init() {
 	
 }
 
+#ifndef __APPLE__
+
+/* non-OS X implementations: */
+ 
+vec2<unsigned> DisplayData::calculateScreenResolution() {
+	//todo
+}
+
+void DisplayData::calculateDisplayScalingFactor() {
+	//todo
+}
+
+#endif
+
 double DisplayData::getScreenRefreshRate() {
 	return CGDisplayModeGetRefreshRate(displayMode) ;
 }

@@ -15,7 +15,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include "Vect.h"
-#include "DisplayData.h"
+#include "../View/DisplayData.h"
 
 using namespace std ;
 

@@ -22,8 +22,8 @@
 
 #include "../Util/Vect.h"
 #include "../Util/Color.h"
+#include "../Util/Config.h"
 
-#include "Config.h"
 #include "DisplayData.h"
 
 using namespace std ;

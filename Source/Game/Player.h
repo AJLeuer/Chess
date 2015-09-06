@@ -75,6 +75,8 @@ public:
 	 */
 	Player & operator = (Player && other) = delete ;
 	
+	Chess::Color getColor() const { return color ; }
+	
 	void removePiece(Piece * piece) ;
 	
 	void registerForNotifications() ;
@@ -104,9 +106,8 @@ class AI : public Player {
 	
 protected:
 	
-	vector<MoveSequence> computeMoveSequence(vector<MoveSequence> & moveSequences, vector<Piece *> & ownPieces,
-												 vector<Piece *>::iterator currentPiece,
-												 Board & board, unsigned maxSearchDepth, unsigned currentDepth) ;
+	tree<MoveIntent> computeAllMoves(Game & game, vector<Piece *> & piecesToSearchForMoves, vector<MoveIntent> & movesToCheck,
+											 unsigned piecesSearchedThisDepth, unsigned currentDepth, unsigned maxSearchDepth) ;
 	
 	const MoveIntent findBestMoveForPiece(Piece * piece) const ;
 	

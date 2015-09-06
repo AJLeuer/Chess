@@ -135,6 +135,17 @@ public:
 	 */
 	vector<const Square *> getSpecifiedSquares(const vec2<int> startingSquarePosition, int searchRadius) const ;
 	
+	/**
+	 * Finds the Piece on this board that matches the given argument. There are two requirements for a match:
+	 * first that the two pieces are at the same position on their respective boards (and they may belong to different boards),
+	 * second is that they are of the same type. Note that this function does not verify that they are the same object (and indeed
+	 * the very purpose of this function is such that in most cases the argument and the return value should point to different objects
+	 * entirely).
+	 *
+	 * @param piece The piece to match
+	 */
+	Piece * findMatch(const Piece * piece) ;
+	
 	
 	/**
 	 * Calculates a numeric value based on the current state of the chess board (including the existence and configuration of pieces)m
@@ -144,6 +155,15 @@ public:
 	 * @param callingPlayersColor The color of the player from whose perspective the value of the game state is calculated
 	 */
 	virtual const short evaluate(const Chess::Color callingPlayersColor) const ;
+	
+	/**
+	 * Same as running evaluate() after moving piece to the specified RankAndFile. Does not actually change the state of the board.
+	 *
+	 * @param callingPlayersColor The color of the player from whose perspective the value of the game state is calculated
+	 * @param piece The Piece that would move
+	 * @param moveTo Where piece would move
+	 */
+	const short evaluateAfterHypotheticalMove(const Piece * piece, const vec2<int> moveTo) const ;
 	
 } ;
 
