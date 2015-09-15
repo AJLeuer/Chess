@@ -30,7 +30,7 @@ int main(int argc, char ** argv) {
 
 	Game game ;
 
-    game.playDebugGame() ;
+    	game.playDebugGame() ;
 
 	return 0 ;
 }
