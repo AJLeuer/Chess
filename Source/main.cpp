@@ -27,7 +27,6 @@ int main(int argc, char ** argv) {
 	
 	currentDirectory = argv[0] ;
 	//cout << "The directory is: " << currentDirectory << endl ;
-	
 
 	Game game ;
 

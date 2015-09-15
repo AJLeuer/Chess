@@ -32,7 +32,15 @@ using namespace std ;
 
 namespace Chess {
 	
+	
+/* Forward declarations: */
+class Game_Base ;
+
 class Game ;
+
+class SimulatedGame ;
+	
+	
 
 class Board {
 	
@@ -44,7 +52,7 @@ protected:
 	
 	array<array<Square, files>, ranks> boardRepresentation ;
 	
-	const Game * game = nullptr ;
+	const Game_Base * game = nullptr ;
 	
 	/**
 	 * @return A pointer to the Square at the position specified by pos
@@ -60,6 +68,8 @@ protected:
 	friend class Player ;
 	
 	friend class AI ;
+	
+	friend class Game_Base ;
 	
 	friend class Game ;
 	

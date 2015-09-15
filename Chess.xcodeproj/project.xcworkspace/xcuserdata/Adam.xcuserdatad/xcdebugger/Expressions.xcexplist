@@ -6,6 +6,24 @@
          contextName = "runChessGameTests():main.cpp">
       </ContextState>
       <ContextState
+         contextName = "Chess::Pawn::getLegalMovementDirectionToEmptySquares() const:Piece.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::Board::getSpecifiedSquares(vec2&lt;int&gt;, std::__1::vector&lt;Direction, std::__1::allocator&lt;Direction&gt; &gt; const&amp;, int, SafeBoolean, Chess::Color) const:Board.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "bool equal&lt;unsigned int&gt;(unsigned int vector[2], unsigned int vector[2]):Position.h">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::Square::getBoard() const:Square.h">
+      </ContextState>
+      <ContextState
+         contextName = "vec2&lt;int&gt;::vec2(vec2&lt;int&gt; const&amp;):Vect.h">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::Square::getPositionPointer() const:Square.h">
+      </ContextState>
+      <ContextState
          contextName = "Chess::Game::testAndDebug():Game.cpp">
          <PersistentStrings>
             <PersistentString
@@ -14,13 +32,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "vec2&lt;int&gt;::operator==(vec2&lt;int&gt;) const:Vect.h">
-      </ContextState>
-      <ContextState
          contextName = "Chess::Board::getSpecifiedSquares(vec2&lt;int&gt;, std::__1::vector&lt;Direction, std::__1::allocator&lt;Direction&gt; &gt; const&amp;, int, Chess::Color, Chess::Color) const:Board.cpp">
       </ContextState>
       <ContextState
-         contextName = "bool equal&lt;unsigned int&gt;(unsigned int vector[2], unsigned int vector[2]):Position.h">
+         contextName = "Chess::AI::computeAllMoves(Chess::Game&amp;, std::__1::vector&lt;Chess::Piece*, std::__1::allocator&lt;Chess::Piece*&gt; &gt;&amp;, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;*, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;::sibling_iterator&amp;, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;*, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;::sibling_iterator&amp;, unsigned int, unsigned int) const:Player.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Piece::sendMoveNotification(unsigned int vector[2]):Piece.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::AI::computeAllMoves2(Chess::Game&amp;, std::__1::vector&lt;Chess::Piece*, std::__1::allocator&lt;Chess::Piece*&gt; &gt;&amp;, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;*, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;::sibling_iterator&amp;, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;*, tree&lt;Chess::MoveIntent, std::__1::allocator&lt;tree_node_&lt;Chess::MoveIntent&gt; &gt; &gt;::sibling_iterator&amp;, unsigned int, unsigned int) const:Player.cpp">
       </ContextState>
       <ContextState
          contextName = "ChessWindow::ChessWindow(std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; const&amp;):Window.cpp">
@@ -31,16 +52,16 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Chess::Pawn::getLegalMovementDirectionToEmptySquares() const:Piece.cpp">
-      </ContextState>
-      <ContextState
          contextName = "Chess::Pawn::getAllPossibleLegalMoves() const:Piece.cpp">
       </ContextState>
       <ContextState
-         contextName = "Chess::Board::getSpecifiedSquares(vec2&lt;int&gt;, std::__1::vector&lt;Direction, std::__1::allocator&lt;Direction&gt; &gt; const&amp;, int, SafeBoolean, Chess::Color) const:Board.cpp">
+         contextName = "Chess::Piece::getPosition() const:Piece.cpp">
       </ContextState>
       <ContextState
-         contextName = "Piece::sendMoveNotification(unsigned int vector[2]):Piece.cpp">
+         contextName = "vec2&lt;int&gt;::operator==(vec2&lt;int&gt;) const:Vect.h">
+      </ContextState>
+      <ContextState
+         contextName = "Chess::Board::getSpecifiedSquares(vec2&lt;int&gt;, std::__1::vector&lt;Direction, std::__1::allocator&lt;Direction&gt; &gt; const&amp;, SafeBoolean, Chess::Color) const:Board.cpp">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

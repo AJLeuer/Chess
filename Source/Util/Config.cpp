@@ -11,7 +11,7 @@
 string currentDirectory("") ;
 string commandLineArgument("") ;
 
-const string & mainFontFilePath {"./Assets/Fonts/Menlo-Regular.ttf"} ; //apparently works even though it seems like referencing a rvalue. const-qualifying makes it legal
+const string & mainFontFilePath {"./Assets/Fonts/Menlo-Regular.ttf"} ; //apparently works even though it seems like referencing an rvalue. const-qualifying makes it legal
 
 vec2<unsigned> mainWindowSize = setMainWindowSize() ;
 

@@ -6,48 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Game/Game.cpp"
-            timestampString = "462703371.257718"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "Game::commitMove(MoveIntent &amp; move)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Source/Game/Piece.cpp"
-            timestampString = "462798431.553369"
+            filePath = "Source/Game/Player.cpp"
+            timestampString = "464002711.59857"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "499"
-            endingLineNumber = "499"
-            landmarkName = "MoveIntent::MoveIntent(const MoveIntent &amp; other)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Game/Piece.cpp"
-            timestampString = "462798435.367068"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "509"
-            endingLineNumber = "509"
-            landmarkName = "MoveIntent::operator = (const MoveIntent &amp; other)"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
+            landmarkName = "Player::computeAllMoves2(Chess::SimulatedGame &amp; game, tree&lt;MoveIntent&gt; &amp; moveTree)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -65,6 +65,133 @@ vector<Piece *> Player::findOwnPiecesOnBoard(const Board & workingBoard) const {
 	
 	return workingPieces ;
 }
+	
+tree<MoveIntent> Player::computeAllMoves(Game_Base & game, vector<Piece *> & piecesToSearchForMoves,
+									 		tree<MoveIntent> * decisionTree, tree<MoveIntent>::sibling_iterator & decisionTreePosition,
+									 		tree<MoveIntent> * movesToCheck, tree<MoveIntent>::sibling_iterator & currentMove,
+									 		unsigned currentDepth, const unsigned maxSearchDepth) const
+
+{
+	
+	tree<MoveIntent> movesToCheckNext ; //needs to be in scope for duration of function call
+	
+	if ((movesToCheck->empty()) || (currentMove == movesToCheck->end())) {
+		
+		if (piecesToSearchForMoves.empty()) {
+			
+			if (currentDepth == maxSearchDepth) {
+				
+				return * movesToCheck ;
+				
+			}
+			
+			else {
+				
+				currentDepth++ ;
+				
+				piecesToSearchForMoves = findOwnPiecesOnBoard(game.board) ;
+				
+			}
+			
+		}
+		
+		Piece * piece ;
+		
+		while (movesToCheckNext.empty()) {
+			
+			piece = piecesToSearchForMoves.back() ;
+			
+			movesToCheckNext = piece->getPossibleLegalMovesTree() ;
+			
+			piecesToSearchForMoves.pop_back() ;
+		}
+		
+		decisionTree = movesToCheck ;
+		
+		movesToCheck = & movesToCheckNext ;
+		
+		currentMove = movesToCheck->begin() ;
+		
+	}
+	
+	MoveIntent & move = * currentMove ;
+	
+	game.advanceGame(game.getMatchingPlayer(* this), true, & move) ;
+	
+	game.advanceGame(game.getOpponentPlayer(* this), false, nullptr) ;
+	
+	SimulatedGame simGame(game) ;
+	
+	currentMove++ ;
+	
+	tree<MoveIntent> computedMoveTree = computeAllMoves(simGame, piecesToSearchForMoves, decisionTree, decisionTreePosition, movesToCheck, currentMove, currentDepth, maxSearchDepth) ;
+	
+	decisionTree->insert_subtree(decisionTree->begin(), computedMoveTree.begin()) ;
+	
+	return * decisionTree ;
+}
+	
+tree<MoveIntent> Player::computeAllMoves2(SimulatedGame & game, tree<MoveIntent> & moveTree,
+										  unsigned currentDepth, const unsigned maxDepth) const {
+	
+	if (currentDepth == maxDepth) {
+		return moveTree ;
+	}
+	
+	vector<Piece *> pieces = findOwnPiecesOnBoard(game.board) ;
+	
+	tree<MoveIntent>::iterator checkResult ;
+	tree<MoveIntent>::sibling_iterator pos ;
+
+	for (auto i = 0 ; i < pieces.size() ; i++) {
+		
+		Piece * piece = pieces.at(i) ;
+		MoveIntent sentinel = MoveIntent::createSentinel(piece) ;
+		
+		tree<MoveIntent>::sibling_iterator intialBegin = moveTree.begin() ; //debug code
+		pos = moveTree.insert(moveTree.begin(), sentinel) ;
+		tree<MoveIntent>::sibling_iterator postBegin = moveTree.begin() ; //debug code
+		
+		tree<MoveIntent> potentialMoves = piece->getPossibleLegalMovesTree() ;
+		checkResult = moveTree.append_children(pos, potentialMoves.begin(), potentialMoves.end()) ;
+		
+		auto checkBegin = moveTree.begin() ; //debug code
+		
+	}
+	
+	tree<MoveIntent> sub_tree = moveTree.subtree(pos, pos) ;
+	
+	sub_tree = computeAllMoves2(game, sub_tree, currentDepth++, maxDepth) ;
+	
+	moveTree.replace(pos, sub_tree.begin()) ;
+	
+	return moveTree ;
+}
+	
+const tree<MoveIntent> Player::findAllMoves() const {
+	/*
+	tree<MoveIntent> decisionTree ;
+	tree<MoveIntent>::sibling_iterator decisionTreePosition = decisionTree.begin() ;
+	tree<MoveIntent> movesToCheck ;
+	tree<MoveIntent>::sibling_iterator currentMove = movesToCheck.begin() ;
+	
+	SimulatedGame simGame(* this->board->game) ;
+	auto pieces = findOwnPiecesOnBoard(simGame.board) ;
+	
+	auto result = this->computeAllMoves(simGame, pieces,
+										& decisionTree, decisionTreePosition,
+										& movesToCheck, currentMove,
+										0, 3) ;
+	 */
+	
+	
+	tree<MoveIntent> decisionTree ;
+	SimulatedGame simGame(* this->board->game) ;
+	
+	auto result = computeAllMoves2(simGame, decisionTree, 0 , 3) ;
+	
+	return result ;
+}
 
 void Player::removePiece(Piece * piece) {
 	bool pieceNotFound = true ; //debug var, remove
@@ -89,7 +216,7 @@ const MoveIntent Human::decideNextMove() const {
 
 
 const MoveIntent AI::decideNextMove() const {
-	
+
 	Board temporaryBoard(* this->board) ;
 	
 	AI simulatedOpponent(getOpposite(this->color), & temporaryBoard) ;
@@ -99,53 +226,7 @@ const MoveIntent AI::decideNextMove() const {
 	//todo finish
 	return move ;
 }
-	
-void AI::findMoveSequence(unsigned int maxSearchDepth, unsigned int currentDepth) {
-	Game simulation(* this->board->game) ;
-	
-	vector<Piece *> workingPieces = findOwnPiecesOnBoard(* board) ;
-}
-	
-	
-tree<MoveIntent>  AI::computeAllMoves(Game & game, vector<Piece *> & piecesToSearchForMoves, vector<MoveIntent> & movesToCheck,
-										unsigned piecesSearchedThisDepth, unsigned currentDepth, unsigned maxSearchDepth)
-{
-	
-	tree<MoveIntent> searchTree ;
-	
 
-	if (currentDepth == maxSearchDepth) {
-		
-		if (piecesToSearchForMoves.empty()) {
-			
-			return searchTree ;
-		}
-		
-		Piece * piece = piecesToSearchForMoves.back() ;
-		
-		searchTree = piece->getPossibleLegalMovesTree() ;
-		
-		piecesToSearchForMoves.pop_back() ;
-		
-		return searchTree ;
-		
-	}
-	
-	else {
-		
-		MoveIntent & move = movesToCheck.back() ;
-		
-		game.advanceGame_Simulated(game.getMatchingPlayer(* this), true, & move) ;
-		
-		game.advanceGame_Simulated(game.getOpponentPlayer(* this), false, nullptr) ;
-	}
-
-
-	
-	//auto allMoves = (*currentPiece)->getAllPossibleLegalMovePositions() ;
-
-	throw exception() ;
-}
 	
 const MoveIntent AI::chooseBestMove(Board & board) const {
 	vector<MoveIntent> highValueMoveOptions = computeBestMoves(board) ;

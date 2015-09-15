@@ -32,8 +32,8 @@ using namespace std ;
 int main(int, char **) ;
 
 namespace Chess {
-
-class Game {
+	
+class Game_Base {
 	
 protected:
 	
@@ -46,56 +46,133 @@ protected:
 	Player * player0 ;
 	Player * player1 ;
 	
-	ChessWindow window ;
 	
-	void display() ;
-	
-	void advanceGame() ;
-	
-	void advanceGame_Simulated(Player * currentPlayer, bool overrideMoveDecision, MoveIntent * overridingMove) ;
+	virtual void advanceGame(Player * currentPlayer = nullptr, bool overrideMoveDecision = false, MoveIntent * overridingMove = nullptr) = 0 ;
+
 	
 	void commitMove(MoveIntent & move, bool recordMove = true) ;
 	
-	void monitorMouse() ;
+	
 	
 	vector<GameRecordEntry> gameRecord ;
+	
+	friend class Player ;
 	
 	friend class AI ;
 	
 	friend int ::main(int, char **) ; //for debug only
 	
-		
+	
 public:
 	
-	Game() ;
+	Game_Base() ;
 	
 	/**
-	 * Copy constructor. Right now, the only use is createing temporary games to run simulations
+	 * Copy constructor. Right now, the only use is creating temporary games to run simulations
 	 */
-	Game(const Game & other) ;
+	Game_Base(const Game_Base & other) ;
 	
-	~Game() ;
+	virtual ~Game_Base() ;
 	
-	Game & operator = (const Game & other) = delete ;
+	Game_Base & operator = (const Game_Base & other) = delete ;
 	
-	void playGame() ;
+	virtual void playGame() = 0 ;
 	
 	/**
 	 * For development and debugging
 	 */
-	void playDebugGame() ;
+	virtual void playDebugGame() = 0 ;
 	
 	/**
-	 * @return The Player with the same color as the Player * passed in as an argument
+	 * @return The Player with the same color as the Player passed in as an argument
 	 */
 	Player * getMatchingPlayer(const Player & player) { return (player.getColor() == player0->getColor()) ? player0 : player1 ;  }
 	
 	/**
-	 * @return The Player with the color opposite the Player * passed in as an argument
+	 * @return The Player with the color opposite the Player passed in as an argument
 	 */
 	Player * getOpponentPlayer(const Player & player) { return (player.getColor() != player0->getColor()) ? player0 : player1 ;  }
 	
+	/**
+	 * @return A MoveIntent object with the matching Piece found by calling this->board.findMatch(move.piece), such that the returned
+	 * MoveIntent could be used to make the same move but in this game
+	 */
+	MoveIntent tranlateMoveIntent(const MoveIntent & move) ;
+	
 };
+
+class Game : public Game_Base {
+	
+protected:
+	
+	ChessWindow window ;
+	
+	void advanceGame(Player * currentPlayer = nullptr, bool overrideMoveDecision = false, MoveIntent * overridingMove = nullptr) override ;
+	
+	
+public:
+	
+	Game() ;
+	
+	Game(const Game_Base & other) ;
+	
+	Game(const Game & other) ;
+	
+	~Game() override {}
+	
+	Game & operator = (const Game_Base & other) = delete ;
+	
+	void playGame() override ;
+	
+	/**
+	 * For development and debugging
+	 */
+	void playDebugGame() override ;
+	
+	void display() ;
+	
+	void monitorMouse() ;
+	
+	
+};
+	
+	
+class SimulatedGame : public Game_Base {
+	
+protected:
+	
+	void advanceGame(Player * currentPlayer = nullptr, bool overrideMoveDecision = false, MoveIntent * overridingMove = nullptr) override ;
+	
+public:
+	
+	SimulatedGame() ;
+	
+	SimulatedGame(const Game_Base & other) ;
+	
+	SimulatedGame(const SimulatedGame & other) ;
+	
+	~SimulatedGame() override {}
+	
+	SimulatedGame & operator = (const Game_Base & other) = delete ;
+	
+	void playGame() override ;
+	
+	/**
+	 * For development and debugging
+	 */
+	void playDebugGame() override ;
+};
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
 

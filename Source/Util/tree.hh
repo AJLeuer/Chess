@@ -1017,7 +1017,7 @@ iter tree<T, tree_node_allocator>::insert(iter position, const T& x)
 	if(position.node==0) {
 		position.node=feet; // Backward compatibility: when calling insert on a null node,
 		                    // insert before the feet.
-		}
+	}
 	tree_node* tmp = alloc_.allocate(1,0);
 	alloc_.construct(tmp, x);
 //	kp::constructor(&tmp->data, x);

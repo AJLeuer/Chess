@@ -23,17 +23,13 @@
 #include "Piece.h"
 #include "Board.h"
 
+
 #include "../Util/tree.hh"
 #include "../Util/Random.hpp"
 
 using namespace std ;
 
 namespace Chess {
-	
-	
-	
-//typedef tuple<const Piece *, const Square *, unsigned>  ;
-	
 	
 
 class Player {
@@ -52,7 +48,19 @@ protected:
 	
 	vector<Piece *> findOwnPiecesOnBoard(const Board & workingBoard) const ;
 	
+	tree<MoveIntent> computeAllMoves(Game_Base & game, vector<Piece *> & piecesToSearchForMoves,
+									 tree<MoveIntent> * decisionTree, tree<MoveIntent>::sibling_iterator & decisionTreePosition,
+									 tree<MoveIntent> * movesToCheck, tree<MoveIntent>::sibling_iterator & currentMove,
+									 unsigned currentDepth, const unsigned maxSearchDepth) const ;
+	
+	tree<MoveIntent> computeAllMoves2(SimulatedGame & game, tree<MoveIntent> & moveTree,
+									  unsigned currentDepth, const unsigned maxDepth) const ;
+	
+	friend class Game_Base ;
+	
 	friend class Game ;
+	
+	friend class SimulatedGame ;
 	
 public:
 	
@@ -81,6 +89,8 @@ public:
 	
 	void registerForNotifications() ;
 	
+	const tree<MoveIntent> findAllMoves() const ;
+	
 	virtual const MoveIntent decideNextMove() const = 0 ;
 	
 };
@@ -94,7 +104,7 @@ public:
 		Player(color, board) {}
 	
 	Human(const Player & other) : Player(other) {}
-	
+
 	const MoveIntent decideNextMove() const override ;
 	
 };
@@ -105,12 +115,8 @@ class AI : public Player {
 	
 	
 protected:
-	
-	tree<MoveIntent> computeAllMoves(Game & game, vector<Piece *> & piecesToSearchForMoves, vector<MoveIntent> & movesToCheck,
-											 unsigned piecesSearchedThisDepth, unsigned currentDepth, unsigned maxSearchDepth) ;
-	
+
 	const MoveIntent findBestMoveForPiece(Piece * piece) const ;
-	
 	
 	friend class Game ; //debug only
 	
@@ -120,11 +126,9 @@ public:
 		Player(color, board) {}
 	
 	AI(const Player & other) : Player(other) {}
-	
+
 	virtual const MoveIntent decideNextMove() const override ;
-	
-	void findMoveSequence(unsigned maxSearchDepth, unsigned currentDepth) ;
-	
+
 	const MoveIntent chooseBestMove(Board & board) const ;
 	
 	vector<MoveIntent> computeBestMoves(Board & board) const ;
@@ -132,14 +136,6 @@ public:
 	
 	
 	
-class SimHuman : public AI {
-	
-public:
-	
-	using AI::AI ;
-	
-};
-
 	
 vector <MoveIntent> extractHighestValueMoves(const vector <MoveIntent> & moves) ;
 	

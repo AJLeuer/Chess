@@ -31,6 +31,8 @@ protected:
 	
 	Piece * piece = nullptr ;
 	
+	friend class Game_Base ;
+	
 	friend class Game ;
 	
 	friend class Piece ;

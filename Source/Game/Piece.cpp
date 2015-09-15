@@ -230,7 +230,7 @@ tree<MoveIntent> Piece::getPossibleLegalMovesTree() {
 	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
 														   SafeBoolean::t, getOpposite(getColor())) ;
 	
-	tree<MoveIntent>::iterator currentTreePos = legalMoves.begin() ;
+	tree<MoveIntent>::sibling_iterator currentTreePos = legalMoves.begin() ;
 	
 	for (auto i = 0 ; i < squares.size() ; i++) {
 		
@@ -531,16 +531,24 @@ basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Piece 
 	return out ;
 }
 	
-MoveIntent::MoveIntent(const MoveIntent & other) : canMove(other.canMove), piece(other.piece), moveDestination(other.moveDestination),
-	moveValue(other.moveValue)
+MoveIntent::MoveIntent(const MoveIntent & other) : isSentinel(other.isSentinel), canMove(other.canMove), piece(other.piece),
+	moveDestination(other.moveDestination), moveValue(other.moveValue)
 {
 	
 }
 
 
-MoveIntent::MoveIntent(MoveIntent && other) noexcept : canMove(other.canMove), piece(other.piece), moveDestination(std::move(other.moveDestination)), moveValue(other.moveValue)
+MoveIntent::MoveIntent(MoveIntent && other) noexcept : isSentinel(other.isSentinel), canMove(other.canMove), piece(other.piece),
+	moveDestination(std::move(other.moveDestination)), moveValue(other.moveValue)
 {
 	other.piece = nullptr ;
+}
+	
+MoveIntent MoveIntent::createSentinel(Piece * piece) {
+	MoveIntent mv ;
+	mv.piece = piece ;
+	mv.isSentinel = true ;
+	return mv ;
 }
 
 MoveIntent & MoveIntent::operator = (const MoveIntent & other) {
@@ -566,6 +574,12 @@ MoveIntent & MoveIntent::operator = (MoveIntent && other) {
 	return * this ;
 }
 	
+bool operator == (const MoveIntent & mv1, const MoveIntent & mv2) {
+	return (& mv1 == & mv2) ;
+}
 	
+bool operator != (const MoveIntent & mv1, const MoveIntent & mv2) {
+	return (& mv1 != & mv2) ;
+}
 	
 }

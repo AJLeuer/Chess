@@ -124,7 +124,7 @@ public:
 	virtual ~Piece() {
 		square = nullptr ;
 		if (deleted) { //debug code
-		
+			throw exception() ;
 		}
 		deleted = true ;
 	} ; 
@@ -387,9 +387,15 @@ class MoveIntent {
 public:
 	
 	/**
+	 * When stored as part of a linked list or tree, some MoveIntents will just be
+	 * dummy objects to mark the start of the structure
+	 */
+	bool isSentinel = false ;
+	
+	/**
 	 * Whether it's possible for piece to move
 	 */
-	bool canMove ;
+	bool canMove = false ;
 	
 	Piece * piece = nullptr ;
 	
@@ -405,12 +411,22 @@ public:
 	
 	MoveIntent(MoveIntent && other) noexcept ;
 	
+	/**
+	 * When stored as part of a linked list or tree, some MoveIntents will just be
+	 * dummy objects to mark the start of the structure
+	 */
+	static MoveIntent createSentinel(Piece * piece) ;
+	
 	
 	~MoveIntent() {}
 	
 	MoveIntent & operator = (const MoveIntent & other) ;
 	
 	MoveIntent & operator = (MoveIntent && other) ;
+	
+	friend bool operator == (const MoveIntent & mv1, const MoveIntent & mv2) ;
+	
+	friend bool operator != (const MoveIntent & mv1, const MoveIntent & mv2) ;
 	
 	
 	
