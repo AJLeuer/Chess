@@ -82,6 +82,8 @@ public:
 	 * For development and debugging
 	 */
 	virtual void playDebugGame() = 0 ;
+    
+    Board getBoard() { return this->board; }
 	
 	/**
 	 * @return The Player with the same color as the Player passed in as an argument

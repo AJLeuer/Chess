@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6603EFA61B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA11B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib */; };
-		6603EFA71B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib */; };
-		6603EFA81B91332300F9A1D1 /* libsfml-network.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA31B91332300F9A1D1 /* libsfml-network.2.3.0.dylib */; };
-		6603EFA91B91332300F9A1D1 /* libsfml-system.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA41B91332300F9A1D1 /* libsfml-system.2.3.0.dylib */; };
-		6603EFAA1B91332300F9A1D1 /* libsfml-window.2.3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA51B91332300F9A1D1 /* libsfml-window.2.3.0.dylib */; };
 		6603EFAC1B917E7800F9A1D1 /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6603EFAB1B917E7800F9A1D1 /* Square.cpp */; };
 		660A3FCC1ACF7BFA00E68035 /* Assets in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66D0AFA41AB6D026001AD733 /* Assets */; };
+		660EE1D11E3853B700BAFFB6 /* libsfml-audio.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA11B91332300F9A1D1 /* libsfml-audio.2.4.1.dylib */; };
+		660EE1D21E3853B700BAFFB6 /* libsfml-graphics.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.4.1.dylib */; };
+		660EE1D31E3853B700BAFFB6 /* libsfml-network.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA31B91332300F9A1D1 /* libsfml-network.2.4.1.dylib */; };
+		660EE1D41E3853B700BAFFB6 /* libsfml-system.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA41B91332300F9A1D1 /* libsfml-system.2.4.1.dylib */; };
+		660EE1D51E3853B700BAFFB6 /* libsfml-window.2.4.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6603EFA51B91332300F9A1D1 /* libsfml-window.2.4.1.dylib */; };
 		6659B8BA1AB75ADD0068B607 /* DisplayData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6659B8B91AB75ADD0068B607 /* DisplayData.cpp */; };
 		6659B8BC1AB75B540068B607 /* DisplayData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6659B8BB1AB75B540068B607 /* DisplayData.mm */; };
 		6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6659B8BE1AB75BB40068B607 /* AppKit.framework */; };
@@ -47,11 +47,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6603EFA11B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-audio.2.3.0.dylib"; sourceTree = "<group>"; };
-		6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-graphics.2.3.0.dylib"; sourceTree = "<group>"; };
-		6603EFA31B91332300F9A1D1 /* libsfml-network.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-network.2.3.0.dylib"; sourceTree = "<group>"; };
-		6603EFA41B91332300F9A1D1 /* libsfml-system.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-system.2.3.0.dylib"; sourceTree = "<group>"; };
-		6603EFA51B91332300F9A1D1 /* libsfml-window.2.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.3.0.dylib"; path = "../../../../../../usr/local/Cellar/sfml/2.3/lib/libsfml-window.2.3.0.dylib"; sourceTree = "<group>"; };
+		6603EFA11B91332300F9A1D1 /* libsfml-audio.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-audio.2.4.1.dylib"; path = "../../../../usr/local/Cellar/sfml/2.4.1/lib/libsfml-audio.2.4.1.dylib"; sourceTree = "<group>"; };
+		6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-graphics.2.4.1.dylib"; path = "../../../../usr/local/Cellar/sfml/2.4.1/lib/libsfml-graphics.2.4.1.dylib"; sourceTree = "<group>"; };
+		6603EFA31B91332300F9A1D1 /* libsfml-network.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-network.2.4.1.dylib"; path = "../../../../usr/local/Cellar/sfml/2.4.1/lib/libsfml-network.2.4.1.dylib"; sourceTree = "<group>"; };
+		6603EFA41B91332300F9A1D1 /* libsfml-system.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-system.2.4.1.dylib"; path = "../../../../usr/local/Cellar/sfml/2.4.1/lib/libsfml-system.2.4.1.dylib"; sourceTree = "<group>"; };
+		6603EFA51B91332300F9A1D1 /* libsfml-window.2.4.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsfml-window.2.4.1.dylib"; path = "../../../../usr/local/Cellar/sfml/2.4.1/lib/libsfml-window.2.4.1.dylib"; sourceTree = "<group>"; };
 		6603EFAB1B917E7800F9A1D1 /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Square.cpp; sourceTree = "<group>"; };
 		6603F9571AD73BAB00B3A5DD /* UniqueNumericID.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UniqueNumericID.h; path = Source/Util/UniqueNumericID.h; sourceTree = SOURCE_ROOT; };
 		661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = BuildConfig.xcconfig; path = Config/BuildConfig.xcconfig; sourceTree = "<group>"; };
@@ -106,11 +106,11 @@
 				66A544431AED2C0A000E35C3 /* Foundation.framework in Frameworks */,
 				6659B8BF1AB75BB40068B607 /* AppKit.framework in Frameworks */,
 				66A5443F1AED1930000E35C3 /* OpenGL.framework in Frameworks */,
-				6603EFA61B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib in Frameworks */,
-				6603EFA71B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib in Frameworks */,
-				6603EFA81B91332300F9A1D1 /* libsfml-network.2.3.0.dylib in Frameworks */,
-				6603EFA91B91332300F9A1D1 /* libsfml-system.2.3.0.dylib in Frameworks */,
-				6603EFAA1B91332300F9A1D1 /* libsfml-window.2.3.0.dylib in Frameworks */,
+				660EE1D11E3853B700BAFFB6 /* libsfml-audio.2.4.1.dylib in Frameworks */,
+				660EE1D21E3853B700BAFFB6 /* libsfml-graphics.2.4.1.dylib in Frameworks */,
+				660EE1D31E3853B700BAFFB6 /* libsfml-network.2.4.1.dylib in Frameworks */,
+				660EE1D41E3853B700BAFFB6 /* libsfml-system.2.4.1.dylib in Frameworks */,
+				660EE1D51E3853B700BAFFB6 /* libsfml-window.2.4.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,11 +171,11 @@
 		66C10DAB1A0030B10074ED36 = {
 			isa = PBXGroup;
 			children = (
-				6603EFA11B91332300F9A1D1 /* libsfml-audio.2.3.0.dylib */,
-				6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.3.0.dylib */,
-				6603EFA31B91332300F9A1D1 /* libsfml-network.2.3.0.dylib */,
-				6603EFA41B91332300F9A1D1 /* libsfml-system.2.3.0.dylib */,
-				6603EFA51B91332300F9A1D1 /* libsfml-window.2.3.0.dylib */,
+				6603EFA11B91332300F9A1D1 /* libsfml-audio.2.4.1.dylib */,
+				6603EFA21B91332300F9A1D1 /* libsfml-graphics.2.4.1.dylib */,
+				6603EFA31B91332300F9A1D1 /* libsfml-network.2.4.1.dylib */,
+				6603EFA41B91332300F9A1D1 /* libsfml-system.2.4.1.dylib */,
+				6603EFA51B91332300F9A1D1 /* libsfml-window.2.4.1.dylib */,
 				661E2F411AD192E4008192F2 /* BuildConfig.xcconfig */,
 				66A544401AED2C04000E35C3 /* CoreFoundation.framework */,
 				66E390DC1ADB1937008D4505 /* CoreGraphics.framework */,
@@ -236,7 +236,7 @@
 		66C10DAC1A0030B10074ED36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Adam James Leuer";
 				TargetAttributes = {
 					66C10DB31A0030B10074ED36 = {
@@ -300,9 +300,11 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -310,6 +312,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -335,7 +338,7 @@
 					/usr/lib,
 					/usr/local/lib,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -357,9 +360,11 @@
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -367,6 +372,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
@@ -383,7 +389,13 @@
 					/usr/local/include,
 					/usr/include,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+					/usr/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -397,8 +409,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/Cellar/sfml/2.2/lib,
-					/usr/local/Cellar/sfml/2.3/lib,
+					/usr/local/Cellar/sfml/2.4.1/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -411,8 +422,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/usr/local/Cellar/sfml/2.2/lib,
-					/usr/local/Cellar/sfml/2.3/lib,
+					/usr/local/Cellar/sfml/2.4.1/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
