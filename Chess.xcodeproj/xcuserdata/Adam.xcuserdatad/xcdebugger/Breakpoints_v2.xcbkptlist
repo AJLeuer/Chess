@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Game/Player.cpp"
-            timestampString = "464002711.59857"
+            timestampString = "541553312.59602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "Player::computeAllMoves2(SimulatedGame &amp; game, tree&lt;MoveIntent&gt; &amp; moveTree, unsigned currentDepth, const unsigned maxDepth)"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "Player::computeAllMoves2(SimulatedGame &amp; game, Tree&lt;MoveIntent&gt; &amp; moveTree, unsigned currentDepth, const unsigned maxDepth)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/Game/Player.cpp"
+            timestampString = "541553312.59734"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "238"
+            endingLineNumber = "238"
+            landmarkName = "AI::chooseBestMove(Board &amp; board)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

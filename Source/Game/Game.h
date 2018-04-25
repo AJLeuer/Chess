@@ -37,22 +37,18 @@ class Game_Base {
 	
 protected:
 	
-	
 	unsigned long gameLoops = 0 ;
 	
 	/** Note: Must be initialized first */
 	Board board ;
 	
 	Player * player0 ;
+
 	Player * player1 ;
-	
 	
 	virtual void advanceGame(Player * currentPlayer = nullptr, bool overrideMoveDecision = false, MoveIntent * overridingMove = nullptr) = 0 ;
 
-	
 	void commitMove(MoveIntent & move, bool recordMove = true) ;
-	
-	
 	
 	vector<GameRecordEntry> gameRecord ;
 	
@@ -61,7 +57,6 @@ protected:
 	friend class AI ;
 	
 	friend int ::main(int, char **) ; //for debug only
-	
 	
 public:
 	
@@ -73,8 +68,8 @@ public:
 	Game_Base(const Game_Base & other) ;
 	
 	virtual ~Game_Base() ;
-	
-	Game_Base & operator = (const Game_Base & other) = delete ;
+
+	Game_Base & operator = (const Game_Base & other) = delete;
 	
 	virtual void playGame() = 0 ;
 	
@@ -122,7 +117,7 @@ public:
 	
 	~Game() override {}
 	
-	Game & operator = (const Game_Base & other) = delete ;
+	Game & operator = (const Game & other) = delete;
 	
 	void playGame() override ;
 	
@@ -155,7 +150,7 @@ public:
 	
 	~SimulatedGame() override {}
 	
-	SimulatedGame & operator = (const Game_Base & other) = delete ;
+	SimulatedGame & operator = (const Game_Base & other) = delete;
 	
 	void playGame() override ;
 	

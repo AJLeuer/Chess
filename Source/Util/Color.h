@@ -13,13 +13,16 @@
 #include <array>
 #include <cstdint>
 
-using namespace std ;
+using std::array;
 
+
+namespace Chess {
+    
 typedef uint8_t byte ;
 
 struct TrueColor {
 	
-	array<byte, 4> RGBA ;
+    array<byte, 4> RGBA ;
 	
 	inline constexpr TrueColor(byte R, byte G, byte B, byte A) : RGBA({R, G, B, A}) {}
 	
@@ -46,5 +49,6 @@ struct TrueColor {
 	
 };
 
+}
 
 #endif

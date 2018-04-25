@@ -26,8 +26,9 @@
 
 #include "DisplayData.h"
 
-using namespace std ;
 using namespace sf ;
+
+namespace Chess {
 
 class ChessWindow : public sf::RenderWindow {
 	
@@ -78,7 +79,7 @@ template<class StringType>
 void ChessWindow::displayText(const StringType & chars, const TrueColor color, const vec2<int> where) {
 	
 	text.setString(chars) ;
-	text.setColor(color) ;
+	text.setFillColor(color) ;
 	
 	auto textSize = text.getLocalBounds() ;
 	
@@ -89,6 +90,8 @@ void ChessWindow::displayText(const StringType & chars, const TrueColor color, c
 	text.setPosition(convertToSFMLVectorType<float, int>(adjustedPos)) ;
 	
 	this->RenderWindow::draw(text) ;
+}
+	
 }
 
 #endif /* defined(__Chess__Window__) */

@@ -25,6 +25,7 @@
 
 
 #include "../Util/tree.hh"
+#include "../Util/Tree.hpp"
 #include "../Util/Random.hpp"
 
 using namespace std ;
@@ -53,7 +54,7 @@ protected:
 									 tree<MoveIntent> * movesToCheck, tree<MoveIntent>::sibling_iterator & currentMove,
 									 unsigned currentDepth, const unsigned maxSearchDepth) const ;
 	
-	tree<MoveIntent> computeAllMoves2(SimulatedGame & game, tree<MoveIntent> & moveTree,
+	Tree<MoveIntent> computeAllMoves2(SimulatedGame & game, Tree<MoveIntent> & moveTree,
 									  unsigned currentDepth, const unsigned maxDepth) const ;
 	
 	friend class Game_Base ;
@@ -89,7 +90,7 @@ public:
 	
 	void registerForNotifications() ;
 	
-	const tree<MoveIntent> findAllMoves() const ;
+	const Tree<MoveIntent> findAllMoves() const ;
 	
 	virtual const MoveIntent decideNextMove() const = 0 ;
 	

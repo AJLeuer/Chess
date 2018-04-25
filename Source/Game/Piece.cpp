@@ -95,31 +95,24 @@ Piece * Piece::initCopy(const Chess::Piece & piece) {
 			
 		case Type::Pawn: {
 			return new Pawn(piece) ;
-			break;
 		}
 		case Type::Knight: {
 			return new Knight(piece) ;
-			break;
 		}
 		case Type::Bishop: {
 			return new Bishop(piece) ;
-			break;
 		}
 		case Type::Rook: {
 			return new Rook(piece) ;
-			break;
 		}
 		case Type::Queen: {
 			return new Queen(piece) ;
-			break;
 		}
 		case Type::King: {
 			return new King(piece) ;
-			break;
 		}
 		default: {
 			throw std::exception() ; //debug code, remove
-			break;
 		}
 	}
 }
@@ -187,7 +180,7 @@ const bool Piece::canMove() const {
 	
 	auto moves = this->getAllPossibleLegalMovePositions() ;
 	
-	const bool canMove = (moves.size() > 0) ;
+	const bool canMove = (moves.empty() == false) ;
 	
 	return canMove ;
 }
@@ -199,8 +192,8 @@ vector<vec2<int>> Piece::getAllPossibleLegalMovePositions() const {
 	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
 														   SafeBoolean::t, getOpposite(getColor())) ;
 	
-	for (auto i = 0 ; i < squares.size() ; i++) {
-		legalMoves.push_back(squares.at(i)->copyPosition()) ;
+	for (auto & square : squares) {
+		legalMoves.push_back(square->copyPosition()) ;
 	}
 	
 	return legalMoves ;
@@ -213,11 +206,13 @@ vector<MoveIntent> Piece::getAllPossibleLegalMoves() {
 	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
 														   SafeBoolean::t, getOpposite(getColor())) ;
 	
-	for (auto i = 0 ; i < squares.size() ; i++) {
+	for (auto & square : squares) {
 		
-		vec2<int> moveDestination = squares.at(i)->copyPosition() ;
+		vec2<int> moveDestination = square->copyPosition() ;
+        
+        union MoveIntent::BoardOrPiece pc {this};
 		
-		legalMoves.push_back(MoveIntent(true, this, moveDestination, this->square->getBoard()->evaluateAfterHypotheticalMove(this, moveDestination))) ;
+		legalMoves.push_back(MoveIntent(true, pc, moveDestination, this->square->getBoard()->evaluateAfterHypotheticalMove(this, moveDestination))) ;
 	}
 	
 	return legalMoves ;
@@ -226,7 +221,7 @@ vector<MoveIntent> Piece::getAllPossibleLegalMoves() {
 tree<MoveIntent> Piece::getPossibleLegalMovesTree() {
 	
 	tree<MoveIntent> legalMoves ;
-	
+
 	auto squares = square->getBoard()->getSpecifiedSquares(* getPosition(), this->getLegalMovementDirections(),
 														   SafeBoolean::t, getOpposite(getColor())) ;
 	
@@ -235,8 +230,10 @@ tree<MoveIntent> Piece::getPossibleLegalMovesTree() {
 	for (auto i = 0 ; i < squares.size() ; i++) {
 		
 		vec2<int> moveDestination = squares.at(i)->copyPosition() ;
+        
+        union MoveIntent::BoardOrPiece borp {this};
 		
-		currentTreePos = legalMoves.insert(currentTreePos, MoveIntent(true, this, moveDestination,
+		currentTreePos = legalMoves.insert(currentTreePos, MoveIntent(true, borp, moveDestination,
 																	  this->square->getBoard()->evaluateAfterHypotheticalMove(this, moveDestination))) ;
 		
 	}
@@ -531,44 +528,59 @@ basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> & out, const Piece 
 	return out ;
 }
 	
-MoveIntent::MoveIntent(const MoveIntent & other) : isSentinel(other.isSentinel), canMove(other.canMove), piece(other.piece),
-	moveDestination(other.moveDestination), moveValue(other.moveValue)
+MoveIntent::MoveIntent(const MoveIntent & other) :
+    sentinel(other.sentinel),
+    canMove(other.canMove),
+    boardOrPiece(other.boardOrPiece),
+	moveDestination(other.moveDestination),
+    moveValue(other.moveValue)
 {
 	
 }
 
 
-MoveIntent::MoveIntent(MoveIntent && other) noexcept : isSentinel(other.isSentinel), canMove(other.canMove), piece(other.piece),
-	moveDestination(std::move(other.moveDestination)), moveValue(other.moveValue)
+MoveIntent::MoveIntent(MoveIntent && other) noexcept :
+    sentinel(other.sentinel),
+    canMove(other.canMove),
+    boardOrPiece(other.boardOrPiece),
+	moveDestination(std::move(other.moveDestination)),
+    moveValue(other.moveValue)
 {
-	other.piece = nullptr ;
+    other.boardOrPiece = BoardOrPiece{(Board *)nullptr} ;
 }
 	
-MoveIntent MoveIntent::createSentinel(Piece * piece) {
-	MoveIntent mv ;
-	mv.piece = piece ;
-	mv.isSentinel = true ;
+MoveIntent MoveIntent::createPieceSentinel(Piece * piece) {
+	BoardOrPiece thePiece(piece);
+	MoveIntent mv(false, thePiece, {0, 0}, 0);
+    mv.sentinel = {true, Sentinel::piece} ;
 	return mv ;
+}
+    
+MoveIntent MoveIntent::createBoardSentinel(Board * board) {
+	BoardOrPiece theBoard(board);
+    MoveIntent mv(false, theBoard, {0, 0}, 0);
+    mv.sentinel = {true, Sentinel::board};
+    return mv ;
 }
 
 MoveIntent & MoveIntent::operator = (const MoveIntent & other) {
 	if (this != & other) {
 		canMove = other.canMove ;
-		piece = other.piece ;
+		boardOrPiece = other.boardOrPiece;
 		moveDestination = other.moveDestination ;
 		moveValue = other.moveValue ;
 	}
 	return * this ;
 }
 	
-MoveIntent & MoveIntent::operator = (MoveIntent && other) {
+MoveIntent & MoveIntent::operator = (MoveIntent && other) noexcept {
 	if (this != & other) {
 		canMove = other.canMove ;
-		piece = other.piece ;
+		boardOrPiece = other.boardOrPiece;
 		moveDestination = std::move(other.moveDestination) ;
 		moveValue = other.moveValue ;
 		
-		other.piece = nullptr ;
+		other.boardOrPiece = BoardOrPiece((Board *)nullptr);
 	}
 	
 	return * this ;

@@ -1,8 +1,6 @@
 
 #ifdef __APPLE__
 
-#include "../Util/Util.hpp"
-
 #include "DisplayData.h"
 #include "Decl_Apple.h"
 

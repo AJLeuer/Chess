@@ -75,7 +75,7 @@ class tree {
 		class pre_order_iterator;
 		class post_order_iterator;
 		class sibling_iterator;
-      class leaf_iterator;
+        class leaf_iterator;
 
 		tree();
 		tree(const T&);

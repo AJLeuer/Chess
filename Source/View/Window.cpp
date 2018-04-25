@@ -8,8 +8,8 @@
 
 #include "Window.h"
 
-using namespace std ;
-using namespace sf ;
+
+namespace Chess {
 
 Font & ChessWindow::font = ChessWindow::initFont() ;
 
@@ -49,9 +49,7 @@ void ChessWindow::setBackgroundColor(const TrueColor color) {
 	//todo implement for non-Apple unix, win
 }
 
-
-
-
-
 #endif
+	
+}
 

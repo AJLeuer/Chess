@@ -41,19 +41,16 @@ Game_Base::Game_Base(const Game_Base & other) :
 }
 
 Game_Base::~Game_Base() {
-	if (player0 != nullptr) {
-		delete player0 ;
-	}
-	
-	if (player1 != nullptr) {
-		delete player1 ;
-	}
+
+	delete player0 ;
+
+	delete player1 ;
 }
 
 
 void Game_Base::commitMove(MoveIntent & move, bool recordMove) {
 	
-	Piece * movingPiece = move.piece ;
+	Piece * movingPiece = move.boardOrPiece.piece;
 	
 	assert(movingPiece->getSquareMutable()->board->game == this) ;//debug code only
 	
@@ -74,17 +71,13 @@ MoveIntent Game_Base::tranlateMoveIntent(const Chess::MoveIntent & move) {
 	
 	MoveIntent copiedMove(move) ;
 	
-	Piece * equivelentPiece = board.findMatch(move.piece) ;
+	Piece * equivalentPiece = board.findMatch(move.boardOrPiece.piece) ;
 	
-	copiedMove.piece = equivelentPiece ;
+    copiedMove.boardOrPiece = MoveIntent::BoardOrPiece(equivalentPiece);
 	
 	return copiedMove ;
 }
-	
-	
 
-	
-	
 Game::Game() :
 	Game_Base(),
 	window()
@@ -154,8 +147,8 @@ void Game::advanceGame(Player * currentPlayer, bool overrideMoveDecision, MoveIn
 }
 	
 void Game::display() {
-	
-	wstringstream * stream = new wstringstream() ;
+
+	auto * stream = new wstringstream() ;
 	*stream << board ;
 	wstring * str = new wstring(stream->str()) ;
 	
@@ -223,9 +216,9 @@ SimulatedGame::SimulatedGame(const Game_Base & other) :
 SimulatedGame::SimulatedGame(const SimulatedGame & other) :
 	Game_Base(other)
 {
-	
+
 }
-	
+
 void SimulatedGame::playGame() {
 
 	while (true) {

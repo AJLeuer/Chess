@@ -276,34 +276,10 @@ const short Board::evaluateAfterHypotheticalMove(const Piece * piece, const vec2
 	return testBoard.evaluate(piece->getColor()) ;
 }
 
+    void runChessGameTests() {
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+    }
+
 
 }
 

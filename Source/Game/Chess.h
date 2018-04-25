@@ -22,15 +22,15 @@ static constexpr unsigned ranks = 8 ;
  */
 static constexpr unsigned files = 8 ;
 	
-static constexpr TrueColor windowBackgroundColor {0x00, 0x00, 0x00, 160} ;
-static constexpr TrueColor windowForegroundColor {0x9D, 0xFF, 0x00, 254} ;
-	
+static constexpr TrueColor windowBackgroundColor {0x00, 0x00, 0x00, 160} ; // NOLINT
+static constexpr TrueColor windowForegroundColor {0x9D, 0xFF, 0x00, 254} ; // NOLINT
+
 enum class Color {
 	black,
 	white
 } ;
 	
-inline Color getOpposite(Color color) {
+inline constexpr Color getOpposite(Color color) {
 	if (color == Color::black) {
 		return Color::white ;
 	}

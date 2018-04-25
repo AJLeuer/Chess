@@ -104,7 +104,8 @@ namespace sf {
 @end
 
 
-
+namespace Chess {
+	
 ChessWindow::ChessWindow(const string & title, const TrueColor backgroundColor) :
 	RenderWindow(videoMode, title, sf::Style::Default, ContextSettings())
 {
@@ -140,7 +141,7 @@ void ChessWindow::setBackgroundColor(const TrueColor color) {
 	[this_window setBackgroundColor:backgroundColor] ;
 }
 
-
+}
 
 
 

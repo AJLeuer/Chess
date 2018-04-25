@@ -60,7 +60,6 @@ public:
 	constexpr RankAndFile(const RankAndFile & other) : RankAndFile(other.file, other.rank) {}
 	
 	/* User-provided destructors not allowed for literal types */
-	
 	constexpr RankAndFile & operator = (const RankAndFile & rhs) {
 		if (this != & rhs) {
 			this->file = rhs.file ;

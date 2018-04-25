@@ -131,7 +131,7 @@ tree<MoveIntent> Player::computeAllMoves(Game_Base & game, vector<Piece *> & pie
 	return * decisionTree ;
 }
 	
-tree<MoveIntent> Player::computeAllMoves2(SimulatedGame & game, tree<MoveIntent> & moveTree,
+Tree<MoveIntent> Player::computeAllMoves2(SimulatedGame & game, Tree<MoveIntent> & moveTree,
 										  unsigned currentDepth, const unsigned maxDepth) const {
 	
 	if (currentDepth == maxDepth) {
@@ -140,35 +140,33 @@ tree<MoveIntent> Player::computeAllMoves2(SimulatedGame & game, tree<MoveIntent>
 	
 	vector<Piece *> pieces = findOwnPiecesOnBoard(game.board) ;
 	
-	tree<MoveIntent>::iterator checkResult ;
-	tree<MoveIntent>::sibling_iterator pos ;
 
-	for (auto i = 0 ; i < pieces.size() ; i++) {
+	for (unsigned i = 0 ; i < pieces.size() ; i++) {
 		
 		Piece * piece = pieces.at(i) ;
-		MoveIntent sentinel = MoveIntent::createSentinel(piece) ;
+		MoveIntent sentinel = MoveIntent::createPieceSentinel(piece) ;
 		
-		tree<MoveIntent>::sibling_iterator intialBegin = moveTree.begin() ; //debug code
-		pos = moveTree.insert(moveTree.begin(), sentinel) ;
-		tree<MoveIntent>::sibling_iterator postBegin = moveTree.begin() ; //debug code
+        moveTree.addChild(sentinel) ;
 		
 		tree<MoveIntent> potentialMoves = piece->getPossibleLegalMovesTree() ;
-		checkResult = moveTree.append_children(pos, potentialMoves.begin(), potentialMoves.end()) ;
+        //checkResult = moveTree.append_children(pos, potentialMoves.begin(), potentialMoves.end()) ;
 		
-		auto checkBegin = moveTree.begin() ; //debug code
-		
+        //auto checkBegin = moveTree.begin() ; //debug code
+        size_t potentialMoves_size = potentialMoves.size(); //debug code
 	}
+    
+    
 	
-	tree<MoveIntent> sub_tree = moveTree.subtree(pos, pos) ;
+	//tree<MoveIntent> sub_tree = moveTree.subtree(pos, pos) ;
 	
-	sub_tree = computeAllMoves2(game, sub_tree, currentDepth++, maxDepth) ;
+	//sub_tree = computeAllMoves2(game, sub_tree, currentDepth++, maxDepth) ;
 	
-	moveTree.replace(pos, sub_tree.begin()) ;
+	//moveTree.replace(pos, sub_tree.begin()) ;
 	
 	return moveTree ;
 }
 	
-const tree<MoveIntent> Player::findAllMoves() const {
+const Tree<MoveIntent> Player::findAllMoves() const {
 	/*
 	tree<MoveIntent> decisionTree ;
 	tree<MoveIntent>::sibling_iterator decisionTreePosition = decisionTree.begin() ;
@@ -184,8 +182,10 @@ const tree<MoveIntent> Player::findAllMoves() const {
 										0, 3) ;
 	 */
 	
-	
-	tree<MoveIntent> decisionTree ;
+    MoveIntent rootSentinel = MoveIntent::createBoardSentinel(this->board);
+    
+	Tree<MoveIntent> decisionTree(rootSentinel) ;
+    
 	SimulatedGame simGame(* this->board->game) ;
 	
 	auto result = computeAllMoves2(simGame, decisionTree, 0 , 3) ;
@@ -234,8 +234,8 @@ const MoveIntent AI::chooseBestMove(Board & board) const {
 	MoveIntent move = selectMoveAtRandom(highValueMoveOptions) ;
 	
 	//get the actual live piece matching the one in mv, and swap it out for its stand-in
-	Piece * original = this->board->getSquareMutable(*move.piece->getPosition())->getPieceMutable() ;
-	move.piece = original ;
+	Piece * original = this->board->getSquareMutable(*move.boardOrPiece.piece->getPosition())->getPieceMutable() ;
+    move.boardOrPiece = MoveIntent::BoardOrPiece(original) ;
 	
 	return move ;
 }
@@ -245,9 +245,9 @@ vector<MoveIntent> AI::computeBestMoves(Board & board) const {
 	
 	vector<MoveIntent> moveOptions ;
 	
-	for (auto i = 0 ; i < workingPieces.size() ; i++) {
+	for (unsigned i = 0 ; i < workingPieces.size() ; i++) {
 		MoveIntent moveOption = findBestMoveForPiece(workingPieces.at(i)) ;
-		assert(moveOption.piece == workingPieces.at(i)) ; //debug code only
+		assert(moveOption.boardOrPiece.piece == workingPieces.at(i)) ; //debug code only
 		
 		if (moveOption.canMove) {
 			moveOptions.push_back(moveOption) ;
@@ -279,8 +279,10 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 		int highestMoveValue = testBoard.evaluate(piece->getColor()) ;
 		
 		vector <MoveIntent> optimalMoves ;
+        
+        MoveIntent::BoardOrPiece boardOrPiece(piece);
 		
-		MoveIntent currentBestMove { true, piece, *testPiece->getPosition(), highestMoveValue } ;
+        MoveIntent currentBestMove { true, boardOrPiece, *testPiece->getPosition(), highestMoveValue } ;
 		
 		optimalMoves.push_back(currentBestMove) ;
 		
@@ -304,8 +306,10 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 			if (currentMoveValue >= highestMoveValue) {
 				
 				highestMoveValue = currentMoveValue ;
+                
+                MoveIntent::BoardOrPiece pc(piece);
 				
-				MoveIntent currentBestMove { true, piece, *testPiece->getPosition(), highestMoveValue } ;
+				MoveIntent currentBestMove { true, pc, *testPiece->getPosition(), highestMoveValue } ;
 				
 				optimalMoves.push_back(currentBestMove) ;
 				
@@ -321,8 +325,10 @@ const MoveIntent AI::findBestMoveForPiece(Piece * piece) const {
 		
 	}
 	else { /* then it's impossible for this Piece to move */
+        
+        MoveIntent::BoardOrPiece pc(piece);
 		
-		MoveIntent noMove { false, piece, vec2<int>{0, 0}, 0 } ;
+		MoveIntent noMove { false, pc, vec2<int>{0, 0}, 0 } ;
 		
 		return noMove ;
 	}

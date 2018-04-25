@@ -28,6 +28,7 @@
 #include "../Util/Util.hpp"
 #include "../Util/Vect.h"
 #include "../Util/tree.hh"
+#include "../Util/Tree.hpp"
 
 namespace Chess {
 
@@ -124,7 +125,7 @@ public:
 	virtual ~Piece() {
 		square = nullptr ;
 		if (deleted) { //debug code
-			throw exception() ;
+            cout << "Warning: Piece was deleted more than once" << endl;
 		}
 		deleted = true ;
 	} ; 
@@ -218,8 +219,8 @@ public:
 	Pawn(const Chess::Color color, Square * square) ;
 	
 	Pawn(const wchar_t symbol, Square * square) ;
-	
-	virtual ~Pawn() {}
+
+	virtual ~Pawn() override {}
 	
 	const unsigned int getValue() const override { return 1 ; }
 	
@@ -383,29 +384,46 @@ public:
 	
 class MoveIntent {
 
-	
 public:
 	
 	/**
 	 * When stored as part of a linked list or tree, some MoveIntents will just be
 	 * dummy objects to mark the start of the structure
 	 */
-	bool isSentinel = false ;
+    struct Sentinel {
+        bool isSentinel = false;
+        enum SentinelType {
+            board,
+            piece
+        } sentinelType;
+    } sentinel;
 	
 	/**
 	 * Whether it's possible for piece to move
 	 */
 	bool canMove = false ;
 	
-	Piece * piece = nullptr ;
+    union BoardOrPiece {
+
+        Board * board;
+        Piece * piece;
+
+        BoardOrPiece(Board * board) : board(board) {}
+        BoardOrPiece(Piece * piece) : piece(piece) {}
+
+    protected:
+    	friend class MoveIntent;
+    	BoardOrPiece() : board(nullptr) {}
+
+    } boardOrPiece;
 	
 	vec2<int> moveDestination {0, 0} ;
 	
 	int moveValue ;
 	
-	MoveIntent() {}
-	
-	MoveIntent(bool canMv, Piece * pc, vec2<int> mvDest, int mvVal) : canMove(canMv), piece(pc), moveDestination(mvDest), moveValue(mvVal) {}
+	MoveIntent() = default;
+
+	MoveIntent(bool canMv, union BoardOrPiece & pc, vec2<int> mvDest, int mvVal) : canMove(canMv), boardOrPiece(pc), moveDestination(mvDest), moveValue(mvVal) {}
 	
 	MoveIntent(const MoveIntent & other) ;
 	
@@ -415,21 +433,21 @@ public:
 	 * When stored as part of a linked list or tree, some MoveIntents will just be
 	 * dummy objects to mark the start of the structure
 	 */
-	static MoveIntent createSentinel(Piece * piece) ;
+	static MoveIntent createPieceSentinel(Piece * piece) ;
+    
+    static MoveIntent createBoardSentinel(Board * board) ;
 	
 	
 	~MoveIntent() {}
 	
 	MoveIntent & operator = (const MoveIntent & other) ;
 	
-	MoveIntent & operator = (MoveIntent && other) ;
+	MoveIntent & operator = (MoveIntent && other) noexcept ;
 	
 	friend bool operator == (const MoveIntent & mv1, const MoveIntent & mv2) ;
 	
 	friend bool operator != (const MoveIntent & mv1, const MoveIntent & mv2) ;
-	
-	
-	
+
 } ;
 	
 	
