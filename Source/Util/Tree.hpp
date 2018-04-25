@@ -12,60 +12,63 @@
 #include <iostream>
 #include <list>
 
-template<typename T>
+
+template <typename T>
 class Tree {
-    
+
 public:
-    
-    struct Node {
-        
-    protected:
-        T data;
-        
-        list<Node> children;
-        
-    public:
 
-        explicit Node(T & data) :
-            data(data) {}
-        
-        void addChild(T & data) {
-            Node kid(data);
-            children.push_back(kid);
-        }
-        
-        void setChildren(list<Node> & nodes) {
-            this->children = nodes;
-        }
-    };
-    
-    
-    list<Node> siblings;
-    
-    Tree() :
-        Tree(nullptr)
-    {
-    }
+	struct Node {
 
-    explicit Tree(T & data) :
-        root(data)
-    {
-         root.setChildren(siblings);
-    }
-    
-    
-    void appendSibling(T * data) {
-        Node sibling(data);
-        siblings.push_back(sibling);
-    }
-    
-    void addChild(T & data) {
-        root.addChild(data);
-    }
-    
+	protected:
+		T data;
+
+		list <Node> children;
+
+	public:
+
+		explicit Node (T & data) :
+			data(data) {}
+
+		void addChild (T & data) {
+			Node kid(data);
+			children.push_back(kid);
+		}
+
+		void setChildren (list <Node> & nodes) {
+			this->children = nodes;
+		}
+	};
+
+
+	list <Node> siblings;
+
+	Tree () :
+		Tree(nullptr)
+	{
+
+	}
+
+	explicit Tree (T & data) :
+		root(data)
+	{
+		root.setChildren(siblings);
+	}
+
+
+	void appendSibling (T * data) {
+		Node sibling(data);
+		siblings.push_back(sibling);
+	}
+
+	void addChild (T & data) {
+		root.addChild(data);
+	}
+
 private:
-    
-    Node root;
+
+	Node root;
 };
+
 
 #endif /* Tree_hpp */

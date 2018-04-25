@@ -8,13 +8,14 @@
 
 #include "Config.h"
 
-string currentDirectory("") ;
-string commandLineArgument("") ;
+string currentDirectory("");
 
-const string & mainFontFilePath {"./Assets/Fonts/Menlo-Regular.ttf"} ; //apparently works even though it seems like referencing an rvalue. const-qualifying makes it legal
+string commandLineArgument("");
 
-vec2<unsigned> mainWindowSize = setMainWindowSize() ;
+const string & mainFontFilePath {"./Assets/Fonts/Menlo-Regular.ttf"};
 
-vec2<unsigned> setMainWindowSize() {
-	return DisplayData::getScreenResolution() ;
+vec2 <unsigned> mainWindowSize = setMainWindowSize();
+
+vec2 <unsigned> setMainWindowSize () {
+	return DisplayData::getScreenResolution();
 }

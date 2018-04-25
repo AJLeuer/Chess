@@ -14,11 +14,11 @@
 #include <codecvt>
 #include <locale>
 
-using namespace std ;
+using namespace std;
 
-extern wstring_convert<std::codecvt_utf8<wchar_t>> stringConverter ;
+extern wstring_convert <std::codecvt_utf8 <wchar_t>> stringConverter;
 
-string convertToString(const wstring & wide_string) ;
+string convertToString (const wstring & wide_string);
 
 
 #endif /* defined(__Chess__Util__) */

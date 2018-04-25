@@ -36,7 +36,7 @@ target_link_libraries(${EXECUTABLE_NAME} stdc++ "-framework Foundation" "-framew
 find_package(SFML COMPONENTS audio graphics window system)
 add_library(SFML SHARED IMPORTED)
 
-if(SFML_FOUND)
+if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
-endif()
+endif ()

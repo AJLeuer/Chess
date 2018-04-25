@@ -17,18 +17,19 @@
 #include "Vect.h"
 #include "../View/DisplayData.h"
 
-using namespace std ;
+using namespace std;
 
-constexpr auto buttonMain = sf::Mouse::Button::Left ;
+constexpr auto buttonMain = sf::Mouse::Button::Left;
 
-extern vec2<unsigned> mainWindowSize ;
+extern vec2 <unsigned> mainWindowSize;
 
-extern vec2<unsigned> setMainWindowSize() ;
+extern vec2 <unsigned> setMainWindowSize ();
 
-extern string currentDirectory ;
-extern string commandLineArgument ;
+extern string currentDirectory;
 
-extern const string & mainFontFilePath ; 
+extern string commandLineArgument;
+
+extern const string & mainFontFilePath;
 
 constexpr auto mainFontFilePathRef("./Assets/Fonts/Menlo-Regular.ttf");
 

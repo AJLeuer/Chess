@@ -32,425 +32,440 @@
 
 namespace Chess {
 
-using namespace std ;
+	using namespace std;
 
-struct Symbols {
-	const wchar_t black ;
-	const wchar_t white ;
-} ;
+	struct Symbols {
+		const wchar_t black;
+		const wchar_t white;
+	};
 
-struct ImageFiles {
-	const string black ;
-	const string white ;
-};
-	
-	
+	struct ImageFiles {
+		const string black;
+		const string white;
+	};
+
+
 /* Forward declaring */
-	
-class MoveIntent ;
-	
-class Board ;
 
-class Square ;
-	
-	
-class Piece {
-	
-public:
-	
-	/* Note to the standards committee - C++ needs nested enums */
-	enum class Type {
-		GenericPiece,
-		Pawn,
-		Knight,
-		Bishop,
-		Rook,
-		Queen,
-		King
-	} ;
-	
-	
-protected:
-	
-	static unsigned long iDs ;
-	
+	class MoveIntent;
 
-	Type type ;
-	
-	const unsigned long iD ;
-	
-	wchar_t symbol ;
-	
-	Chess::Color color ;
-	
-	unsigned movesMade = 0 ;
-	
-	string spriteImageFilePath ;
 
-	sf::Texture spriteTexture ;
-	
-	sf::Sprite sprite ;
-	
-	Square * square ;
-	
-	const vec2<int> startingPosition ;
-	
-	bool deleted = false ; //debug variable only
+	class Board;
 
-	Piece(Type type, const wchar_t symbol, const string & spriteImageFilePath,
-		  const Chess::Color color, Square *square) ;
-	
-	
-	friend class TemporaryPiece ;
 
-	friend class Player ;
-	
-	friend class AI ;
-	
-	friend void runTests() ;
-	
-	friend int main(int, const char **) ; //for debug and devel only, remove
-	
-	
-public:
-	
+	class Square;
 
-	static Piece * init(const wchar_t symbol, Square * square) ;
-	
-	static Piece * initCopy(const Piece & piece) ;
-	
-	Piece (const Piece & other) ;
-	
-	
-	virtual ~Piece() {
-		square = nullptr ;
-		if (deleted) { //debug code
-            cout << "Warning: Piece was deleted more than once" << endl;
+
+	class Piece {
+
+	public:
+
+		/* Note to the standards committee - C++ needs nested enums */
+		enum class Type {
+			GenericPiece,
+			Pawn,
+			Knight,
+			Bishop,
+			Rook,
+			Queen,
+			King
+		};
+
+
+	protected:
+
+		static unsigned long iDs;
+
+
+		Type type;
+
+		const unsigned long iD;
+
+		wchar_t symbol;
+
+		Chess::Color color;
+
+		unsigned movesMade = 0;
+
+		string spriteImageFilePath;
+
+		sf::Texture spriteTexture;
+
+		sf::Sprite sprite;
+
+		Square * square;
+
+		const vec2 <int> startingPosition;
+
+		bool deleted = false; //debug variable only
+
+		Piece (Type type, const wchar_t symbol, const string & spriteImageFilePath,
+		       const Chess::Color color, Square * square);
+
+
+		friend class TemporaryPiece;
+
+
+		friend class Player;
+
+
+		friend class AI;
+
+
+		friend void runTests ();
+
+		friend int main (int, const char **); //for debug and devel only, remove
+
+
+	public:
+
+
+		static Piece * init (const wchar_t symbol, Square * square);
+
+		static Piece * initCopy (const Piece & piece);
+
+		Piece (const Piece & other);
+
+
+		virtual ~Piece () {
+			square = nullptr;
+			if (deleted) { //debug code
+				cout << "Warning: Piece was deleted more than once" << endl;
+			}
+			deleted = true;
+		};
+
+		/* Commenting out assignment operator overload for now, may decide we need it later */
+		//virtual Piece & operator = (const Piece & rhs) ;
+
+		/**
+		 * Returns true if there exists at least one Square that this Piece can legally move to,
+		 * false otherwise
+		 */
+		const bool canMove () const;
+
+		/**
+		 * @return a std::vector that is either filled with the Squares this Piece can legally move to, or, if there are
+		 * no such Squares, empty
+		 */
+		virtual vector <vec2 <int>> getAllPossibleLegalMovePositions () const;
+
+		/**
+		 * @return a std::vector of MoveIntent objects, representing all the possible legal moves this Piece can
+		 * make at the time the function was called
+		 *
+		 * @seealso getAllPossibleLegalMovePositions()
+		 */
+		vector <MoveIntent> getAllPossibleLegalMoves ();
+
+		/**
+		 * Same as getAllPossibleLegalMoves(), only uses tree<> as a container instead of vector
+		 */
+		tree <MoveIntent> getPossibleLegalMovesTree ();
+
+		/**
+		 * Moves the piece to it's new square, and notifies both the Square object
+		 * at its last location the and Square at its new, current location
+		 */
+		virtual void move (const vec2 <int> to);//inheriting pieces will define
+
+		const inline bool isDeleted () const { return deleted; }
+
+		const Piece::Type getType () const { return type; }
+
+		const unsigned long getID () const { return iD; }
+
+		inline const Chess::Color getColor () const { return color; }
+
+		const wchar_t & getSymbol () const { return symbol; }
+
+		const sf::Sprite & getSprite () const { return sprite; }
+
+		const vec2 <int> * getPosition () const;
+
+		virtual const unsigned int getValue () const = 0;
+
+		virtual const vector <Direction> getLegalMovementDirections () const = 0;
+
+		void setSquare (Square * square) {
+			this->square = square;
+			if (square != nullptr) { updateSpritePosition(); }
 		}
-		deleted = true ;
-	} ; 
-	
-	/* Commenting out assignment operator overload for now, may decide we need it later */
-	//virtual Piece & operator = (const Piece & rhs) ;
-	
-	/**
-	 * Returns true if there exists at least one Square that this Piece can legally move to,
-	 * false otherwise
-	 */
-	const bool canMove() const ;
-	
-	/**
-	 * @return a std::vector that is either filled with the Squares this Piece can legally move to, or, if there are
-	 * no such Squares, empty
-	 */
-	virtual vector<vec2<int>> getAllPossibleLegalMovePositions() const ;
-	
-	/**
-	 * @return a std::vector of MoveIntent objects, representing all the possible legal moves this Piece can
-	 * make at the time the function was called
-	 * 
-	 * @seealso getAllPossibleLegalMovePositions()
-	 */
-	vector<MoveIntent> getAllPossibleLegalMoves() ;
-	
-	/**
-	 * Same as getAllPossibleLegalMoves(), only uses tree<> as a container instead of vector
-	 */
-	tree<MoveIntent> getPossibleLegalMovesTree() ;
 
-	/**
-	 * Moves the piece to it's new square, and notifies both the Square object
-	 * at its last location the and Square at its new, current location
-	 */
-	virtual void move(const vec2<int> to) ;//inheriting pieces will define
-	
-	const inline bool isDeleted() const { return deleted ; }
-	
-	const Piece::Type getType() const { return type ; }
-	
-	const unsigned long getID() const { return iD ; }
-	
-	inline const Chess::Color getColor() const { return color ; }
-	
-	const wchar_t & getSymbol() const { return symbol ; }
-	
-	const sf::Sprite & getSprite() const { return sprite ; }
-	
-	const vec2<int> * getPosition() const ;
-	
-	virtual const unsigned int getValue() const = 0 ;
-	
-	virtual const vector<Direction> getLegalMovementDirections() const = 0 ;
-	
-	void setSquare(Square * square) { this->square = square ; if (square != nullptr) updateSpritePosition() ; }
-	
-	Square * const & getSquare() const { return square ; }
-	
-	Square * getSquareMutable() { return square ; }
-	
-	/**
-	 * Called before any drawing is done. Initializes texture object
-	 */
-	void initSpriteTexture() ;
-	
-	inline void updateSpritePosition() { sprite.setPosition(static_cast<float>(getPosition()->value.x), static_cast<float>(getPosition()->value.y)) ; }
-	
-	friend ostream & operator<< (ostream & , const Piece &) ;
-	
-	friend basic_ostream<wchar_t> & operator << (basic_ostream<wchar_t> &, const Piece &) ;
-	
-	friend int main(int argc, const char * argv[]) ;
+		Square * const & getSquare () const { return square; }
 
-};
+		Square * getSquareMutable () { return square; }
+
+		/**
+		 * Called before any drawing is done. Initializes texture object
+		 */
+		void initSpriteTexture ();
+
+		inline void updateSpritePosition () {
+			sprite.setPosition(static_cast<float>(getPosition()->value.x), static_cast<float>(getPosition()->value.y));
+		}
+
+		friend ostream & operator << (ostream &, const Piece &);
+
+		friend basic_ostream <wchar_t> & operator << (basic_ostream <wchar_t> &, const Piece &);
+
+		friend int main (int argc, const char * argv[]);
+
+	};
 
 
+	class Pawn : virtual public Piece {
 
-class Pawn : virtual public Piece {
-	
-public:
-	
-	static Symbols symbols ;
-	
-	static ImageFiles imageFiles ;
+	public:
 
-	Pawn(const Piece & other) :
-		Piece(other) {}
-	
-	Pawn(const Chess::Color color, Square * square) ;
-	
-	Pawn(const wchar_t symbol, Square * square) ;
+		static Symbols symbols;
 
-	virtual ~Pawn() override {}
-	
-	const unsigned int getValue() const override { return 1 ; }
-	
-	/**
-	 * @return a std::vector that is either filled with the Squares this Pawn can legally move to, or, if there are
-	 * no such Squares, empty
-	 */
-	virtual vector<vec2<int>> getAllPossibleLegalMovePositions() const override ;
-	
-	const vector<Direction> getLegalMovementDirections() const override ;
-	
-	const vector<Direction> getLegalCaptureDirections() const ;
-	
-	Direction getLegalMovementDirectionToEmptySquares() const ;
-	
-	void move(const vec2<int> to) override ;
-	
-} ;
+		static ImageFiles imageFiles;
 
-class Knight : virtual public Piece {
+		Pawn (const Piece & other) :
+				Piece(other) {}
 
-	
-public:
-	
-	static Symbols symbols ;
-	
-	static ImageFiles imageFiles ;
-	
-	Knight(const Piece & other) :
-		Piece(other) {}
-	
-	Knight(const Chess::Color color, Square * square) ;
-	
-	Knight(const wchar_t symbol, Square * square) ;
-	
-	virtual ~Knight() {}
-	
-	const unsigned int getValue() const override { return 3 ; }
-	
-	/**
-	 * @return a std::vector that is either filled with the Squares this Knight can legally move to, or, if there are
-	 * no such Squares, empty
-	 */
-	virtual vector<vec2<int>> getAllPossibleLegalMovePositions() const override ;
-	
-	const vector<Direction> getLegalMovementDirections() const override ;
-	
-	void move(const vec2<int> to) override ;
-	
-};
+		Pawn (const Chess::Color color, Square * square);
 
-class Bishop : virtual public Piece {
-	
-public:
-	
-	static Symbols symbols ;
-	
-	static ImageFiles imageFiles ;
-	
-	Bishop(const Piece & other) :
-		Piece(other) {}
+		Pawn (const wchar_t symbol, Square * square);
 
-	Bishop(const Chess::Color color, Square * square) ;
-	
-	Bishop(const wchar_t symbol, Square * square) ;
-	
-	virtual ~Bishop() {}
-	
-	const unsigned int getValue() const override { return 3 ; }
-	
-	const vector<Direction> getLegalMovementDirections() const override ;
-	
-	void move(const vec2<int> to) override ;
-	
-};
+		virtual ~Pawn () override {}
+
+		const unsigned int getValue () const override { return 1; }
+
+		/**
+		 * @return a std::vector that is either filled with the Squares this Pawn can legally move to, or, if there are
+		 * no such Squares, empty
+		 */
+		virtual vector <vec2 <int>> getAllPossibleLegalMovePositions () const override;
+
+		const vector <Direction> getLegalMovementDirections () const override;
+
+		const vector <Direction> getLegalCaptureDirections () const;
+
+		Direction getLegalMovementDirectionToEmptySquares () const;
+
+		void move (const vec2 <int> to) override;
+
+	};
 
 
-class Rook : virtual public Piece {
+	class Knight : virtual public Piece {
 
-public:
-	
-	static Symbols symbols ;
-	
-	static ImageFiles imageFiles ;
-	
-	Rook(const Piece & other) :
-		Piece(other) {}
 
-	Rook(const Chess::Color color, Square * square) ;
-	
-	Rook(const wchar_t symbol, Square * square) ;
-	
-	virtual ~Rook() {}
-	
-	const unsigned int getValue() const override { return 5 ; }
-	
-	const vector<Direction> getLegalMovementDirections() const override ;
-	
-	void move(const vec2<int> to) override ;
+	public:
 
-};
+		static Symbols symbols;
 
-class Queen : virtual public Piece {
-	
-public:
-	
-	static Symbols symbols ;
-	
-	static ImageFiles imageFiles ;
-	
-	Queen(const Piece & other) :
-		Piece(other) {}
-	
-	Queen(const Chess::Color color, Square * square) ;
-	
-	Queen(const wchar_t symbol, Square * square) ;
-	
-	virtual ~Queen() {}
-	
-	const unsigned int getValue() const override { return 9 ; }
-	
-	const vector<Direction> getLegalMovementDirections() const override ;
-	
-	void move(const vec2<int> to) override ;
-	
-};
+		static ImageFiles imageFiles;
 
-class King : virtual public Piece {
+		Knight (const Piece & other) :
+				Piece(other) {}
 
-public:
-	
-	static Symbols symbols ;
-	
-	static ImageFiles imageFiles ;
-	
-	King(const Piece & other) :
-		Piece(other) {}
-	
-	King(const Chess::Color color, Square * square) ;
-	
-	King(const wchar_t symbol, Square * square) ;
-	
-	virtual ~King() {}
-	
-	/**
-	 * Equal to the combined values of all other Pieces, plus 1
-	 */
-	const unsigned int getValue() const override { return 40 ; }
-	
-	const vector<Direction> getLegalMovementDirections() const override ;
-	
-	void move(const vec2<int> to) override ;
-	
-};
-	
-	
-	
-	
-	
-	
-	
-class MoveIntent {
+		Knight (const Chess::Color color, Square * square);
 
-public:
-	
-	/**
-	 * When stored as part of a linked list or tree, some MoveIntents will just be
-	 * dummy objects to mark the start of the structure
-	 */
-    struct Sentinel {
-        bool isSentinel = false;
-        enum SentinelType {
-            board,
-            piece
-        } sentinelType;
-    } sentinel;
-	
-	/**
-	 * Whether it's possible for piece to move
-	 */
-	bool canMove = false ;
-	
-    union BoardOrPiece {
+		Knight (const wchar_t symbol, Square * square);
 
-        Board * board;
-        Piece * piece;
+		virtual ~Knight () {}
 
-        BoardOrPiece(Board * board) : board(board) {}
-        BoardOrPiece(Piece * piece) : piece(piece) {}
+		const unsigned int getValue () const override { return 3; }
 
-    protected:
-    	friend class MoveIntent;
-    	BoardOrPiece() : board(nullptr) {}
+		/**
+		 * @return a std::vector that is either filled with the Squares this Knight can legally move to, or, if there are
+		 * no such Squares, empty
+		 */
+		virtual vector <vec2 <int>> getAllPossibleLegalMovePositions () const override;
 
-    } boardOrPiece;
-	
-	vec2<int> moveDestination {0, 0} ;
-	
-	int moveValue ;
-	
-	MoveIntent() = default;
+		const vector <Direction> getLegalMovementDirections () const override;
 
-	MoveIntent(bool canMv, union BoardOrPiece & pc, vec2<int> mvDest, int mvVal) : canMove(canMv), boardOrPiece(pc), moveDestination(mvDest), moveValue(mvVal) {}
-	
-	MoveIntent(const MoveIntent & other) ;
-	
-	MoveIntent(MoveIntent && other) noexcept ;
-	
-	/**
-	 * When stored as part of a linked list or tree, some MoveIntents will just be
-	 * dummy objects to mark the start of the structure
-	 */
-	static MoveIntent createPieceSentinel(Piece * piece) ;
-    
-    static MoveIntent createBoardSentinel(Board * board) ;
-	
-	
-	~MoveIntent() {}
-	
-	MoveIntent & operator = (const MoveIntent & other) ;
-	
-	MoveIntent & operator = (MoveIntent && other) noexcept ;
-	
-	friend bool operator == (const MoveIntent & mv1, const MoveIntent & mv2) ;
-	
-	friend bool operator != (const MoveIntent & mv1, const MoveIntent & mv2) ;
+		void move (const vec2 <int> to) override;
 
-} ;
-	
-	
+	};
+
+
+	class Bishop : virtual public Piece {
+
+	public:
+
+		static Symbols symbols;
+
+		static ImageFiles imageFiles;
+
+		Bishop (const Piece & other) :
+				Piece(other) {}
+
+		Bishop (const Chess::Color color, Square * square);
+
+		Bishop (const wchar_t symbol, Square * square);
+
+		virtual ~Bishop () {}
+
+		const unsigned int getValue () const override { return 3; }
+
+		const vector <Direction> getLegalMovementDirections () const override;
+
+		void move (const vec2 <int> to) override;
+
+	};
+
+
+	class Rook : virtual public Piece {
+
+	public:
+
+		static Symbols symbols;
+
+		static ImageFiles imageFiles;
+
+		Rook (const Piece & other) :
+				Piece(other) {}
+
+		Rook (const Chess::Color color, Square * square);
+
+		Rook (const wchar_t symbol, Square * square);
+
+		virtual ~Rook () {}
+
+		const unsigned int getValue () const override { return 5; }
+
+		const vector <Direction> getLegalMovementDirections () const override;
+
+		void move (const vec2 <int> to) override;
+
+	};
+
+
+	class Queen : virtual public Piece {
+
+	public:
+
+		static Symbols symbols;
+
+		static ImageFiles imageFiles;
+
+		Queen (const Piece & other) :
+				Piece(other) {}
+
+		Queen (const Chess::Color color, Square * square);
+
+		Queen (const wchar_t symbol, Square * square);
+
+		virtual ~Queen () {}
+
+		const unsigned int getValue () const override { return 9; }
+
+		const vector <Direction> getLegalMovementDirections () const override;
+
+		void move (const vec2 <int> to) override;
+
+	};
+
+
+	class King : virtual public Piece {
+
+	public:
+
+		static Symbols symbols;
+
+		static ImageFiles imageFiles;
+
+		King (const Piece & other) :
+				Piece(other) {}
+
+		King (const Chess::Color color, Square * square);
+
+		King (const wchar_t symbol, Square * square);
+
+		virtual ~King () {}
+
+		/**
+		 * Equal to the combined values of all other Pieces, plus 1
+		 */
+		const unsigned int getValue () const override { return 40; }
+
+		const vector <Direction> getLegalMovementDirections () const override;
+
+		void move (const vec2 <int> to) override;
+
+	};
+
+
+	class MoveIntent {
+
+	public:
+
+		/**
+		 * When stored as part of a linked list or tree, some MoveIntents will just be
+		 * dummy objects to mark the start of the structure
+		 */
+		struct Sentinel {
+			bool isSentinel = false;
+			enum SentinelType {
+				board,
+				piece
+			} sentinelType;
+		} sentinel;
+
+		/**
+		 * Whether it's possible for piece to move
+		 */
+		bool canMove = false;
+
+
+		union BoardOrPiece {
+
+			Board * board;
+
+			Piece * piece;
+
+			BoardOrPiece (Board * board) : board(board) {}
+
+			BoardOrPiece (Piece * piece) : piece(piece) {}
+
+		protected:
+			friend class MoveIntent;
+
+
+			BoardOrPiece () : board(nullptr) {}
+
+		} boardOrPiece;
+
+
+		vec2 <int> moveDestination {0, 0};
+
+		int moveValue;
+
+		MoveIntent () = default;
+
+		MoveIntent (bool canMv, union BoardOrPiece & pc, vec2 <int> mvDest, int mvVal) :
+				canMove(canMv), boardOrPiece(pc), moveDestination(mvDest), moveValue(mvVal) {}
+
+		MoveIntent (const MoveIntent & other);
+
+		MoveIntent (MoveIntent && other) noexcept;
+
+		/**
+		 * When stored as part of a linked list or tree, some MoveIntents will just be
+		 * dummy objects to mark the start of the structure
+		 */
+		static MoveIntent createPieceSentinel (Piece * piece);
+
+		static MoveIntent createBoardSentinel (Board * board);
+
+
+		~MoveIntent () {}
+
+		MoveIntent & operator = (const MoveIntent & other);
+
+		MoveIntent & operator = (MoveIntent && other) noexcept;
+
+		friend bool operator == (const MoveIntent & mv1, const MoveIntent & mv2);
+
+		friend bool operator != (const MoveIntent & mv1, const MoveIntent & mv2);
+
+	};
+
+
 /*
 class MoveSequence{
 

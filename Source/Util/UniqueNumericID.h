@@ -9,6 +9,6 @@
 #ifndef Chess_UniqueNumericID_h
 #define Chess_UniqueNumericID_h
 
-typedef unsigned long UniqueNumericIdentifier ;
+typedef unsigned long UniqueNumericIdentifier;
 
 #endif

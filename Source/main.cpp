@@ -7,28 +7,22 @@
 //
 
 #include <iostream>
-#include <chrono>
-#include <functional>
-#include <vector>
-#include <list>
-#include <typeinfo>
 
 #include "./Util/Config.h"
-#include "./Util/Vect.h"
 #include "./Util/Color.h"
 
 #include "./Game/Game.h"
 
 
-using namespace Chess ;
+using namespace Chess;
 
-int main(int argc, char ** argv) {
-	
-	currentDirectory = argv[0] ;
+int main (int argc, char ** argv) {
 
-	Game game ;
+	currentDirectory = argv[0];
 
-    game.playDebugGame() ;
+	Game game;
 
-	return 0 ;
+	game.playDebugGame();
+
+	return 0;
 }
