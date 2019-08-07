@@ -9,6 +9,7 @@
 #ifdef __APPLE__
 
 
+#include <OpenGL/gl.h>
 #import <Foundation/Foundation.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSColor.h>
@@ -19,8 +20,10 @@
 #include "Window.h"
 
 
-namespace sf {
-	namespace priv {
+namespace sf
+{
+	namespace priv
+	{
 		class WindowImplCocoa;
 	}
 }
@@ -123,7 +126,8 @@ namespace Chess {
 		this->setBackgroundColor(backgroundColor);
 	}
 
-	void ChessWindow::display () {
+	void ChessWindow::display ()
+	{
 		/* for some reason we need to call the native update method as well as SFML's */
 		NSWindow * this_window = (__bridge NSWindow *) (this->getSystemHandle());
 		[this_window displayIfNeeded];
@@ -132,7 +136,8 @@ namespace Chess {
 	}
 
 
-	void ChessWindow::setBackgroundColor (const TrueColor color) {
+	void ChessWindow::setBackgroundColor (const TrueColor color)
+	{
 
 		NSWindow * this_window = (__bridge NSWindow *) (this->getSystemHandle());
 

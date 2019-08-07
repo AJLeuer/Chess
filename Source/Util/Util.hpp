@@ -19,20 +19,21 @@
 
 using namespace std;
 
-constexpr long double 𝜋 = 3.141592653589793238462643383279502884197169399375105820974944L; /* needs UTF-8 support */
-static constexpr auto & pi = 𝜋; 
+constexpr long double pi = 3.141592653589793238462643383279502884197169399375105820974944L;
 
 /**
  * Used to avoid ambiguity when calling various constructors
  * with integral values that might be confused for boolean
  */
-enum class SafeBoolean : bool {
+enum class SafeBoolean : bool
+{
 	t = true,
 	f = false
 };
 
 template <typename N>
-constexpr static bool checkIfFloatingPointType () {
+constexpr static bool checkIfFloatingPointType ()
+{
 	if (typeid(N) == typeid(long double)) {
 		return true;
 	}
@@ -53,7 +54,8 @@ constexpr static bool checkIfFloatingPointType () {
  * todo: reimplement
  */
 template <typename M, typename N>
-double Mod (M x_in, N y_in) {
+constexpr double Mod (M x_in, N y_in)
+{
 
 	double x = static_cast<double>(x_in); /* x is ok */
 
@@ -111,14 +113,16 @@ double Mod (M x_in, N y_in) {
  * @return The average of the two values
  */
 template <typename N>
-N average (N first, N second) {
+N average (N first, N second)
+{
 	N sum = (first + second);
 	double result = (static_cast<double>(sum) / static_cast<double>(2));
 	return static_cast<N>(result);
 }
 
 template <typename N>
-N average (const vector <N> & numbers) {
+N average (const vector <N> & numbers)
+{
 	unsigned i = 0;
 	N sum = 0;
 	while (i < numbers.size()) {
@@ -130,8 +134,8 @@ N average (const vector <N> & numbers) {
 }
 
 template <typename T, template <typename, typename = std::allocator <T>> class Container>
-T sumElements (const Container <T, std::allocator <T>> & cont) {
-
+T sumElements (const Container <T, std::allocator <T>> & cont)
+{
 	T sum;
 	auto i = cont.begin();
 	sum = * i;
@@ -145,7 +149,8 @@ T sumElements (const Container <T, std::allocator <T>> & cont) {
 
 
 template <typename N>
-N setUnsigned (N n) {
+N setUnsigned (N n)
+{
 	if (n < 0) {
 		n = (n * -1);
 	}
@@ -153,23 +158,27 @@ N setUnsigned (N n) {
 }
 
 template <typename N>
-N difference (N n0, N n1) {
+N difference (N n0, N n1)
+{
 	N saveSign = n1 / (setUnsigned(n1));
 	n1 = setUnsigned(n1);
 }
 
 
 template <typename T>
-T pythag (T a, T b) {
+T pythag (T a, T b)
+{
 	return sqrt((pow(a, 2)) + (pow(b, 2)));
 }
 
-inline float sinNeg (float n) {
+inline float sinNeg (float n)
+{
 	return (-1 * (sin(n)));
 }
 
 template <typename T>
-T findSmallest_helper (unsigned long currSmallest, vector <T> cont) {
+T findSmallest_helper (unsigned long currSmallest, vector <T> cont)
+{
 	//vector<T*> smallerElem = vector<T*>() ;
 	auto size = cont.size();
 
@@ -187,12 +196,14 @@ T findSmallest_helper (unsigned long currSmallest, vector <T> cont) {
 }
 
 template <typename T>
-T findSmallest (vector <T> cont) {
+T findSmallest (vector <T> cont)
+{
 	return findSmallest_helper(0, cont);
 }
 
 template <typename T>
-T findLargest_helper (unsigned long currLargest, vector <T> cont) {
+T findLargest_helper (unsigned long currLargest, vector <T> cont)
+{
 	auto size = cont.size();
 
 	for (auto i = 0; i != cont.size(); i++) {
@@ -209,26 +220,33 @@ T findLargest_helper (unsigned long currLargest, vector <T> cont) {
 }
 
 template <typename T>
-T findLargest (vector <T> cont) {
+T findLargest (vector <T> cont)
+{
 	return findLargest_helper(0, cont);
 }
 
 template <typename N>
-N ceilling (N n1, N n2) {
-	if (n1 >= n2) {
+N ceilling (N n1, N n2)
+{
+	if (n1 >= n2)
+	{
 		return n1;
 	}
-	else {
+	else
+	{
 		return n2;
 	}
 }
 
 template <typename N>
-N floor (N n1, N n2) {
-	if (n1 <= n2) {
+N floor (N n1, N n2)
+{
+	if (n1 <= n2)
+	{
 		return n1;
 	}
-	else {
+	else
+	{
 		return n2;
 	}
 }
@@ -239,16 +257,20 @@ N floor (N n1, N n2) {
  */
 template <typename F = float, typename I = int>
 // F = some float or double, I = some unsigned, int, long, etc
-I roundF (F value) {
-	if ((typeid(F) == typeid(unsigned)) || (typeid(F) == typeid(int)) || (typeid(F) == typeid(long))) {
+I roundF (F value)
+{
+	if ((typeid(F) == typeid(unsigned)) || (typeid(F) == typeid(int)) || (typeid(F) == typeid(long)))
+	{
 		return value;
 	}
-	else {
+	else
+	{
 		F temp = (value >= 0.0f) ? (floor(value + 0.5f)) : (ceil(value - 0.5f));
 		I round = static_cast<I>(temp);
 
 		/* catch a weird problem where this was returning a negative value from a posititive input */
-		if ((value >= 0) && (round < 0)) {
+		if ((value >= 0) && (round < 0))
+		{
 			round = (round * -1);
 		}
 
@@ -257,11 +279,14 @@ I roundF (F value) {
 }
 
 template <typename I = int, class FloatPosition>
-FloatPosition roundF (FloatPosition & pos) {
-	if ((typeid(pos.x) == typeid(unsigned)) || (typeid(pos.x) == typeid(int)) || (typeid(pos.x) == typeid(long))) {
+FloatPosition roundF (FloatPosition & pos)
+{
+	if ((typeid(pos.x) == typeid(unsigned)) || (typeid(pos.x) == typeid(int)) || (typeid(pos.x) == typeid(long)))
+	{
 		return pos;
 	}
-	else {
+	else
+	{
 		I tempX = roundFI(pos.getX());
 		I tempY = roundFI(pos.getY());
 		I tempZ = roundFI(pos.getZ());
@@ -271,11 +296,14 @@ FloatPosition roundF (FloatPosition & pos) {
 
 
 template <typename I = int, class FloatPosition>
-FloatPosition roundF (FloatPosition * pos) {
-	if ((typeid(pos->x) == typeid(unsigned)) || (typeid(pos->x) == typeid(int)) || (typeid(pos->x) == typeid(long))) {
+FloatPosition roundF (FloatPosition * pos)
+{
+	if ((typeid(pos->x) == typeid(unsigned)) || (typeid(pos->x) == typeid(int)) || (typeid(pos->x) == typeid(long)))
+	{
 		return pos;
 	}
-	else {
+	else
+	{
 		I tempX = roundFI(pos->getX());
 		I tempY = roundFI(pos->getY());
 		I tempZ = roundFI(pos->getZ());
@@ -284,11 +312,14 @@ FloatPosition roundF (FloatPosition * pos) {
 }
 
 template <typename I = int, class FloatPosition>
-FloatPosition * roundF (FloatPosition * pos) {
-	if ((typeid(pos->x) == typeid(unsigned)) || (typeid(pos->x) == typeid(int)) || (typeid(pos->x) == typeid(long))) {
+FloatPosition * roundF (FloatPosition * pos)
+{
+	if ((typeid(pos->x) == typeid(unsigned)) || (typeid(pos->x) == typeid(int)) || (typeid(pos->x) == typeid(long)))
+	{
 		return pos;
 	}
-	else {
+	else
+	{
 		I tempX = roundFI(pos->getX());
 		I tempY = roundFI(pos->getY());
 		I tempZ = roundFI(pos->getZ());
@@ -298,38 +329,44 @@ FloatPosition * roundF (FloatPosition * pos) {
 
 
 template <typename Radians = double>
-double convertToDegrees (const Radians angle_rad) {
+double convertToDegrees (const Radians angle_rad)
+{
 	double angle_in_radians = static_cast<double>(angle_rad);
 	double angle_in_degrees = angle_in_radians * (180.0 / static_cast<double>(pi));
 	return angle_in_degrees;
 }
 
 template <typename Degrees = double>
-double convertToRadians (const Degrees angle_deg) {
+double convertToRadians (const Degrees angle_deg)
+{
 	double angle_in_degrees = static_cast<double>(angle_deg);
 	double angle_in_radians = angle_in_degrees / (180.0 / static_cast<double>(pi));
 	return angle_in_radians;
 }
 
 template <typename T>
-vector <T> & operator += (vector <T> & vect, const T & t) {
+vector <T> & operator += (vector <T> & vect, const T & t)
+{
 	vect.push_back(t);
 	return vect;
 }
 
 template <typename T>
-vector <T> operator + (const vector <T> & vect, const T & t) {
+vector <T> operator + (const vector <T> & vect, const T & t)
+{
 	vector <T> copy(vect);
 	copy.push_back(t);
 	return vect;
 }
 
 template <typename T>
-vector <T> operator + (const vector <T> & leftSide, const vector <T> & rightSide) {
+vector <T> operator + (const vector <T> & leftSide, const vector <T> & rightSide)
+{
 
 	vector <T> combined(leftSide); //copy leftSide
 
-	for (typename vector <T>::size_type i = 0; i < rightSide.size(); i++) {
+	for (typename vector <T>::size_type i = 0; i < rightSide.size(); i++)
+	{
 		combined += rightSide.at(i); //then copy everything from rightSide
 	}
 

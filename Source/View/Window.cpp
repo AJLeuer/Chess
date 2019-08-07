@@ -9,25 +9,28 @@
 #include "Window.h"
 
 
-namespace Chess {
+namespace Chess
+{
 
 	Font & ChessWindow::font = ChessWindow::initFont();
 
 	VideoMode ChessWindow::videoMode = setVideoMode();
 
-	Font & ChessWindow::initFont () {
+	Font & ChessWindow::initFont ()
+	{
 		static Font storedFont;
 		string mainFontFilePathCopy(mainFontFilePath); //debug code
 		storedFont.loadFromFile(mainFontFilePath);
 		return storedFont;
 	}
 
-	VideoMode & ChessWindow::setVideoMode () {
-		const vec2 <unsigned> baseWindowSize {mainWindowSize.value.x, mainWindowSize.value.y};
+	VideoMode & ChessWindow::setVideoMode ()
+	{
+		const vec2 <unsigned> baseWindowSize {mainWindowSize.value[0], mainWindowSize.value[1]};
 		const float dpiScale(DisplayData::getDisplayScalingFactor <float>());
-		vec2 <unsigned> scaledWindowSize {static_cast<unsigned>(baseWindowSize.value.x * dpiScale),
-		                                  static_cast<unsigned>(baseWindowSize.value.y * dpiScale)};
-		videoMode = VideoMode(scaledWindowSize.value.x, scaledWindowSize.value.y);
+		vec2 <unsigned> scaledWindowSize {static_cast<unsigned>(baseWindowSize.value[0] * dpiScale),
+		                                  static_cast<unsigned>(baseWindowSize.value[1] * dpiScale)};
+		videoMode = VideoMode(scaledWindowSize.value[0], scaledWindowSize.value[1]);
 		return videoMode; //self assigns
 	}
 
@@ -44,9 +47,14 @@ namespace Chess {
 		this->setBackgroundColor(backgroundColor) ;
 	}
 
+	void ChessWindow::display()
+	{
+		RenderWindow::display();
+	}
 
 
-	void ChessWindow::setBackgroundColor(const TrueColor color) {
+	void ChessWindow::setBackgroundColor(const TrueColor color)
+	{
 		//todo implement for non-Apple unix, win
 	}
 

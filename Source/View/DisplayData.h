@@ -9,14 +9,18 @@
 #ifndef DisplayData_h
 #define DisplayData_h
 
+#ifdef __APPLE__
+
 #include <CoreGraphics/CoreGraphics.h>
+
+#endif
 
 #include "../Util/Vect.h"
 
 /**
  * Only exists for debugging
  */
-void inspectDisplayConfiguration ();
+void inspectDisplayConfiguration();
 
 
 /**
@@ -28,18 +32,14 @@ private:
 
 	static bool isInit;
 
-	static bool hiDPI_referenceVal;
+	static bool displayIsHighDPI;
 
 	/**
 	 * The display scaling factor.
 	 * For example, if the system is running in Retina mode,
 	 * this value will be 2.0
 	 */
-	static float displayScalingFactor_referenceVal;
-
-	static CGDirectDisplayID displayID;
-
-	static CGDisplayModeRef displayMode;
+	static float displayScalingFactor;
 
 	static void init ();
 
@@ -63,7 +63,7 @@ public:
 	/**
 	 * Checks if running in Retina mode
 	 */
-	static bool hiDPI ();
+	static bool IsHighDPI();
 
 	/**
 	 * The display scaling factor.
@@ -84,12 +84,14 @@ vec2 <NumericType> DisplayData::getScreenResolution () {
 template <typename NumericType>
 NumericType DisplayData::getDisplayScalingFactor () {
 
-	if (isInit == false) {
+	if (isInit == false)
+	{
 		init();
-		return DisplayData::displayScalingFactor_referenceVal;
+		return DisplayData::displayScalingFactor;
 	}
-	else {
-		return displayScalingFactor_referenceVal;
+	else
+	{
+		return displayScalingFactor;
 	}
 }
 

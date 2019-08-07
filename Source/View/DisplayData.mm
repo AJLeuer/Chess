@@ -4,8 +4,16 @@
 #include "DisplayData.h"
 #include "Decl_Apple.h"
 
+static CGDirectDisplayID displayID = CGMainDisplayID();
+static CGDisplayModeRef displayMode = CGDisplayCopyDisplayMode(displayID);
 
-vec2 <unsigned> DisplayData::calculateScreenResolution () {
+double DisplayData::getScreenRefreshRate ()
+{
+	return CGDisplayModeGetRefreshRate(displayMode);
+}
+
+vec2 <unsigned> DisplayData::calculateScreenResolution ()
+{
 	NSScreen * screen = [NSScreen mainScreen];
 	auto vf = [screen visibleFrame];
 
@@ -14,7 +22,8 @@ vec2 <unsigned> DisplayData::calculateScreenResolution () {
 	return vec2 <unsigned> {static_cast<unsigned>(x), static_cast<unsigned>(y)};
 }
 
-void DisplayData::calculateDisplayScalingFactor () {
+void DisplayData::calculateDisplayScalingFactor ()
+{
 	float displayScale = 1.0;
 
 	if ([[NSScreen mainScreen] respondsToSelector:@selector(backingScaleFactor)]) {
@@ -26,7 +35,7 @@ void DisplayData::calculateDisplayScalingFactor () {
 			}
 		}
 	}
-	displayScalingFactor_referenceVal = displayScale;
+	displayScalingFactor = displayScale;
 }
 
 

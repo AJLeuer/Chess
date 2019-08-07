@@ -15,39 +15,42 @@
 #include <sstream>
 #include <utility>
 #include <stdexcept>
+#include <array>
 
 #include <SFML/System/Vector2.hpp>
 
-#include "../Util/UniqueNumericID.h"
+#include "Util.h"
 
 using namespace std;
 
 constexpr unsigned lowerCaseA {97};
 
+#ifdef __clang__
+
 template <typename NumericType>
 using simd_vector_2 = NumericType __attribute__((ext_vector_type(2)));
 
+#elif _MSC_VER
+
+template <typename NumericType>
+using simd_vector_2 = std::array<NumericType, 2>;
+
+#endif
 
 /**
  * @note A good example of a C++ literal type
  */
 template <typename NumericType>
-
-struct vec2 {
-
-
+struct vec2
+{
 	simd_vector_2 <NumericType> value;
-
-
-	//inline constexpr vec2() : value(simd_vector_2<NumericType>{0, 0}) {}
 
 	inline constexpr vec2 (const vec2 & other) : value(other.value) {}
 
 	inline constexpr vec2 (const simd_vector_2 <NumericType> val) : value(val) {}
 
 	template <typename NumericType0>
-	inline constexpr vec2 (const simd_vector_2 <NumericType0> val) :
-			value {static_cast<NumericType>(val.x), static_cast<NumericType>(val.y)} {}
+	inline constexpr vec2 (const simd_vector_2 <NumericType0> val) : value { static_cast<NumericType>(val[0]), static_cast<NumericType>(val[1]) } {}
 
 	inline constexpr vec2 (NumericType x, NumericType y) : value(simd_vector_2 <NumericType> {x, y}) {}
 
@@ -55,7 +58,7 @@ struct vec2 {
 
 	template <typename NumericType0>
 	inline constexpr operator simd_vector_2 <NumericType0> () const {
-		return simd_vector_2 <NumericType0> {static_cast<NumericType0>(value.x), static_cast<NumericType0>(value.y)};
+		return simd_vector_2 <NumericType0> {static_cast<NumericType0>(value[0]), static_cast<NumericType0>(value[1])};
 	}
 
 
@@ -63,51 +66,59 @@ struct vec2 {
 
 
 	inline constexpr bool operator == (vec2 other) const {
-		return ((this->value.x == other.value.x) && (this->value.y == other.value.y));
+		return ((this->value[0] == other.value[0]) && (this->value[1] == other.value[1]));
 	}
 
 	inline constexpr bool operator != (vec2 other) const { return (!(* this == other)); }
 
 
-	inline constexpr vec2 & operator += (vec2 other) {
+	inline constexpr vec2 & operator += (vec2 other)
+	{
 		this->value += other.value;
 		return * this;
 	}
 
-	inline constexpr vec2 & operator -= (vec2 other) {
+	inline constexpr vec2 & operator -= (vec2 other)
+	{
 		this->value -= other.value;
 		return * this;
 	}
 
-	inline constexpr vec2 & operator *= (vec2 other) {
+	inline constexpr vec2 & operator *= (vec2 other)
+	{
 		this->value *= other.value;
 		return * this;
 	}
 
-	inline constexpr vec2 & operator /= (vec2 other) {
+	inline constexpr vec2 & operator /= (vec2 other)
+	{
 		this->value /= other.value;
 		return * this;
 	}
 
 
-	inline constexpr vec2 & operator += (NumericType n) {
+	inline constexpr vec2 & operator += (NumericType n)
+	{
 		this->value += n;
 		return * this;
 	}
 
-	inline constexpr vec2 & operator -= (NumericType n) {
+	inline constexpr vec2 & operator -= (NumericType n)
+	{
 		this->value -= n;
 		return * this;
 	}
 
 	template <typename NumericType0>
-	inline constexpr vec2 <NumericType> & operator *= (NumericType0 n) {
+	inline constexpr vec2 <NumericType> & operator *= (NumericType0 n)
+    {
 		this->value *= n;
 		return * this;
 	}
 
 	template <typename NumericType0>
-	inline constexpr vec2 <NumericType> & operator /= (NumericType0 n) {
+	inline constexpr vec2 <NumericType> & operator /= (NumericType0 n)
+    {
 		this->value /= n;
 		return * this;
 	}
@@ -117,26 +128,35 @@ struct vec2 {
 	 * Compiler seems to provide these operator overloads implicitly, retaining for reference and/or the possibility
 	 * we run into problem later
 	 *
-	inline friend constexpr vec2 operator + (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value + v1.value) } ; }
-	inline friend constexpr vec2 operator - (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value - v1.value) } ; }
-	inline friend constexpr vec2 operator * (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value * v1.value) } ; }
-	inline friend constexpr vec2 operator / (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value / v1.value) } ; }
-	 */
+	 * Update: four years later, when trying to compile this with MSVC, it turns out these are now needed. So thanks, old me */
 
-	inline friend constexpr vec2 operator + (const vec2 v, const NumericType n) {
-		return vec2 {(v.value.x + n), (v.value.y + n)};
+	inline friend constexpr vec2 operator + (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value[0] + v1.value[0]), (v0.value[1] + v1.value[1]) } ; }
+
+	inline friend constexpr vec2 operator - (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value[0] - v1.value[0]), (v0.value[1] - v1.value[1]) } ; }
+
+	inline friend constexpr vec2 operator * (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value[0] * v1.value[0]), (v0.value[1] * v1.value[1]) } ; }
+
+	inline friend constexpr vec2 operator / (const vec2 v0, const vec2 v1) { return vec2<NumericType> { (v0.value[0] / v1.value[0]), (v0.value[1] / v1.value[1]) } ; }
+
+
+	inline friend constexpr vec2 operator + (const vec2 v, const NumericType n)
+	{
+		return vec2 {(v.value[0] + n), (v.value[1] + n)};
 	}
 
-	inline friend constexpr vec2 operator - (const vec2 v, const NumericType n) {
-		return vec2 {(v.value.x - n), (v.value.y - n)};
+	inline friend constexpr vec2 operator - (const vec2 v, const NumericType n)
+	{
+		return vec2 {(v.value[0] - n), (v.value[1] - n)};
 	}
 
-	inline friend constexpr vec2 operator * (const vec2 v, const NumericType n) {
-		return vec2 {(v.value.x * n), (v.value.y * n)};
+	inline friend constexpr vec2 operator * (const vec2 v, const NumericType n)
+	{
+		return vec2 {(v.value[0] * n), (v.value[1] * n)};
 	}
 
-	inline friend constexpr vec2 operator / (const vec2 v, const NumericType n) {
-		return vec2 {(v.value.x / n), (v.value.y / n)};
+	inline friend constexpr vec2 operator / (const vec2 v, const NumericType n)
+	{
+		return vec2 {(v.value[0] / n), (v.value[1] / n)};
 	}
 
 };
@@ -193,8 +213,8 @@ simd_vector_2 <NumericType> operator * (const Direction & direction, const Numer
 
 	simd_vector_2 <NumericType> ret;
 
-	ret.x = direction.value.x * n;
-	ret.y = direction.value.y * n;
+	ret[0] = direction.value[0] * n;
+	ret[1] = direction.value[1] * n;
 
 	return ret;
 }
@@ -204,8 +224,8 @@ simd_vector_2 <NumericType> operator + (const Direction & direction, const simd_
 
 	simd_vector_2 <NumericType> ret;
 
-	ret.x = direction.value.x + vec.x;
-	ret.y = direction.value.y + vec.y;
+	ret[0] = direction.value[0] + vec[0];
+	ret[1] = direction.value[1] + vec[1];
 
 	return ret;
 }
@@ -258,7 +278,8 @@ sf::Vector2 <OutputNumericType> convertToSFMLVectorType (const simd_vector_2 <In
 }
 
 template <typename Character, typename NumericType>
-basic_ostream <Character> & operator << (basic_ostream <Character> & out, const simd_vector_2 <NumericType> & vect) {
+basic_ostream <Character> & operator << (basic_ostream <Character> & out, const simd_vector_2 <NumericType> & vect)
+{
 	out << "x = " << vect[0] << " y = " << vect[1];
 	return out;
 }
@@ -268,7 +289,8 @@ basic_ostream <Character> & operator << (basic_ostream <Character> & out, const 
  * @link http://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
  */
 template <typename VectorType>
-inline UniqueNumericIdentifier hashVector (const VectorType & vect, size_t vectorSize) {
+inline UniqueNumericIdentifier hashVector (const VectorType & vect, size_t vectorSize)
+{
 	unsigned long seed = 0;
 
 	for (auto i = 0; i < vectorSize; i++) {

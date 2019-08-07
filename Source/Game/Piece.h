@@ -53,7 +53,7 @@ namespace Chess {
 	class Board;
 
 
-	class Square;
+	struct Square;
 
 
 	class Piece {
@@ -61,7 +61,8 @@ namespace Chess {
 	public:
 
 		/* Note to the standards committee - C++ needs nested enums */
-		enum class Type {
+		enum class Type
+		{
 			GenericPiece,
 			Pawn,
 			Knight,
@@ -202,7 +203,7 @@ namespace Chess {
 		void initSpriteTexture ();
 
 		inline void updateSpritePosition () {
-			sprite.setPosition(static_cast<float>(getPosition()->value.x), static_cast<float>(getPosition()->value.y));
+			sprite.setPosition(static_cast<float>(getPosition()->value[0]), static_cast<float>(getPosition()->value[1]));
 		}
 
 		friend ostream & operator << (ostream &, const Piece &);
@@ -214,7 +215,8 @@ namespace Chess {
 	};
 
 
-	class Pawn : virtual public Piece {
+	class Pawn : virtual public Piece
+	{
 
 	public:
 
@@ -250,7 +252,8 @@ namespace Chess {
 	};
 
 
-	class Knight : virtual public Piece {
+	class Knight : virtual public Piece
+	{
 
 
 	public:
@@ -283,7 +286,8 @@ namespace Chess {
 	};
 
 
-	class Bishop : virtual public Piece {
+	class Bishop : virtual public Piece
+	{
 
 	public:
 
@@ -309,7 +313,8 @@ namespace Chess {
 	};
 
 
-	class Rook : virtual public Piece {
+	class Rook : virtual public Piece
+	{
 
 	public:
 
@@ -335,7 +340,8 @@ namespace Chess {
 	};
 
 
-	class Queen : virtual public Piece {
+	class Queen : virtual public Piece
+	{
 
 	public:
 
@@ -361,7 +367,8 @@ namespace Chess {
 	};
 
 
-	class King : virtual public Piece {
+	class King : virtual public Piece
+	{
 
 	public:
 
@@ -390,7 +397,8 @@ namespace Chess {
 	};
 
 
-	class MoveIntent {
+	class MoveIntent
+	{
 
 	public:
 
@@ -398,9 +406,11 @@ namespace Chess {
 		 * When stored as part of a linked list or tree, some MoveIntents will just be
 		 * dummy objects to mark the start of the structure
 		 */
-		struct Sentinel {
+		struct Sentinel
+		{
 			bool isSentinel = false;
-			enum SentinelType {
+			enum SentinelType
+			{
 				board,
 				piece
 			} sentinelType;

@@ -18,16 +18,16 @@ namespace Chess {
 	}
 
 	Square * Board::getSquareMutable (vec2 <int> pos) {
-		return & boardRepresentation[pos.value.x][pos.value.y];
+		return & boardRepresentation[pos.value[0]][pos.value[1]];
 	}
 
 	const Square * Board::getSquare (const RankAndFile & rf) const {
 		vec2 <int> pos {rf.convertToPosition()};
-		return this->operator ()(pos.value.x, pos.value.y); //todo implement properly
+		return this->operator ()(pos.value[0], pos.value[1]); //todo implement properly
 	}
 
 	const Square * Board::getSquare (const vec2 <int> pos) const {
-		return this->operator ()(pos.value.x, pos.value.y);
+		return this->operator ()(pos.value[0], pos.value[1]);
 	}
 
 	const Square * Board::getSquare (unsigned x, unsigned y) const {
@@ -97,8 +97,8 @@ namespace Chess {
 	}
 
 	bool Board::isInsideBoardBounds (const vec2 <int> pos) const {
-		if ((pos.value.x >= 0) && (pos.value.x < boardRepresentation.size())) {
-			if ((pos.value.y >= 0) && (pos.value.y < boardRepresentation[pos.value.x].size())) {
+		if ((pos.value[0] >= 0) && (pos.value[0] < boardRepresentation.size())) {
+			if ((pos.value[1] >= 0) && (pos.value[1] < boardRepresentation[pos.value[0]].size())) {
 				return true;
 			}
 			else {
@@ -204,12 +204,12 @@ namespace Chess {
 
 		vector <const Square *> squares;
 
-		for (vec2 <int> currentIndex {(startingSquarePosition.value.x - searchRadius),
-		                              (startingSquarePosition.value.y - searchRadius)};
-		     currentIndex.value.x <= (startingSquarePosition.value.x + searchRadius); currentIndex.value.x++) {
+		for (vec2 <int> currentIndex {(startingSquarePosition.value[0] - searchRadius),
+		                              (startingSquarePosition.value[1] - searchRadius)};
+		     currentIndex.value[0] <= (startingSquarePosition.value[0] + searchRadius); currentIndex.value[0]++) {
 
-			for (currentIndex.value.y = (startingSquarePosition.value.y - searchRadius);
-			     currentIndex.value.y <= (startingSquarePosition.value.y + searchRadius); currentIndex.value.y++) {
+			for (currentIndex.value[1] = (startingSquarePosition.value[1] - searchRadius);
+			     currentIndex.value[1] <= (startingSquarePosition.value[1] + searchRadius); currentIndex.value[1]++) {
 
 				if (isInsideBoardBounds(currentIndex)) {
 					const Square * sq {getSquare(currentIndex)};

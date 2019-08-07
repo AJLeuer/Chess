@@ -12,8 +12,6 @@
 #include <iostream>
 #include <string>
 
-#include <OpenGL/gl.h>
-
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>

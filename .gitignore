@@ -6,3 +6,6 @@ cmake-build-debug/
 cmake-build-release/
 
 .DS_Store
+
+IDE Project Configuration Files/
+.idea/

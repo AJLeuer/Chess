@@ -98,7 +98,7 @@ namespace Chess {
 
 		Board & operator = (const Board & other) = delete;
 
-		inline unsigned long getID () const { return ID; }
+		unsigned long getID () const { return ID; }
 
 		/**
 		 * @return A pointer to the Square at the position specified by x and y

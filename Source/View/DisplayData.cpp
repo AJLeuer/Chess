@@ -4,62 +4,63 @@
 
 #include "DisplayData.h"
 
-void inspectDisplayConfiguration () {
+void inspectDisplayConfiguration ()
+{
 	auto refreshRate = DisplayData::getScreenRefreshRate();
 }
 
 
 bool DisplayData::isInit = false;
 
-bool DisplayData::hiDPI_referenceVal;
+bool DisplayData::displayIsHighDPI;
 
-float DisplayData::displayScalingFactor_referenceVal;
+float DisplayData::displayScalingFactor;
 
-CGDirectDisplayID DisplayData::displayID = CGMainDisplayID();
-
-CGDisplayModeRef DisplayData::displayMode = CGDisplayCopyDisplayMode(displayID);
-
-void DisplayData::init () {
-
-	/* init displayScalingFactor_referenceVal */
+void DisplayData::init ()
+{
+	/* init displayScalingFactor */
 	calculateDisplayScalingFactor();
 
-	/* init hiDPI_referenceVal */
-	hiDPI_referenceVal = ((displayScalingFactor_referenceVal == 2.0) ? true : false);
+	/* init displayIsHighDPI */
+	displayIsHighDPI = ((displayScalingFactor == 2.0) ? true : false);
 
 	isInit = true;
+}
 
+bool DisplayData::IsHighDPI ()
+{
+	if (isInit == false)
+	{
+		init();
+	}
+
+	return DisplayData::displayIsHighDPI;
 }
 
 #ifndef __APPLE__
 
 /* non-OS X implementations: */
+
+double DisplayData::getScreenRefreshRate ()
+{
+	//todo implement
+	return 120;
+}
  
-vec2<unsigned> DisplayData::calculateScreenResolution() {
-	//todo
+vec2<unsigned> DisplayData::calculateScreenResolution()
+{
+	//todo implement
+	return {1280, 720 };
 }
 
-void DisplayData::calculateDisplayScalingFactor() {
-	//todo
+void DisplayData::calculateDisplayScalingFactor()
+{
+	//todo implement
+	displayScalingFactor = 2.5;
 }
 
 #endif
 
-double DisplayData::getScreenRefreshRate () {
-	return CGDisplayModeGetRefreshRate(displayMode);
-}
-
-bool DisplayData::hiDPI () {
-
-	if (isInit == false) {
-		init();
-		return DisplayData::hiDPI_referenceVal;
-	}
-	else {
-		return DisplayData::hiDPI_referenceVal;
-	}
-
-}
 
 
 
